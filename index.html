@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Personal Intro</title>
+<style>
+  body {
+    margin: 0;
+    background: #0a0f24;
+    color: #e6e6e6;
+    font-family: Inter, Arial, sans-serif;
+  }
+  nav {
+    width: 100%;
+    padding: 16px 40px;
+    background: #0d152f;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+  }
+  nav .logo {
+    font-size: 20px;
+    font-weight: 600;
+  }
+  nav .menu a {
+    margin-left: 24px;
+    text-decoration: none;
+    color: #9cc3ff;
+    font-weight: 500;
+  }
+  nav .menu a:hover {
+    color: #fff;
+  }
+  .breadcrumb {
+    margin-top: 90px;
+    padding: 10px 40px;
+    font-size: 14px;
+    color: #9db0d6;
+  }
+  .breadcrumb span {
+    color: #4ca3ff;
+  }
+
+  .container {
+    margin-top: 20px;
+    display: flex;
+    padding: 40px;
+    gap: 40px;
+  }
+  .code-box {
+    flex: 1;
+    min-height: 70vh;
+    background: #0e162f;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    padding: 24px;
+    overflow: hidden;
+    white-space: pre-wrap;
+    font-family: "Roboto Mono", monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #d7e0ff;
+  }
+
+  .kw { color: #ff7b72; }
+  .fn { color: #6fc3ff; }
+  .str { color: #f7e58f; }
+  .var { color: #a29bfe; }
+  .num { color: #81ecec; }
+
+  .caret {
+    display: inline-block;
+    width: 10px;
+    height: 18px;
+    background: #fff;
+    animation: blink 1s infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .profile {
+    width: 35%;
+    background: #131c3b;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    text-align: center;
+  }
+  .profile img {
+    width: 80%;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+  }
+  .profile p {
+    margin-top: 20px;
+    font-size: 15px;
+    color: #c9d4ff;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 900px) {
+    .container { flex-direction: column; }
+    .profile { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">My Portfolio</div>
+  <div class="menu">
+    <a href="#home">Home</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">Home ➜ <span>Introduction</span></div>
+
+<div class="container" id="home">
+  <div class="code-box" id="codeBox"></div>
+
+  <div class="profile">
+    <img src="your-image.jpg" alt="Your Photo" />
+    <p>
+      A focused developer who builds fast systems and clean interfaces.
+      Passionate about automation, performance, and solving technical problems.
+    </p>
+  </div>
+</div>
+
+<script>
+const codeBox = document.getElementById('codeBox');
+
+const codeLines = [
+  '<span class="kw">function</span> <span class="fn">introduce</span>() {',
+  '  <span class="kw">const</span> <span class="var">name</span> = <span class="str">\'Your Name\'</span>;',
+  '  <span class="kw">const</span> <span class="var">title</span> = <span class="str">\'Full‑Stack Developer\'</span>;',
+  '  <span class="kw">const</span> <span class="var">specialty</span> = <span class="str">\'Systems, UI, Automation\'</span>;',
+  '  <span class="kw">return</span> `\${name} - \${title}`;',
+  '}',
+  '<span class="fn">console</span>.log(<span class="fn">introduce</span>());'
+];
+
+let lineIndex = 0;
+let charIndex = 0;
+const caret = document.createElement('span');
+caret.className = 'caret';
+
+function render() {
+  let visible = '';
+  for (let i = 0; i < lineIndex; i++) visible += codeLines[i] + "\n";
+  visible += codeLines[lineIndex].slice(0, charIndex);
+  codeBox.innerHTML = visible;
+  if (!codeBox.contains(caret)) codeBox.appendChild(caret);
+  codeBox.scrollTop = codeBox.scrollHeight;
+}
+
+function step() {
+  const current = codeLines[lineIndex];
+
+  if (charIndex < current.length) {
+    charIndex++;
+    render();
+    const delay = current[charIndex - 1] === ' ' ? 8 : 22;
+    setTimeout(step, delay);
+    return;
+  }
+
+  if (lineIndex < codeLines.length - 1) {
+    lineIndex++;
+    charIndex = 0;
+    setTimeout(step, 160);
+    return;
+  }
+
+  setTimeout(() => {
+    lineIndex = 0;
+    charIndex = 0;
+    render();
+    setTimeout(step, 600);
+  }, 1400);
+}
+
+render();
+setTimeout(step, 300);
+</script>
+</body>
+</html>
