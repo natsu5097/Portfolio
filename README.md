@@ -1,5 +1,7 @@
 # Mani's Portfolio — Enhanced
 
+[![Live Site](https://img.shields.io/website-up-down-green-red/https/natsu5097.github.io/Portfolio.svg)](https://natsu5097.github.io/Portfolio/)
+
 This repository contains a static portfolio site for Mani. I added several enhancements to make it a full single-page portfolio:
 
 - New sections: **Services**, **Skills**, **Projects**, **Education**, **Experience**, **Contact** and **Footer**
