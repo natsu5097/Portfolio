@@ -23,14 +23,13 @@
         </div>
 
         <div class="intro-neon-blocks" id="introNeonBlocks" aria-hidden="true">
-    <div class="intro-neon-block"></div>
-    <div class="intro-neon-block"></div>
-    <div class="intro-neon-block"></div>
-    <div class="intro-neon-block"></div>
-    <div class="intro-neon-block"></div>
-</div>
+            <div class="intro-neon-block"></div>
+            <div class="intro-neon-block"></div>
+            <div class="intro-neon-block"></div>
+            <div class="intro-neon-block"></div>
+            <div class="intro-neon-block"></div>
+        </div>
 
-        
         <div class="intro-text-container">
             <h1 class="intro-text-3d">
                 <span style="--i: 0">H</span><span style="--i: 1">I</span><span style="--i: 2">,</span>
@@ -58,34 +57,316 @@
         </div>
 
         <header>
-            <a href="#" class="logo">Mani</a>
-            <nav>
-                <a href="#" class="active">Home</a>
-                <a href="#">Services</a>
-                <a href="#">Skills</a>
-                <a href="#">Education</a>
-                <a href="#">Experience</a>
-                <a href="#">Contact</a>
+            <a href="#home" class="logo">Mani</a>
+            <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav">
+                <span class="sr-only">Open menu</span>
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <nav id="primaryNav">
+                <a href="#home" class="active">Home</a>
+                <a href="#about">About</a>
+                <a href="#services">Services</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#journey">Journey</a>
+                <a href="#testimonials">Testimonials</a>
+                <a href="#contact">Contact</a>
             </nav>
         </header>
 
-        <section class="home">
-            <div class="home-img">
-                <img src="https://via.placeholder.com/400" alt="Mani Profile">
-            </div>
-            <div class="home-content">
-                <h1>Hello, It's me <span>Mani</span></h1>
-                <h3 class="typing-text">I'm an Aspiring student and Developer..<span></span></h3>
-                <p>I am Mani Puspak Dhakal from Nepal. I created this webpage to document my journey toward becoming an engineer and developer. This page keeps me accountable and motivated, while sharing what I learn along the way.</p>
-                <div class="social-icons">
-                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="#"><i class="fa-brands fa-github"></i></a>
-                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="https://www.instagram.com/manipuspak12_/"><i class="fa-brands fa-instagram"></i></a>
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <p class="eyebrow">Aspiring Software Engineer • Nepal</p>
+                <h1>Building thoughtful digital experiences that help people move faster.</h1>
+                <h3 class="typing-text">I'm Mani, a developer who loves shipping clean, purposeful products.<span></span></h3>
+                <p class="lead">I craft web experiences with empathy, clarity, and modern engineering. From concept to deployment, I help teams transform ideas into scalable products.</p>
+                <div class="hero-actions">
+                    <a class="btn primary" href="#contact">Hire me</a>
+                    <a class="btn ghost" href="#projects">View projects</a>
                 </div>
-                <a href="#" class="btn">Hire me</a>
+                <div class="hero-stats">
+                    <div>
+                        <h4>20+</h4>
+                        <span>Projects delivered</span>
+                    </div>
+                    <div>
+                        <h4>8</h4>
+                        <span>Hackathons</span>
+                    </div>
+                    <div>
+                        <h4>3</h4>
+                        <span>Open-source collabs</span>
+                    </div>
+                </div>
+                <div class="social-icons">
+                    <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://www.instagram.com/manipuspak12_/" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="hero-card">
+                <div class="hero-img">
+                    <img src="https://via.placeholder.com/420" alt="Portrait of Mani">
+                </div>
+                <div class="hero-highlights">
+                    <div>
+                        <span class="badge">Available for internships</span>
+                        <h3>Let’s build your next MVP.</h3>
+                        <p>Full-stack web apps, design systems, and fast iterations.</p>
+                    </div>
+                    <ul>
+                        <li><i class="fa-solid fa-check"></i> Responsive, accessible UI</li>
+                        <li><i class="fa-solid fa-check"></i> Clean, scalable code</li>
+                        <li><i class="fa-solid fa-check"></i> Reliable collaboration</li>
+                    </ul>
+                </div>
             </div>
         </section>
+
+        <section class="about" id="about">
+            <div class="section-heading">
+                <p class="eyebrow">About</p>
+                <h2>Curious by nature, focused by design.</h2>
+                <p>I’m an aspiring student and developer documenting my journey into software engineering. I love connecting front-end polish with back-end reliability.</p>
+            </div>
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>What I value</h3>
+                    <p>Human-centered design, shipping frequently, and keeping codebases healthy. I believe every product should be fast, inclusive, and delightful.</p>
+                </div>
+                <div class="about-card">
+                    <h3>What I’m learning</h3>
+                    <p>Design systems, API architecture, database fundamentals, and thoughtful animation that elevates the user experience.</p>
+                </div>
+                <div class="about-card">
+                    <h3>What I’m looking for</h3>
+                    <p>Internships, mentorship, and collaboration opportunities with teams that care about impact and community.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="services" id="services">
+            <div class="section-heading">
+                <p class="eyebrow">Services</p>
+                <h2>From vision to launch.</h2>
+                <p>I support teams with a balanced mix of product thinking, UI craft, and engineering execution.</p>
+            </div>
+            <div class="card-grid">
+                <article class="service-card">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <h3>Design Systems</h3>
+                    <p>Reusable UI components, tokens, and documentation that scale across products.</p>
+                </article>
+                <article class="service-card">
+                    <i class="fa-solid fa-code"></i>
+                    <h3>Frontend Engineering</h3>
+                    <p>Modern React workflows, performant layouts, and accessible design implementation.</p>
+                </article>
+                <article class="service-card">
+                    <i class="fa-solid fa-database"></i>
+                    <h3>Backend Foundations</h3>
+                    <p>API design, database modeling, and serverless deployments for MVPs.</p>
+                </article>
+                <article class="service-card">
+                    <i class="fa-solid fa-rocket"></i>
+                    <h3>Product Launch</h3>
+                    <p>Rapid iteration, analytics setup, and feedback loops to improve conversion.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="skills" id="skills">
+            <div class="section-heading">
+                <p class="eyebrow">Skills</p>
+                <h2>Toolbox I rely on daily.</h2>
+                <p>Balanced between design, engineering, and product leadership.</p>
+            </div>
+            <div class="skills-grid">
+                <div class="skills-card">
+                    <h3>Core Stack</h3>
+                    <div class="skill-chip">HTML5</div>
+                    <div class="skill-chip">CSS3</div>
+                    <div class="skill-chip">JavaScript</div>
+                    <div class="skill-chip">React</div>
+                    <div class="skill-chip">Node.js</div>
+                    <div class="skill-chip">MongoDB</div>
+                </div>
+                <div class="skills-card">
+                    <h3>Workflow</h3>
+                    <div class="progress">
+                        <span>UI Engineering</span>
+                        <div class="bar"><div style="width: 90%"></div></div>
+                    </div>
+                    <div class="progress">
+                        <span>API Development</span>
+                        <div class="bar"><div style="width: 75%"></div></div>
+                    </div>
+                    <div class="progress">
+                        <span>Design Systems</span>
+                        <div class="bar"><div style="width: 80%"></div></div>
+                    </div>
+                    <div class="progress">
+                        <span>Team Collaboration</span>
+                        <div class="bar"><div style="width: 95%"></div></div>
+                    </div>
+                </div>
+                <div class="skills-card">
+                    <h3>Tools</h3>
+                    <ul>
+                        <li>Figma • Adobe XD</li>
+                        <li>Git • GitHub • VS Code</li>
+                        <li>Netlify • Vercel • Render</li>
+                        <li>Notion • Jira • Slack</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="projects" id="projects">
+            <div class="section-heading">
+                <p class="eyebrow">Projects</p>
+                <h2>Featured work</h2>
+                <p>Selected work demonstrating product thinking, problem solving, and execution.</p>
+            </div>
+            <div class="card-grid">
+                <article class="project-card">
+                    <div class="project-tag">Fintech</div>
+                    <h3>PayWave Dashboard</h3>
+                    <p>Analytics dashboard for tracking revenue, churn, and user engagement across regions.</p>
+                    <div class="project-links">
+                        <a href="#">Case study</a>
+                        <a href="#">Live demo</a>
+                    </div>
+                </article>
+                <article class="project-card">
+                    <div class="project-tag">EdTech</div>
+                    <h3>StudySync App</h3>
+                    <p>Personalized study planner with reminders, streaks, and focus sessions.</p>
+                    <div class="project-links">
+                        <a href="#">Case study</a>
+                        <a href="#">Live demo</a>
+                    </div>
+                </article>
+                <article class="project-card">
+                    <div class="project-tag">Community</div>
+                    <h3>Nepal Dev Hub</h3>
+                    <p>Community platform spotlighting local developers, events, and resources.</p>
+                    <div class="project-links">
+                        <a href="#">Case study</a>
+                        <a href="#">Live demo</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="journey" id="journey">
+            <div class="section-heading">
+                <p class="eyebrow">Journey</p>
+                <h2>Learning, building, and growing.</h2>
+                <p>Education milestones and hands-on experience.</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-card">
+                    <span class="timeline-date">2024 • Present</span>
+                    <h3>Frontend Intern (Remote)</h3>
+                    <p>Collaborating on a SaaS dashboard, improving performance, and building reusable components.</p>
+                </div>
+                <div class="timeline-card">
+                    <span class="timeline-date">2023 • 2024</span>
+                    <h3>Freelance Web Developer</h3>
+                    <p>Designed and delivered landing pages, portfolios, and small business websites.</p>
+                </div>
+                <div class="timeline-card">
+                    <span class="timeline-date">2022 • Present</span>
+                    <h3>Bachelor of Computer Engineering</h3>
+                    <p>Tribhuvan University — Coursework in algorithms, systems design, and UX.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials" id="testimonials">
+            <div class="section-heading">
+                <p class="eyebrow">Testimonials</p>
+                <h2>What collaborators say</h2>
+                <p>Feedback from mentors, peers, and clients.</p>
+            </div>
+            <div class="card-grid">
+                <article class="testimonial-card">
+                    <p>“Mani is quick to understand product goals and consistently delivers thoughtful UI details.”</p>
+                    <h4>Prerana K.</h4>
+                    <span>Product Designer</span>
+                </article>
+                <article class="testimonial-card">
+                    <p>“Reliable, proactive, and always improving. A great teammate in hackathons.”</p>
+                    <h4>Abhishek R.</h4>
+                    <span>Hackathon Mentor</span>
+                </article>
+                <article class="testimonial-card">
+                    <p>“He translated our ideas into a clean, fast website that our team loves.”</p>
+                    <h4>Sanju B.</h4>
+                    <span>Small Business Owner</span>
+                </article>
+            </div>
+        </section>
+
+        <section class="contact" id="contact">
+            <div class="section-heading">
+                <p class="eyebrow">Contact</p>
+                <h2>Let’s build together.</h2>
+                <p>Have an opportunity, project, or collaboration idea? I’m ready to help.</p>
+            </div>
+            <div class="contact-grid">
+                <form class="contact-form">
+                    <div class="form-row">
+                        <label>
+                            Name
+                            <input type="text" placeholder="Your name">
+                        </label>
+                        <label>
+                            Email
+                            <input type="email" placeholder="you@example.com">
+                        </label>
+                    </div>
+                    <label>
+                        Project details
+                        <textarea rows="5" placeholder="Tell me about your project"></textarea>
+                    </label>
+                    <button class="btn primary" type="submit">Send message</button>
+                </form>
+                <div class="contact-details">
+                    <div>
+                        <h3>Get in touch</h3>
+                        <p>Based in Nepal, open to remote roles and collaborations worldwide.</p>
+                    </div>
+                    <ul>
+                        <li><i class="fa-solid fa-envelope"></i> mani.dev@email.com</li>
+                        <li><i class="fa-solid fa-phone"></i> +977 9812345678</li>
+                        <li><i class="fa-solid fa-location-dot"></i> Kathmandu, Nepal</li>
+                    </ul>
+                    <a class="btn ghost" href="#projects">Download resume</a>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-top">
+                <div>
+                    <h3>Mani Dhakal</h3>
+                    <p>Building reliable, human-centered digital products.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#about">About</a>
+                    <a href="#services">Services</a>
+                    <a href="#projects">Projects</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2025 Mani Dhakal. All rights reserved.</span>
+                <span>Designed & built with care.</span>
+            </div>
+        </footer>
     </div>
 
     <script>
@@ -95,104 +376,114 @@
                 const texts = document.querySelectorAll('.intro-text-3d');
                 const x = (e.clientX / window.innerWidth - 0.5) * 20;
                 const y = (e.clientY / window.innerHeight - 0.5) * 20;
-                
+
                 texts.forEach(text => {
                     text.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
                 });
             }
         });
 
-        // Animate blocks to match image positions
         (function() {
             if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-            
+
             const blocks = Array.from(document.querySelectorAll('.intro-neon-block'));
             if (!blocks.length) return;
 
-            // Positions matching your image (left %, top %)
             const positions = [
-                { left: '10%', top: '16%', size: 45 },     // Top left
-                { right: '12%', top: '10%', size: 38 },    // Top right
-                { right: '8%', top: '28%', size: 50 },     // Upper right
-                { right: '15%', bottom: '30%', size: 42 }  // Lower right
+                { left: '10%', top: '16%', size: 45 },
+                { right: '12%', top: '10%', size: 38 },
+                { right: '8%', top: '28%', size: 50 },
+                { right: '15%', bottom: '30%', size: 42 }
             ];
 
-            // Apply positions and start animations
             blocks.forEach((block, i) => {
                 const pos = positions[i];
-                
-                // Set position
+
                 if (pos.left) block.style.left = pos.left;
                 if (pos.right) block.style.right = pos.right;
                 if (pos.top) block.style.top = pos.top;
                 if (pos.bottom) block.style.bottom = pos.bottom;
-                
-                // Set size
+
                 block.style.width = pos.size + 'px';
                 block.style.height = pos.size + 'px';
-                
-                // Start vertical animation
+
                 const duration = 4 + Math.random() * 2;
                 const delay = Math.random() * 2;
                 block.style.animation = `float-vertical ${duration}s ease-in-out ${delay}s infinite`;
             });
         })();
 
-        // Fade out intro after 5 seconds and show main content
         setTimeout(() => {
             const introOverlay = document.getElementById('introOverlay');
             const mainContent = document.getElementById('mainContent');
-            
+
             introOverlay.classList.add('fade-out');
             mainContent.classList.add('show');
-            
+
             setTimeout(() => {
                 introOverlay.style.display = 'none';
             }, 1000);
         }, 5000);
 
-function startTyping(lines, speed = 18, pause = 1200) {
-    lines.forEach(line => {
-        line.dataset.fullText = line.textContent;
-        line.textContent = '';
-    });
+        function startTyping(lines, speed = 18, pause = 1200) {
+            lines.forEach(line => {
+                line.dataset.fullText = line.textContent;
+                line.textContent = '';
+            });
 
-    let i = 0;
-    let j = 0;
+            let i = 0;
+            let j = 0;
 
-    function type() {
-        const line = lines[i];
-        const text = line.dataset.fullText;
+            function type() {
+                const line = lines[i];
+                const text = line.dataset.fullText;
 
-        if (j < text.length) {
-            line.textContent += text[j++];
-            setTimeout(type, speed);
-        } else {
-            setTimeout(() => {
-                j = 0;
-                i = (i + 1) % lines.length;
+                if (j < text.length) {
+                    line.textContent += text[j++];
+                    setTimeout(type, speed);
+                } else {
+                    setTimeout(() => {
+                        j = 0;
+                        i = (i + 1) % lines.length;
 
-                if (i === 0) {
-                    lines.forEach(l => l.textContent = '');
+                        if (i === 0) {
+                            lines.forEach(l => l.textContent = '');
+                        }
+                        type();
+                    }, pause);
                 }
-                type();
-            }, pause);
+            }
+            type();
         }
-    }
-    type();
-}
 
-/* INTRO */
-window.addEventListener('load', () => {
-    const introLines = document.querySelectorAll('.intro-code-line');
-    if (introLines.length) startTyping(introLines);
-});
+        window.addEventListener('load', () => {
+            const introLines = document.querySelectorAll('.intro-code-line');
+            if (introLines.length) startTyping(introLines);
+        });
 
-/* MAIN (AFTER INTRO FADES) */
-setTimeout(() => {
-    const mainLines = document.querySelectorAll('.code-line');
-    if (mainLines.length) startTyping(mainLines, 16, 1000);
-}, 5200);
+        setTimeout(() => {
+            const mainLines = document.querySelectorAll('.code-line');
+            if (mainLines.length) startTyping(mainLines, 16, 1000);
+        }, 5200);
+
+        const navToggle = document.getElementById('navToggle');
+        const nav = document.getElementById('primaryNav');
+
+        navToggle.addEventListener('click', () => {
+            const isOpen = nav.classList.toggle('active');
+            navToggle.setAttribute('aria-expanded', isOpen);
+            navToggle.innerHTML = isOpen
+                ? '<span class="sr-only">Close menu</span><i class="fa-solid fa-xmark"></i>'
+                : '<span class="sr-only">Open menu</span><i class="fa-solid fa-bars"></i>';
+        });
+
+        nav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+                navToggle.setAttribute('aria-expanded', 'false');
+                navToggle.innerHTML = '<span class="sr-only">Open menu</span><i class="fa-solid fa-bars"></i>';
+            });
+        });
     </script>
 </body>
 </html>
