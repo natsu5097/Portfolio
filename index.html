@@ -3,9 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mani Puspak Dhakal — Aspiring engineer & developer. Portfolio showcasing projects, skills, experience and contact.">
+    <meta name="keywords" content="Mani, portfolio, web developer, JavaScript, React, Node.js, Nepal">
+    <meta name="theme-color" content="#000000">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://assets8.lottiefiles.com" crossorigin>
+    <link rel="preconnect" href="https://via.placeholder.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <title>Mani's Portfolio</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="preload" href="style.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://via.placeholder.com/400" as="image">
+    <noscript><link rel="stylesheet" href="style.min.css"></noscript>
+    <!-- Simple inline SVG favicon -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%236bd1c9'/%3E%3Ctext x='50' y='58' font-size='48' text-anchor='middle' fill='black' font-family='Poppins' font-weight='700'%3Em%3C/text%3E%3C/svg%3E">
+    <!-- Lottie will be lazy-loaded when the hero enters the viewport -->
 </head>
 <body>
     <div class="intro-overlay" id="introOverlay">
@@ -58,20 +72,29 @@
         </div>
 
         <header>
-            <a href="#" class="logo">Mani</a>
-            <nav>
-                <a href="#" class="active">Home</a>
-                <a href="#">Services</a>
-                <a href="#">Skills</a>
-                <a href="#">Education</a>
-                <a href="#">Experience</a>
-                <a href="#">Contact</a>
+            <a href="#home" class="logo">Mani</a>
+            <div class="header-controls">
+                <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><i class="fa fa-bars"></i></button>
+                <button class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">🌙</button>
+            </div>
+            <nav id="mainNav">
+                <a href="#home" class="active">Home</a>
+                <a href="#services">Services</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#education">Education</a>
+                <a href="#experience">Experience</a>
+                <a href="#contact">Contact</a>
             </nav>
         </header>
 
         <section class="home">
             <div class="home-img">
-                <img src="https://via.placeholder.com/400" alt="Mani Profile">
+                <img src="https://via.placeholder.com/400" alt="Mani Profile" width="400" height="400" loading="eager" decoding="async" fetchpriority="high" srcset="https://via.placeholder.com/400 400w, https://via.placeholder.com/800 800w" sizes="(max-width:600px) 70vw, 32vw">
+                <!-- Decorative Lottie animation — can be replaced with another free animation -->
+                <div class="hero-lottie" aria-hidden="true">
+                    <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_jcikwtux.json" background="transparent" speed="1" loop autoplay style="width:120px; height:120px;"></lottie-player>
+                </div>
             </div>
             <div class="home-content">
                 <h1>Hello, It's me <span>Mani</span></h1>
@@ -86,6 +109,141 @@
                 <a href="#" class="btn">Hire me</a>
             </div>
         </section>
+
+        <!-- ====== Services ====== -->
+        <section id="services" class="services">
+            <h2 class="section-title">Services</h2>
+            <div class="services-grid">
+                <article class="service-card">
+                    <h3>Web Development</h3>
+                    <p>Modern, responsive websites using HTML, CSS and JavaScript — focused on performance and accessibility.</p>
+                </article>
+                <article class="service-card">
+                    <h3>UI / UX</h3>
+                    <p>Design and refine user interfaces with a user-first approach and attention to detail.</p>
+                </article>
+                <article class="service-card">
+                    <h3>Projects & Consulting</h3>
+                    <p>Prototype, build and ship projects — from idea to production-ready deployment.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- ====== Skills ====== -->
+        <section id="skills" class="skills">
+            <h2 class="section-title">Skills</h2>
+            <div class="skills-grid">
+                <div class="skill">
+                    <h4>HTML / CSS <span class="skill-value" aria-hidden="true">90%</span></h4>
+                    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="90" data-value="90"><span></span></div>
+                </div>
+                <div class="skill">
+                    <h4>JavaScript <span class="skill-value" aria-hidden="true">85%</span></h4>
+                    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="85" data-value="85"><span></span></div>
+                </div>
+                <div class="skill">
+                    <h4>React <span class="skill-value" aria-hidden="true">75%</span></h4>
+                    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75" data-value="75"><span></span></div>
+                </div>
+                <div class="skill">
+                    <h4>Node.js <span class="skill-value" aria-hidden="true">70%</span></h4>
+                    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70" data-value="70"><span></span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== Projects ====== -->
+        <section id="projects" class="projects">
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-grid">
+                <article class="project-card" data-title="Project One" data-desc="A small e-commerce demo built with vanilla JS.">
+                    <img src="https://via.placeholder.com/400x220" alt="Project One screenshot" width="400" height="220" loading="lazy" decoding="async" fetchpriority="low" srcset="https://via.placeholder.com/400x220 400w, https://via.placeholder.com/800x440 800w" sizes="(max-width:600px) 90vw, (max-width:900px) 48vw, 30vw">
+                    <h4>Project One</h4>
+                    <button class="btn open-project">Details</button>
+                </article>
+                <article class="project-card" data-title="Project Two" data-desc="Interactive UI demo using React components.">
+                    <img src="https://via.placeholder.com/400x220" alt="Project Two screenshot" width="400" height="220" loading="lazy" decoding="async" fetchpriority="low" srcset="https://via.placeholder.com/400x220 400w, https://via.placeholder.com/800x440 800w" sizes="(max-width:600px) 90vw, (max-width:900px) 48vw, 30vw">
+                    <h4>Project Two</h4>
+                    <button class="btn open-project">Details</button>
+                </article>
+                <article class="project-card" data-title="Project Three" data-desc="API-driven dashboard built on Node.js.">
+                    <img src="https://via.placeholder.com/400x220" alt="Project Three screenshot" width="400" height="220" loading="lazy" decoding="async" fetchpriority="low" srcset="https://via.placeholder.com/400x220 400w, https://via.placeholder.com/800x440 800w" sizes="(max-width:600px) 90vw, (max-width:900px) 48vw, 30vw">
+                    <h4>Project Three</h4>
+                    <button class="btn open-project">Details</button>
+                </article>
+            </div>
+        </section>
+
+        <!-- Project Modal -->
+        <div id="projectModal" class="modal" aria-hidden="true">
+            <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="projectTitle">
+                <button class="modal-close" aria-label="Close project details">×</button>
+                <h3 id="projectTitle"></h3>
+                <p id="projectDesc"></p>
+            </div>
+        </div>
+
+        <!-- ====== Education ====== -->
+        <section id="education" class="timeline">
+            <h2 class="section-title">Education</h2>
+            <div class="timeline-list">
+                <div class="timeline-item">
+                    <h4>Bachelor of Engineering (In progress)</h4>
+                    <time>2023 - Present</time>
+                    <p>Studying engineering with focus on software and systems.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>High School</h4>
+                    <time>2019 - 2022</time>
+                    <p>Graduated with strong mathematics and science background.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== Experience ====== -->
+        <section id="experience" class="timeline">
+            <h2 class="section-title">Experience</h2>
+            <div class="timeline-list">
+                <div class="timeline-item">
+                    <h4>Freelance Developer</h4>
+                    <time>2022 - Present</time>
+                    <p>Built small business websites and prototypes for clients.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== Contact ====== -->
+        <section id="contact" class="contact">
+            <h2 class="section-title">Contact</h2>
+            <div class="contact-grid">
+                <form id="contactForm" class="contact-form" novalidate data-endpoint="">
+                    <label for="name">Name</label>
+                    <input id="name" name="name" required>
+
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" required>
+
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+
+                    <input type="hidden" name="_subject" value="Portfolio contact">
+                    <!-- Set your Formspree endpoint here, e.g. data-endpoint="https://formspree.io/f/your-id" -->
+                    <button type="submit" class="btn"><span class="spinner" aria-hidden="true"></span><span class="btn-text">Send Message</span></button>
+                    <p class="form-status" aria-live="polite"></p>
+                </form>
+                <div class="contact-info">
+                    <h4>Get in touch</h4>
+                    <p>Feel free to reach out on any of the social links or send a message through the form.</p>
+                    <a href="resume.pdf" class="btn" download>Download Resume</a>
+                    <a href="resume.html" class="btn">View Resume</a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <p>© <span id="currentYear"></span> Mani Puspak Dhakal — Built with ❤️</p>
+        </footer>
+
     </div>
 
     <script>
@@ -194,5 +352,6 @@ setTimeout(() => {
     if (mainLines.length) startTyping(mainLines, 16, 1000);
 }, 5200);
     </script>
+    <script src="script.min.js" defer></script>
 </body>
 </html>
