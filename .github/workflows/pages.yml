@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+# Grant workflow the ability to push to repository (required for creating/updating gh-pages)
+permissions:
+  contents: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
