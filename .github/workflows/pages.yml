@@ -1,0 +1,24 @@
+name: "GitHub Pages"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # if you have a build step you can add it here
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./Portfolio
+          publish_branch: gh-pages
+          # keep empty if you want root or specify docs if using root folder
+          # for a project site the URL will be https://<user>.github.io/Portfolio-Main/
