@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Damage Calculator - Blox Fruits Wiki</title>
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="icon" href="../../assets/images/sitelogo/bloxtrex.png" type="image/png">
+  <link rel="stylesheet" href="../../assets/styles/tools.css">
+  <style>
+    .calculator-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+    }
+    .calc-section {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: var(--bg-color);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+    .calc-section h3 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+    .input-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .input-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .input-field label {
+      font-weight: var(--font-medium);
+      color: var(--text-color);
+    }
+    .input-field input, .input-field select {
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: var(--bg-color-alt);
+      color: var(--text-color);
+      font-size: 1rem;
+    }
+    .input-field input:focus, .input-field select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+    }
+    .calculate-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--gradient-primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: var(--font-semibold);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .calculate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(var(--primary-color-rgb), 0.4);
+    }
+    .result-display {
+      margin-top: 2rem;
+      padding: 2rem;
+      background: var(--gradient-primary);
+      border-radius: 12px;
+      text-align: center;
+      color: white;
+      display: none;
+    }
+    .result-display.active {
+      display: block;
+      animation: slideIn 0.5s ease;
+    }
+    .result-display h2 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      color: white;
+    }
+    .result-display p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+    .damage-breakdown {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .breakdown-item {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 8px;
+      backdrop-filter: blur(10px);
+    }
+    .breakdown-item strong {
+      display: block;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="calculator-container">
+      <h1 style="text-align: center; color: var(--primary-color); margin-bottom: 2rem;">⚔️ Damage Calculator</h1>
+      
+      <div class="calc-section">
+        <h3>📊 Basic Stats</h3>
+        <div class="input-group">
+          <div class="input-field">
+            <label for="level">Your Level</label>
+            <input type="number" id="level" value="2450" min="1" max="2550">
+          </div>
+          <div class="input-field">
+            <label for="melee">Melee Stat</label>
+            <input type="number" id="melee" value="0" min="0" max="10000">
+          </div>
+          <div class="input-field">
+            <label for="defense">Defense Stat</label>
+            <input type="number" id="defense" value="0" min="0" max="10000">
+          </div>
+          <div class="input-field">
+            <label for="fruit">Devil Fruit Stat</label>
+            <input type="number" id="fruit" value="0" min="0" max="10000">
+          </div>
+          <div class="input-field">
+            <label for="sword">Sword Stat</label>
+            <input type="number" id="sword" value="0" min="0" max="10000">
+          </div>
+          <div class="input-field">
+            <label for="gun">Gun Stat</label>
+            <input type="number" id="gun" value="0" min="0" max="10000">
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-section">
+        <h3>🍎 Fruit & Weapon Selection</h3>
+        <div class="input-group">
+          <div class="input-field">
+            <label for="fruitType">Devil Fruit</label>
+            <select id="fruitType">
+              <option value="none">None</option>
+              <option value="dragon">Dragon (Mythical)</option>
+              <option value="leopard">Leopard (Mythical)</option>
+              <option value="dough">Dough (Legendary)</option>
+              <option value="shadow">Shadow (Legendary)</option>
+              <option value="venom">Venom (Legendary)</option>
+              <option value="buddha">Buddha (Legendary)</option>
+              <option value="control">Control (Legendary)</option>
+              <option value="spirit">Spirit (Mythical)</option>
+              <option value="kitsune">Kitsune (Mythical)</option>
+            </select>
+          </div>
+          <div class="input-field">
+            <label for="weaponType">Weapon Type</label>
+            <select id="weaponType">
+              <option value="sword">Sword</option>
+              <option value="gun">Gun</option>
+              <option value="melee">Fighting Style</option>
+            </select>
+          </div>
+          <div class="input-field">
+            <label for="weapon">Weapon</label>
+            <select id="weapon">
+              <option value="cursed_dual_katana">Cursed Dual Katana</option>
+              <option value="yama">Yama</option>
+              <option value="tushita">Tushita</option>
+              <option value="dark_blade">Dark Blade</option>
+              <option value="soul_cane">Soul Cane</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-section">
+        <h3>💪 Buffs & Modifiers</h3>
+        <div class="input-group">
+          <div class="input-field">
+            <label for="mastery">Mastery Level</label>
+            <input type="number" id="mastery" value="600" min="1" max="600">
+          </div>
+          <div class="input-field">
+            <label for="accessory">Accessory Buff</label>
+            <select id="accessory">
+              <option value="none">None</option>
+              <option value="pale_scarf">Pale Scarf (+15%)</option>
+              <option value="ghostly_cape">Ghostly Cape (+12%)</option>
+              <option value="dark_coat">Dark Coat (+10%)</option>
+            </select>
+          </div>
+          <div class="input-field">
+            <label for="raceBonus">Race V4 Active</label>
+            <select id="raceBonus">
+              <option value="none">None</option>
+              <option value="human">Human (+30%)</option>
+              <option value="mink">Mink (+20% Speed)</option>
+              <option value="fishman">Fishman (+25%)</option>
+              <option value="cyborg">Cyborg (+15%)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <button class="calculate-btn" onclick="calculateDamage()">🔥 Calculate Damage</button>
+
+      <div class="result-display" id="resultDisplay">
+        <h2 id="totalDamage">0</h2>
+        <p>Estimated Total Damage</p>
+        <div class="damage-breakdown">
+          <div class="breakdown-item">
+            <strong id="baseDamage">0</strong>
+            <span>Base Damage</span>
+          </div>
+          <div class="breakdown-item">
+            <strong id="statBonus">0</strong>
+            <span>Stat Bonus</span>
+          </div>
+          <div class="breakdown-item">
+            <strong id="buffBonus">0</strong>
+            <span>Buff Bonus</span>
+          </div>
+          <div class="breakdown-item">
+            <strong id="dps">0</strong>
+            <span>DPS (Est.)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../script.js"></script>
+  <script>
+    function calculateDamage() {
+      // Get all input values
+      const level = parseInt(document.getElementById('level').value) || 0;
+      const melee = parseInt(document.getElementById('melee').value) || 0;
+      const defense = parseInt(document.getElementById('defense').value) || 0;
+      const fruitStat = parseInt(document.getElementById('fruit').value) || 0;
+      const swordStat = parseInt(document.getElementById('sword').value) || 0;
+      const gunStat = parseInt(document.getElementById('gun').value) || 0;
+      const mastery = parseInt(document.getElementById('mastery').value) || 1;
+      
+      const fruitType = document.getElementById('fruitType').value;
+      const weaponType = document.getElementById('weaponType').value;
+      const weapon = document.getElementById('weapon').value;
+      const accessory = document.getElementById('accessory').value;
+      const race = document.getElementById('raceBonus').value;
+      
+      // Base damage calculation
+      let baseDamage = 100;
+      
+      // Weapon base damage
+      const weaponDamages = {
+        cursed_dual_katana: 450,
+        yama: 420,
+        tushita: 400,
+        dark_blade: 500,
+        soul_cane: 380
+      };
+      
+      baseDamage = weaponDamages[weapon] || 300;
+      
+      // Stat scaling
+      let relevantStat = 0;
+      if (weaponType === 'sword') relevantStat = swordStat;
+      else if (weaponType === 'gun') relevantStat = gunStat;
+      else if (weaponType === 'melee') relevantStat = melee;
+      
+      const statMultiplier = 1 + (relevantStat / 100) * 0.5;
+      const masteryMultiplier = 1 + (mastery / 600) * 0.8;
+      
+      // Fruit damage boost
+      const fruitBoosts = {
+        dragon: 1.5,
+        leopard: 1.45,
+        dough: 1.35,
+        shadow: 1.3,
+        venom: 1.3,
+        buddha: 1.25,
+        control: 1.25,
+        spirit: 1.4,
+        kitsune: 1.42,
+        none: 1.0
+      };
+      
+      const fruitMultiplier = fruitBoosts[fruitType] || 1.0;
+      const fruitStatBonus = 1 + (fruitStat / 100) * 0.3;
+      
+      // Accessory bonuses
+      const accessoryBoosts = {
+        pale_scarf: 1.15,
+        ghostly_cape: 1.12,
+        dark_coat: 1.10,
+        none: 1.0
+      };
+      
+      const accessoryMultiplier = accessoryBoosts[accessory] || 1.0;
+      
+      // Race bonuses
+      const raceBoosts = {
+        human: 1.30,
+        mink: 1.20,
+        fishman: 1.25,
+        cyborg: 1.15,
+        none: 1.0
+      };
+      
+      const raceMultiplier = raceBoosts[race] || 1.0;
+      
+      // Calculate total damage
+      const statBonus = baseDamage * (statMultiplier - 1) * masteryMultiplier;
+      const buffBonus = baseDamage * (accessoryMultiplier - 1 + raceMultiplier - 1 + fruitMultiplier - 1);
+      const totalDamage = Math.floor(
+        baseDamage * statMultiplier * masteryMultiplier * 
+        fruitMultiplier * fruitStatBonus * accessoryMultiplier * raceMultiplier
+      );
+      
+      // Estimated DPS (assuming 2 hits per second)
+      const dps = Math.floor(totalDamage * 2);
+      
+      // Display results
+      document.getElementById('totalDamage').textContent = totalDamage.toLocaleString();
+      document.getElementById('baseDamage').textContent = Math.floor(baseDamage).toLocaleString();
+      document.getElementById('statBonus').textContent = '+' + Math.floor(statBonus).toLocaleString();
+      document.getElementById('buffBonus').textContent = '+' + Math.floor(buffBonus).toLocaleString();
+      document.getElementById('dps').textContent = dps.toLocaleString();
+      
+      document.getElementById('resultDisplay').classList.add('active');
+      
+      // Scroll to results
+      document.getElementById('resultDisplay').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  </script>
+</body>
+</html>
+

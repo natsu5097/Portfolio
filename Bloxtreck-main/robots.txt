@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Block unnecessary crawling
+Disallow: /assets/images/large/
+Disallow: /documentation/
+Disallow: *.pdf
+Disallow: *.zip
+
+# Sitemap
+Sitemap: https://natsu5097.github.io/Bloxtreck/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1

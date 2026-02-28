@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🗺️ Interactive World Map - Blox Fruits Wiki</title>
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../../assets/styles/tools.css">
+  <link rel="icon" href="../../assets/images/sitelogo/bloxtrex.png" type="image/png">
+  <style>
+    .map-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .map-controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      align-items: center;
+      background: var(--bg-color-alt);
+      padding: 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+    .sea-tabs {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .sea-tab {
+      background: none;
+      border: 2px solid var(--border-color);
+      color: var(--text-color);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: var(--font-semibold);
+    }
+    .sea-tab.active {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+      color: white;
+    }
+    .filter-controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .filter-label {
+      font-weight: var(--font-semibold);
+      color: var(--text-color);
+      white-space: nowrap;
+    }
+    .filter-checkbox {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary-color);
+    }
+    .map-display {
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      min-height: 600px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+    }
+    .world-map {
+      position: relative;
+      width: 100%;
+      height: 600px;
+      background: linear-gradient(135deg, #87CEEB, #4682B4);
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: grab;
+    }
+    .world-map:active {
+      cursor: grabbing;
+    }
+    .sea-section {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.1);
+      border: 2px dashed rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+    }
+    .first-sea {
+      top: 10%;
+      left: 10%;
+      width: 35%;
+      height: 35%;
+    }
+    .second-sea {
+      top: 10%;
+      right: 10%;
+      width: 35%;
+      height: 35%;
+    }
+    .third-sea {
+      bottom: 10%;
+      left: 25%;
+      width: 50%;
+      height: 40%;
+    }
+    .sea-label {
+      position: absolute;
+      top: 5px;
+      left: 10px;
+      color: white;
+      font-weight: var(--font-bold);
+      font-size: 0.9rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .island {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: #90EE90;
+      border-radius: 50% 20% 50% 20%;
+      border: 2px solid #228B22;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+    .island:hover {
+      transform: scale(1.2);
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+    .island.boss-island {
+      background: #FF6B6B;
+      border-color: #DC143C;
+      border-width: 3px;
+    }
+    .island.raid-island {
+      background: #9D4EDD;
+      border-color: #7209B7;
+      border-width: 3px;
+    }
+    .island.special-island {
+      background: #FFD700;
+      border-color: #FF8C00;
+      border-width: 3px;
+    }
+    .spawn-point {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #FF4444;
+      border-radius: 50%;
+      border: 2px solid white;
+      cursor: pointer;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(255, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 68, 68, 0); }
+    }
+    .npc-marker {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background: #4ECDC4;
+      border-radius: 50%;
+      border: 2px solid white;
+      cursor: pointer;
+    }
+    .quest-marker {
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      background: #FFA500;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      cursor: pointer;
+    }
+    .island-tooltip {
+      position: absolute;
+      background: var(--bg-color-alt);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      min-width: 200px;
+      z-index: 1000;
+      box-shadow: var(--card-shadow-hover);
+      display: none;
+      pointer-events: none;
+    }
+    .tooltip-header {
+      font-weight: var(--font-bold);
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    .tooltip-level {
+      color: var(--text-color-muted);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    .tooltip-description {
+      color: var(--text-color);
+      line-height: 1.4;
+      margin-bottom: 0.5rem;
+    }
+    .tooltip-features {
+      margin-top: 0.5rem;
+    }
+    .feature-tag {
+      display: inline-block;
+      background: var(--primary-color);
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      margin: 0.2rem;
+    }
+    .info-panel {
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .legend-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #228B22;
+    }
+    .legend-text {
+      color: var(--text-color);
+      font-size: 0.9rem;
+    }
+    .zoom-controls {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .zoom-btn {
+      width: 40px;
+      height: 40px;
+      background: var(--bg-color-alt);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-color);
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .zoom-btn:hover {
+      background: var(--primary-color);
+      color: white;
+    }
+    @media (max-width: 768px) {
+      .map-container {
+        padding: 1rem;
+      }
+      .map-controls {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .sea-tabs {
+        width: 100%;
+        justify-content: center;
+      }
+      .filter-controls {
+        width: 100%;
+        justify-content: center;
+      }
+      .world-map {
+        height: 400px;
+      }
+      .island {
+        width: 30px;
+        height: 30px;
+        font-size: 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="intro">
+      <h2>🗺️ Interactive World Map</h2>
+      <p>Explore the world of Blox Fruits! Click on islands to view detailed information, NPCs, quests, and more.</p>
+      <p><a href="../tools.html">← Back to Tools</a></p>
+    </section>
+
+    <div class="map-container">
+      <div class="map-controls">
+        <div class="sea-tabs">
+          <button class="sea-tab active" data-sea="all" onclick="filterSea('all')">All Seas</button>
+          <button class="sea-tab" data-sea="first" onclick="filterSea('first')">First Sea</button>
+          <button class="sea-tab" data-sea="second" onclick="filterSea('second')">Second Sea</button>
+          <button class="sea-tab" data-sea="third" onclick="filterSea('third')">Third Sea</button>
+        </div>
+        
+        <div class="filter-controls">
+          <div class="filter-group">
+            <input type="checkbox" id="showBosses" class="filter-checkbox" checked>
+            <label for="showBosses" class="filter-label">Boss Islands</label>
+          </div>
+          <div class="filter-group">
+            <input type="checkbox" id="showRaids" class="filter-checkbox" checked>
+            <label for="showRaids" class="filter-label">Raid Islands</label>
+          </div>
+          <div class="filter-group">
+            <input type="checkbox" id="showNPCs" class="filter-checkbox" checked>
+            <label for="showNPCs" class="filter-label">NPCs</label>
+          </div>
+          <div class="filter-group">
+            <input type="checkbox" id="showQuests" class="filter-checkbox" checked>
+            <label for="showQuests" class="filter-label">Quests</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-display">
+        <div class="world-map" id="worldMap">
+          <!-- Zoom Controls -->
+          <div class="zoom-controls">
+            <button class="zoom-btn" onclick="zoomIn()">+</button>
+            <button class="zoom-btn" onclick="zoomOut()">−</button>
+            <button class="zoom-btn" onclick="resetZoom()">⌂</button>
+          </div>
+
+          <!-- Sea Sections -->
+          <div class="sea-section first-sea" data-sea="first">
+            <div class="sea-label">First Sea</div>
+          </div>
+          <div class="sea-section second-sea" data-sea="second">
+            <div class="sea-label">Second Sea (New World)</div>
+          </div>
+          <div class="sea-section third-sea" data-sea="third">
+            <div class="sea-label">Third Sea</div>
+          </div>
+
+          <!-- Islands will be populated by JavaScript -->
+        </div>
+        
+        <!-- Tooltip -->
+        <div id="islandTooltip" class="island-tooltip">
+          <div class="tooltip-header"></div>
+          <div class="tooltip-level"></div>
+          <div class="tooltip-description"></div>
+          <div class="tooltip-features"></div>
+        </div>
+      </div>
+
+      <div class="info-panel">
+        <h3>🗺️ Map Legend</h3>
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-icon" style="background: #90EE90;"></div>
+            <span class="legend-text">Normal Island</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-icon" style="background: #FF6B6B; border-color: #DC143C;"></div>
+            <span class="legend-text">Boss Island</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-icon" style="background: #9D4EDD; border-color: #7209B7;"></div>
+            <span class="legend-text">Raid Island</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-icon" style="background: #FFD700; border-color: #FF8C00;"></div>
+            <span class="legend-text">Special Island</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-icon" style="background: #FF4444; width: 15px; height: 15px;"></div>
+            <span class="legend-text">Spawn Point</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-icon" style="background: #4ECDC4; width: 12px; height: 12px;"></div>
+            <span class="legend-text">NPC</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Island data with detailed information
+    const islandsData = {
+      first: [
+        {
+          name: "Starter Island",
+          position: { x: "20%", y: "30%" },
+          level: "1-10",
+          type: "normal",
+          description: "The beginning of your journey. Train with bandits and learn basic combat.",
+          features: ["Bandit", "Spawn Point", "Fruit Dealer"]
+        },
+        {
+          name: "Pirate Village",
+          position: { x: "45%", y: "25%" },
+          level: "15-30",
+          type: "normal",
+          description: "A bustling pirate town with various NPCs and quests.",
+          features: ["Pirates", "Quests", "Shops"]
+        },
+        {
+          name: "Jungle",
+          position: { x: "30%", y: "60%" },
+          level: "15-30",
+          type: "normal",
+          description: "Dense jungle filled with monkeys and gorillas.",
+          features: ["Monkey", "Gorilla King"]
+        },
+        {
+          name: "Desert",
+          position: { x: "60%", y: "45%" },
+          level: "60-90",
+          type: "normal",
+          description: "Hot desert with bandits and the Desert Officer.",
+          features: ["Desert Bandits", "Desert Officer"]
+        },
+        {
+          name: "Frozen Village",
+          position: { x: "25%", y: "80%" },
+          level: "90-120",
+          type: "normal",
+          description: "Icy village with snow bandits and Vice Admiral.",
+          features: ["Snow Bandits", "Vice Admiral"]
+        },
+        {
+          name: "Magma Village",
+          position: { x: "70%", y: "70%" },
+          level: "300+",
+          type: "boss",
+          description: "Volcanic island home to Admiral and Magma Admiral.",
+          features: ["Admiral", "Magma Admiral", "Hot & Cold Quest"]
+        }
+      ],
+      
+      second: [
+        {
+          name: "Kingdom of Rose",
+          position: { x: "25%", y: "30%" },
+          level: "700-850",
+          type: "normal",
+          description: "Beautiful kingdom with royal soldiers and Swan.",
+          features: ["Royal Soldier", "Swan", "Colosseum"]
+        },
+        {
+          name: "Green Zone",
+          position: { x: "45%", y: "20%" },
+          level: "875-925",
+          type: "normal",
+          description: "Lush green area with various NPCs.",
+          features: ["God's Guard", "Shanda"]
+        },
+        {
+          name: "Graveyard Island",
+          position: { x: "30%", y: "60%" },
+          level: "950-975",
+          type: "boss",
+          description: "Spooky graveyard with undead enemies.",
+          features: ["Reborn Skeleton", "Living Zombie", "Demonic Soul"]
+        },
+        {
+          name: "Snow Mountain",
+          position: { x: "60%", y: "40%" },
+          level: "1000-1050",
+          type: "normal",
+          description: "Snowy mountain with winter warriors.",
+          features: ["Winter Warrior", "Lab Subordinate"]
+        },
+        {
+          name: "Hot and Cold",
+          position: { x: "25%", y: "80%" },
+          level: "1100+",
+          type: "special",
+          description: "Unique island with extreme temperatures.",
+          features: ["Tide Keeper", "Lava Pirates", "Ship Deckhand"]
+        },
+        {
+          name: "Raid Island",
+          position: { x: "70%", y: "70%" },
+          level: "1100+",
+          type: "raid",
+          description: "Special island for fruit awakening raids.",
+          features: ["Flame Raid", "Ice Raid", "Rumble Raid", "Dark Raid"]
+        }
+      ],
+      
+      third: [
+        {
+          name: "Port Town",
+          position: { x: "30%", y: "25%" },
+          level: "1500+",
+          type: "normal",
+          description: "Main port of the Third Sea with advanced NPCs.",
+          features: ["Elite Pirate", "Pirate Millionaire"]
+        },
+        {
+          name: "Hydra Island",
+          position: { x: "50%", y: "35%" },
+          level: "1675+",
+          type: "normal",
+          description: "Island with powerful Hydra warriors.",
+          features: ["Hydra", "Sea Soldier"]
+        },
+        {
+          name: "Floating Turtle",
+          position: { x: "25%", y: "60%" },
+          level: "1775+",
+          type: "special",
+          description: "Giant turtle floating in the sea.",
+          features: ["Dragon Crew Warrior", "Dragon Crew Archer"]
+        },
+        {
+          name: "Mansion",
+          position: { x: "60%", y: "45%" },
+          level: "1900+",
+          type: "boss",
+          description: "Mysterious mansion with powerful enemies.",
+          features: ["Cocoa Warrior", "Chocolate Bar Battler"]
+        },
+        {
+          name: "Castle on the Sea",
+          position: { x: "40%", y: "75%" },
+          level: "2000+",
+          type: "special",
+          description: "Majestic floating castle with elite guards.",
+          features: ["Cake Prince", "Cookie Crafter", "Baking Staff"]
+        },
+        {
+          name: "Tiki Outpost",
+          position: { x: "70%", y: "60%" },
+          level: "2075+",
+          type: "normal",
+          description: "Tribal outpost with tiki warriors.",
+          features: ["Tiki Warrior", "Tiki Shaman"]
+        }
+      ]
+    };
+
+    let currentZoom = 1;
+    let currentSea = 'all';
+    let isDragging = false;
+    let dragStart = { x: 0, y: 0 };
+    let mapPosition = { x: 0, y: 0 };
+
+    function initializeMap() {
+      const worldMap = document.getElementById('worldMap');
+      
+      // Clear existing islands
+      const existingIslands = worldMap.querySelectorAll('.island, .spawn-point, .npc-marker, .quest-marker');
+      existingIslands.forEach(island => island.remove());
+      
+      // Add islands from all seas
+      Object.keys(islandsData).forEach(seaKey => {
+        islandsData[seaKey].forEach((island, index) => {
+          createIslandElement(island, seaKey, index);
+        });
+      });
+      
+      applyFilters();
+    }
+
+    function createIslandElement(islandData, sea, index) {
+      const worldMap = document.getElementById('worldMap');
+      const island = document.createElement('div');
+      
+      island.className = `island ${islandData.type}-island`;
+      island.dataset.sea = sea;
+      island.dataset.type = islandData.type;
+      island.style.left = islandData.position.x;
+      island.style.top = islandData.position.y;
+      island.textContent = islandData.name.charAt(0);
+      island.title = islandData.name;
+      
+      // Add click and hover events
+      island.addEventListener('click', () => showIslandInfo(islandData));
+      island.addEventListener('mouseenter', (e) => showTooltip(e, islandData));
+      island.addEventListener('mouseleave', hideTooltip);
+      
+      worldMap.appendChild(island);
+      
+      // Add NPCs and quest markers randomly around the island
+      if (islandData.features.length > 0) {
+        islandData.features.forEach((feature, fIndex) => {
+          if (Math.random() > 0.5) { // 50% chance to show each feature
+            createMarker(feature, islandData.position, sea, `${index}-${fIndex}`);
+          }
+        });
+      }
+    }
+
+    function createMarker(feature, basePosition, sea, id) {
+      const worldMap = document.getElementById('worldMap');
+      const marker = document.createElement('div');
+      
+      // Determine marker type
+      let markerClass = 'npc-marker';
+      if (feature.includes('Quest') || feature.includes('Admiral') || feature.includes('Officer')) {
+        markerClass = 'quest-marker';
+      }
+      if (feature.includes('Spawn')) {
+        markerClass = 'spawn-point';
+      }
+      
+      marker.className = markerClass;
+      marker.dataset.sea = sea;
+      marker.dataset.type = markerClass.replace('-marker', '').replace('-point', '');
+      
+      // Position near the island with some random offset
+      const offsetX = (Math.random() - 0.5) * 8; // ±4%
+      const offsetY = (Math.random() - 0.5) * 8; // ±4%
+      
+      marker.style.left = `calc(${basePosition.x} + ${offsetX}%)`;
+      marker.style.top = `calc(${basePosition.y} + ${offsetY}%)`;
+      marker.title = feature;
+      
+      worldMap.appendChild(marker);
+    }
+
+    function filterSea(seaType) {
+      currentSea = seaType;
+      
+      // Update active tab
+      document.querySelectorAll('.sea-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.querySelector(`[data-sea="${seaType}"]`).classList.add('active');
+      
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const showBosses = document.getElementById('showBosses').checked;
+      const showRaids = document.getElementById('showRaids').checked;
+      const showNPCs = document.getElementById('showNPCs').checked;
+      const showQuests = document.getElementById('showQuests').checked;
+      
+      // Filter islands
+      document.querySelectorAll('.island').forEach(island => {
+        const islandSea = island.dataset.sea;
+        const islandType = island.dataset.type;
+        
+        let showSea = currentSea === 'all' || islandSea === currentSea;
+        let showType = true;
+        
+        if (islandType === 'boss' && !showBosses) showType = false;
+        if (islandType === 'raid' && !showRaids) showType = false;
+        
+        island.style.display = (showSea && showType) ? 'flex' : 'none';
+      });
+      
+      // Filter markers
+      document.querySelectorAll('.npc-marker, .quest-marker, .spawn-point').forEach(marker => {
+        const markerSea = marker.dataset.sea;
+        const markerType = marker.dataset.type;
+        
+        let showSea = currentSea === 'all' || markerSea === currentSea;
+        let showType = true;
+        
+        if (markerType === 'npc' && !showNPCs) showType = false;
+        if (markerType === 'quest' && !showQuests) showType = false;
+        
+        marker.style.display = (showSea && showType) ? 'block' : 'none';
+      });
+    }
+
+    function showTooltip(e, islandData) {
+      const tooltip = document.getElementById('islandTooltip');
+      const header = tooltip.querySelector('.tooltip-header');
+      const level = tooltip.querySelector('.tooltip-level');
+      const description = tooltip.querySelector('.tooltip-description');
+      const features = tooltip.querySelector('.tooltip-features');
+      
+      header.textContent = islandData.name;
+      level.textContent = `Recommended Level: ${islandData.level}`;
+      description.textContent = islandData.description;
+      
+      features.innerHTML = islandData.features.map(feature => 
+        `<span class="feature-tag">${feature}</span>`
+      ).join('');
+      
+      tooltip.style.left = e.pageX + 10 + 'px';
+      tooltip.style.top = e.pageY - 10 + 'px';
+      tooltip.style.display = 'block';
+    }
+
+    function hideTooltip() {
+      document.getElementById('islandTooltip').style.display = 'none';
+    }
+
+    function showIslandInfo(islandData) {
+      alert(`${islandData.name}\n\nLevel: ${islandData.level}\n\n${islandData.description}\n\nFeatures: ${islandData.features.join(', ')}`);
+    }
+
+    function zoomIn() {
+      currentZoom = Math.min(currentZoom * 1.2, 3);
+      applyZoom();
+    }
+
+    function zoomOut() {
+      currentZoom = Math.max(currentZoom / 1.2, 0.5);
+      applyZoom();
+    }
+
+    function resetZoom() {
+      currentZoom = 1;
+      mapPosition = { x: 0, y: 0 };
+      applyZoom();
+    }
+
+    function applyZoom() {
+      const worldMap = document.getElementById('worldMap');
+      worldMap.style.transform = `scale(${currentZoom}) translate(${mapPosition.x}px, ${mapPosition.y}px)`;
+    }
+
+    // Initialize the map when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeMap();
+      
+      // Add filter event listeners
+      document.getElementById('showBosses').addEventListener('change', applyFilters);
+      document.getElementById('showRaids').addEventListener('change', applyFilters);
+      document.getElementById('showNPCs').addEventListener('change', applyFilters);
+      document.getElementById('showQuests').addEventListener('change', applyFilters);
+      
+      // Add drag functionality to the map
+      const worldMap = document.getElementById('worldMap');
+      
+      worldMap.addEventListener('mousedown', (e) => {
+        if (e.target === worldMap || e.target.classList.contains('sea-section')) {
+          isDragging = true;
+          dragStart = { x: e.clientX - mapPosition.x, y: e.clientY - mapPosition.y };
+        }
+      });
+      
+      document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          mapPosition = { 
+            x: e.clientX - dragStart.x, 
+            y: e.clientY - dragStart.y 
+          };
+          applyZoom();
+        }
+      });
+      
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+      });
+    });
+  </script>
+  <script src="../../script.js"></script>
+</body>
+</html>
+
+
+

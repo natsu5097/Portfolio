@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="200" height="120">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#111111" />
+      <stop offset="100%" stop-color="#222222" />
+    </linearGradient>
+    <radialGradient id="foxGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#FF9500" />
+      <stop offset="100%" stop-color="#FF5500" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect x="0" y="0" width="200" height="120" fill="url(#bgGradient)"/>
+  
+  <!-- Kitsune Fox Icon -->
+  <g transform="translate(20, 20) scale(0.6)">
+    <circle cx="50" cy="50" r="45" fill="url(#foxGradient)" />
+    <path d="M50 15 C65 25 80 40 75 65 C70 80 60 85 50 85 C40 85 30 80 25 65 C20 40 35 25 50 15Z" fill="#FF7800" />
+    <path d="M30 40 C35 35 45 35 50 40 C55 35 65 35 70 40 C75 45 75 55 70 60 C65 65 55 65 50 60 C45 65 35 65 30 60 C25 55 25 45 30 40Z" fill="#FFF" />
+    <circle cx="40" cy="45" r="5" fill="#000" />
+    <circle cx="60" cy="45" r="5" fill="#000" />
+    <path d="M45 55 C45 58 55 58 55 55" stroke="#000" stroke-width="2" fill="none" />
+    <path d="M25 30 L15 15 M75 30 L85 15" stroke="#FF7800" stroke-width="3" fill="none" />
+    <path d="M25 35 L10 25 M75 35 L90 25" stroke="#FF7800" stroke-width="3" fill="none" />
+  </g>
+  
+  <!-- Text -->
+  <text x="80" y="40" font-family="Arial, sans-serif" font-size="16" fill="#FFFFFF" text-anchor="left">Kitsune Fruit</text>
+  <text x="80" y="60" font-family="Arial, sans-serif" font-size="12" fill="#CCCCCC" text-anchor="left">Complete Guide</text>
+  <text x="80" y="80" font-family="Arial, sans-serif" font-size="10" fill="#AAAAAA" text-anchor="left">Abilities • Combos • Awakening</text>
+</svg>

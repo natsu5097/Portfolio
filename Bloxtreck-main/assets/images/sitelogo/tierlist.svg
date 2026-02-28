@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="200" height="120">
+  <rect x="0" y="0" width="200" height="120" fill="#2A2A2A"/>
+  <rect x="10" y="10" width="30" height="20" fill="#FF4545"/>
+  <text x="25" y="25" font-family="Arial" font-size="16" fill="white" text-anchor="middle">S</text>
+  <rect x="10" y="35" width="30" height="20" fill="#FF8C45"/>
+  <text x="25" y="50" font-family="Arial" font-size="16" fill="white" text-anchor="middle">A</text>
+  <rect x="10" y="60" width="30" height="20" fill="#FFD700"/>
+  <text x="25" y="75" font-family="Arial" font-size="16" fill="white" text-anchor="middle">B</text>
+  <rect x="10" y="85" width="30" height="20" fill="#90EE90"/>
+  <text x="25" y="100" font-family="Arial" font-size="16" fill="white" text-anchor="middle">C</text>
+  
+  <circle cx="60" cy="20" r="10" fill="#FF9500"/>
+  <circle cx="85" cy="20" r="10" fill="#FF5500"/>
+  <circle cx="110" cy="20" r="10" fill="#FF0000"/>
+  
+  <circle cx="60" cy="45" r="10" fill="#4169E1"/>
+  <circle cx="85" cy="45" r="10" fill="#9932CC"/>
+  <circle cx="110" cy="45" r="10" fill="#32CD32"/>
+  
+  <circle cx="60" cy="70" r="10" fill="#FFD700"/>
+  <circle cx="85" cy="70" r="10" fill="#C0C0C0"/>
+  <circle cx="110" cy="70" r="10" fill="#CD7F32"/>
+  
+  <circle cx="60" cy="95" r="10" fill="#A0A0A0"/>
+  <circle cx="85" cy="95" r="10" fill="#808080"/>
+  <circle cx="110" cy="95" r="10" fill="#696969"/>
+  
+  <text x="150" y="60" font-family="Arial" font-size="14" fill="white" text-anchor="middle">PvP Tier List</text>
+</svg>

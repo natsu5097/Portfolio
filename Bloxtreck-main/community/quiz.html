@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blox Fruits Trivia Quiz - Test Your Knowledge!</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="../assets/images/sitelogo/favicon_io/favicon.ico" type="image/x-icon">
+  <style>
+    .quiz-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+    .quiz-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .quiz-header h1 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+    .score-display {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .score-item {
+      background: var(--bg-color-alt);
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+    }
+    .score-item strong {
+      display: block;
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+    .question-card {
+      background: var(--bg-color-alt);
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 2rem;
+      border: 2px solid var(--border-color);
+    }
+    .question-number {
+      color: var(--text-color-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .question-text {
+      font-size: 1.4rem;
+      font-weight: var(--font-semibold);
+      color: var(--text-color);
+      margin-bottom: 2rem;
+    }
+    .answers-grid {
+      display: grid;
+      gap: 1rem;
+    }
+    .answer-btn {
+      padding: 1.25rem;
+      background: var(--bg-color);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: left;
+      font-size: 1.1rem;
+      color: var(--text-color);
+    }
+    .answer-btn:hover {
+      border-color: var(--primary-color);
+      transform: translateX(8px);
+      background: rgba(var(--primary-color-rgb), 0.05);
+    }
+    .answer-btn.correct {
+      background: #10b981;
+      border-color: #10b981;
+      color: white;
+      animation: correctPulse 0.5s;
+    }
+    .answer-btn.incorrect {
+      background: #ef4444;
+      border-color: #ef4444;
+      color: white;
+      animation: shake 0.5s;
+    }
+    .answer-btn.disabled {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+    .next-btn {
+      width: 100%;
+      padding: 1.25rem;
+      background: var(--gradient-primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      font-weight: var(--font-semibold);
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 2rem;
+    }
+    .next-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(var(--primary-color-rgb), 0.4);
+    }
+    .results-screen {
+      text-align: center;
+      background: var(--bg-color-alt);
+      padding: 3rem;
+      border-radius: 16px;
+      box-shadow: var(--card-shadow-hover);
+    }
+    .results-screen h2 {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+    .final-score {
+      font-size: 4rem;
+      font-weight: var(--font-extrabold);
+      color: var(--primary-color);
+      margin: 2rem 0;
+    }
+    .rank-badge {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      border-radius: 25px;
+      font-size: 1.5rem;
+      font-weight: var(--font-bold);
+      margin: 1rem 0;
+    }
+    .rank-master {
+      background: linear-gradient(45deg, #ffd700, #ffed4e);
+      color: #1a1a1a;
+    }
+    .rank-expert {
+      background: linear-gradient(45deg, #c0c0c0, #e8e8e8);
+      color: #1a1a1a;
+    }
+    .rank-intermediate {
+      background: linear-gradient(45deg, #cd7f32, #e3a063);
+      color: white;
+    }
+    .rank-beginner {
+      background: var(--gradient-primary);
+      color: white;
+    }
+    @keyframes correctPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="quiz-container">
+      <div class="quiz-header">
+        <h1>🎮 Blox Fruits Trivia Quiz</h1>
+        <p style="color: var(--text-color-muted);">Test your knowledge and become a Blox Fruits expert!</p>
+      </div>
+
+      <div class="score-display">
+        <div class="score-item">
+          <strong id="currentScore">0</strong>
+          <span>Score</span>
+        </div>
+        <div class="score-item">
+          <strong id="currentQuestion">1</strong>
+          <span>Question</span>
+        </div>
+        <div class="score-item">
+          <strong id="totalQuestions">10</strong>
+          <span>Total</span>
+        </div>
+      </div>
+
+      <div id="quizContent">
+        <!-- Quiz questions will be inserted here -->
+      </div>
+
+      <div id="resultsScreen" style="display: none;">
+        <!-- Results will be shown here -->
+      </div>
+    </div>
+  </main>
+
+  <script src="../script.js"></script>
+  <script>
+    const quizQuestions = [
+      {
+        question: "What is the rarest type of Devil Fruit in Blox Fruits?",
+        answers: ["Legendary", "Mythical", "Epic", "Rare"],
+        correct: 1
+      },
+      {
+        question: "Which fruit allows you to transform into a giant golden Buddha?",
+        answers: ["Spirit", "Buddha", "Light", "Dough"],
+        correct: 1
+      },
+      {
+        question: "What is the maximum level in Blox Fruits?",
+        answers: ["2000", "2300", "2450", "2550"],
+        correct: 3
+      },
+      {
+        question: "Which sword is considered one of the best in the game?",
+        answers: ["Katana", "Cutlass", "Cursed Dual Katana", "Triple Sword"],
+        correct: 2
+      },
+      {
+        question: "What type of fruit is Dragon?",
+        answers: ["Paramecia", "Logia", "Zoan", "Special"],
+        correct: 2
+      },
+      {
+        question: "Which sea is the starting area for new players?",
+        answers: ["Second Sea", "Third Sea", "First Sea", "New World"],
+        correct: 2
+      },
+      {
+        question: "What is the awakening requirement for most Legendary fruits?",
+        answers: ["Level 1000", "Completing raids", "500 mastery", "Buying with Robux"],
+        correct: 1
+      },
+      {
+        question: "Which fruit is known for being the best for grinding?",
+        answers: ["Venom", "Buddha", "Dragon", "Ice"],
+        correct: 1
+      },
+      {
+        question: "What race gives you the highest damage boost when activated?",
+        answers: ["Mink", "Human", "Fishman", "Cyborg"],
+        correct: 1
+      },
+      {
+        question: "Which NPC sells random fruits?",
+        answers: ["Blox Fruit Dealer", "Experienced Captain", "Mysterious Man", "Admiral"],
+        correct: 0
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let answered = false;
+
+    function startQuiz() {
+      currentQuestionIndex = 0;
+      score = 0;
+      answered = false;
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const question = quizQuestions[currentQuestionIndex];
+      document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+      document.getElementById('currentScore').textContent = score;
+
+      const quizContent = document.getElementById('quizContent');
+      quizContent.innerHTML = `
+        <div class="question-card">
+          <div class="question-number">Question ${currentQuestionIndex + 1} of ${quizQuestions.length}</div>
+          <div class="question-text">${question.question}</div>
+          <div class="answers-grid">
+            ${question.answers.map((answer, index) => `
+              <button class="answer-btn" onclick="selectAnswer(${index})">
+                ${String.fromCharCode(65 + index)}. ${answer}
+              </button>
+            `).join('')}
+          </div>
+          <button class="next-btn" onclick="nextQuestion()" style="display: none;" id="nextBtn">
+            ${currentQuestionIndex < quizQuestions.length - 1 ? 'Next Question →' : 'See Results →'}
+          </button>
+        </div>
+      `;
+      answered = false;
+    }
+
+    function selectAnswer(selectedIndex) {
+      if (answered) return;
+      answered = true;
+
+      const question = quizQuestions[currentQuestionIndex];
+      const buttons = document.querySelectorAll('.answer-btn');
+      
+      buttons.forEach((btn, index) => {
+        btn.classList.add('disabled');
+        if (index === question.correct) {
+          btn.classList.add('correct');
+        }
+        if (index === selectedIndex && selectedIndex !== question.correct) {
+          btn.classList.add('incorrect');
+        }
+      });
+
+      if (selectedIndex === question.correct) {
+        score++;
+        document.getElementById('currentScore').textContent = score;
+      }
+
+      document.getElementById('nextBtn').style.display = 'block';
+    }
+
+    function nextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < quizQuestions.length) {
+        showQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      const percentage = (score / quizQuestions.length) * 100;
+      let rank = '';
+      let rankClass = '';
+      let message = '';
+
+      if (percentage === 100) {
+        rank = '🏆 Master';
+        rankClass = 'rank-master';
+        message = 'Perfect score! You are a true Blox Fruits expert!';
+      } else if (percentage >= 80) {
+        rank = '⭐ Expert';
+        rankClass = 'rank-expert';
+        message = 'Excellent work! You know your stuff!';
+      } else if (percentage >= 60) {
+        rank = '📚 Intermediate';
+        rankClass = 'rank-intermediate';
+        message = 'Good job! Keep learning and you\'ll be a master soon!';
+      } else {
+        rank = '🌱 Beginner';
+        rankClass = 'rank-beginner';
+        message = 'Keep playing and exploring! There\'s always more to learn!';
+      }
+
+      document.getElementById('quizContent').style.display = 'none';
+      const resultsScreen = document.getElementById('resultsScreen');
+      resultsScreen.style.display = 'block';
+      resultsScreen.innerHTML = `
+        <div class="results-screen">
+          <h2>Quiz Complete!</h2>
+          <div class="final-score">${score} / ${quizQuestions.length}</div>
+          <div class="rank-badge ${rankClass}">${rank}</div>
+          <p style="font-size: 1.2rem; margin: 2rem 0; color: var(--text-color);">${message}</p>
+          <p style="color: var(--text-color-muted); margin-bottom: 2rem;">
+            You got ${percentage.toFixed(0)}% of questions correct!
+          </p>
+          <button class="next-btn" onclick="restartQuiz()">🔄 Try Again</button>
+          <a href="../index.html" class="next-btn" style="display: inline-block; margin-top: 1rem; text-decoration: none;">
+            🏠 Back to Home
+          </a>
+        </div>
+      `;
+    }
+
+    function restartQuiz() {
+      document.getElementById('resultsScreen').style.display = 'none';
+      document.getElementById('quizContent').style.display = 'block';
+      startQuiz();
+    }
+
+    // Start the quiz when page loads
+    startQuiz();
+  </script>
+</body>
+</html>

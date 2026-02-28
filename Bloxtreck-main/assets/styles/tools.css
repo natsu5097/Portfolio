@@ -1,0 +1,39 @@
+/* Tools page specific enhancements. Inherits tokens from ../style.css */
+
+.section-title {
+  font-family: var(--heading-font);
+  color: var(--primary-color);
+  text-align: center;
+}
+
+.category-grid {
+  grid-auto-rows: 1fr;
+}
+
+.category-card {
+  backdrop-filter: saturate(1.1) blur(2px);
+}
+
+.category-card p {
+  max-width: 36ch;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .category-card { transition: transform 200ms ease, box-shadow 200ms ease; }
+}
+
+.featured-card {
+  display: flex;
+  align-items: center;
+  min-height: 140px;
+}
+
+.featured-info h3 {
+  color: var(--text-color);
+}
+
+.featured-info p {
+  max-width: 60ch;
+}
+
+

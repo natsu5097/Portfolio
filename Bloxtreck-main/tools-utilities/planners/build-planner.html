@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧩 Build Planner - Blox Fruits Wiki</title>
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../../assets/styles/tools.css">
+  <link rel="icon" href="../../assets/images/sitelogo/bloxtrex.png" type="image/png">
+  <style>
+    .build-planner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .planner-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .planner-section {
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border-color);
+    }
+    .section-header h3 {
+      margin: 0;
+      color: var(--primary-color);
+    }
+    .stat-allocator {
+      grid-column: 1 / -1;
+    }
+    .stat-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      background: var(--bg-color);
+      border-radius: 8px;
+      border-left: 4px solid var(--primary-color);
+    }
+    .stat-info {
+      flex: 1;
+    }
+    .stat-label {
+      font-weight: var(--font-semibold);
+      color: var(--text-color);
+      margin-bottom: 0.25rem;
+    }
+    .stat-description {
+      font-size: 0.85rem;
+      color: var(--text-color-muted);
+    }
+    .stat-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .stat-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 6px;
+      background: var(--primary-color);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--font-bold);
+      transition: all 0.3s ease;
+    }
+    .stat-btn:hover {
+      background: var(--primary-color-alt);
+      transform: scale(1.1);
+    }
+    .stat-btn:disabled {
+      background: var(--border-color);
+      cursor: not-allowed;
+      transform: none;
+    }
+    .stat-value {
+      min-width: 80px;
+      text-align: center;
+      font-weight: var(--font-bold);
+      font-size: 1.1rem;
+      color: var(--primary-color);
+    }
+    .stat-slider {
+      width: 150px;
+      margin: 0 1rem;
+      accent-color: var(--primary-color);
+    }
+    .points-display {
+      background: linear-gradient(135deg, var(--success-color), var(--accent-color));
+      color: white;
+      padding: 1rem;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .points-remaining {
+      font-size: 2rem;
+      font-weight: var(--font-bold);
+      margin-bottom: 0.5rem;
+    }
+    .level-input {
+      padding: 0.5rem;
+      border: 2px solid var(--border-color);
+      border-radius: 6px;
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-size: 1rem;
+      width: 100px;
+      text-align: center;
+    }
+    .loadout-slot {
+      background: var(--bg-color);
+      border: 2px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 1rem;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .loadout-slot:hover {
+      border-color: var(--primary-color);
+      background: rgba(var(--primary-color-rgb), 0.05);
+    }
+    .loadout-slot.filled {
+      border: 2px solid var(--primary-color);
+      background: rgba(var(--primary-color-rgb), 0.1);
+    }
+    .slot-label {
+      font-weight: var(--font-semibold);
+      color: var(--text-color);
+      margin-bottom: 0.5rem;
+    }
+    .slot-content {
+      font-size: 0.9rem;
+      color: var(--text-color-muted);
+    }
+    .item-selected {
+      font-weight: var(--font-bold);
+      color: var(--primary-color);
+    }
+    .build-summary {
+      grid-column: 1 / -1;
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+      margin-top: 2rem;
+    }
+    .build-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .build-stat-card {
+      background: var(--bg-color);
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      border-left: 4px solid var(--primary-color);
+    }
+    .build-stat-value {
+      font-size: 1.5rem;
+      font-weight: var(--font-bold);
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+    .build-stat-label {
+      font-size: 0.9rem;
+      color: var(--text-color-muted);
+    }
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .action-btn {
+      background: var(--gradient-primary);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: var(--font-semibold);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(var(--primary-color-rgb), 0.3);
+    }
+    .action-btn.secondary {
+      background: var(--bg-color);
+      color: var(--text-color);
+      border: 2px solid var(--border-color);
+    }
+    .preset-builds {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .preset-card {
+      background: var(--bg-color);
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .preset-card:hover {
+      border-color: var(--primary-color);
+      transform: translateY(-2px);
+    }
+    .preset-title {
+      font-weight: var(--font-bold);
+      color: var(--text-color);
+      margin-bottom: 0.5rem;
+    }
+    .preset-description {
+      font-size: 0.9rem;
+      color: var(--text-color-muted);
+      margin-bottom: 0.5rem;
+    }
+    .preset-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .preset-tag {
+      background: var(--primary-color);
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.7rem;
+    }
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .item-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .item-option {
+      background: var(--bg-color);
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.75rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .item-option:hover {
+      border-color: var(--primary-color);
+    }
+    .item-option.selected {
+      border-color: var(--primary-color);
+      background: rgba(var(--primary-color-rgb), 0.1);
+    }
+    @media (max-width: 768px) {
+      .build-planner {
+        padding: 1rem;
+      }
+      .planner-grid {
+        grid-template-columns: 1fr;
+      }
+      .stat-controls {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .stat-slider {
+        width: 100%;
+        margin: 0.5rem 0;
+      }
+      .action-buttons {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="intro">
+      <h2>🧩 Build Planner</h2>
+      <p>Create and optimize your perfect Blox Fruits character build! Allocate stats, choose your loadout, and see detailed calculations.</p>
+      <p><a href="../tools.html">← Back to Tools</a></p>
+    </section>
+
+    <div class="build-planner">
+      <!-- Stat Allocator -->
+      <div class="planner-section stat-allocator">
+        <div class="section-header">
+          <h3>💪 Stat Allocation</h3>
+        </div>
+        
+        <div class="points-display">
+          <div class="points-remaining" id="pointsRemaining">0</div>
+          <div>Points Remaining</div>
+          <div style="margin-top: 0.5rem;">
+            <label for="playerLevel">Level: </label>
+            <input type="number" id="playerLevel" class="level-input" min="1" max="2550" value="1">
+          </div>
+        </div>
+
+        <div class="stat-group">
+          <div class="stat-info">
+            <div class="stat-label">Health/Energy</div>
+            <div class="stat-description">Increases HP and Energy capacity</div>
+          </div>
+          <div class="stat-controls">
+            <button class="stat-btn" onclick="adjustStat('health', -1)">-</button>
+            <input type="range" class="stat-slider" id="healthSlider" min="0" max="2550" value="0" onchange="setStat('health', this.value)">
+            <div class="stat-value" id="healthValue">0</div>
+            <button class="stat-btn" onclick="adjustStat('health', 1)">+</button>
+          </div>
+        </div>
+
+        <div class="stat-group">
+          <div class="stat-info">
+            <div class="stat-label">Melee</div>
+            <div class="stat-description">Increases melee damage and fighting style power</div>
+          </div>
+          <div class="stat-controls">
+            <button class="stat-btn" onclick="adjustStat('melee', -1)">-</button>
+            <input type="range" class="stat-slider" id="meleeSlider" min="0" max="2550" value="0" onchange="setStat('melee', this.value)">
+            <div class="stat-value" id="meleeValue">0</div>
+            <button class="stat-btn" onclick="adjustStat('melee', 1)">+</button>
+          </div>
+        </div>
+
+        <div class="stat-group">
+          <div class="stat-info">
+            <div class="stat-label">Defense</div>
+            <div class="stat-description">Reduces damage taken from all sources</div>
+          </div>
+          <div class="stat-controls">
+            <button class="stat-btn" onclick="adjustStat('defense', -1)">-</button>
+            <input type="range" class="stat-slider" id="defenseSlider" min="0" max="2550" value="0" onchange="setStat('defense', this.value)">
+            <div class="stat-value" id="defenseValue">0</div>
+            <button class="stat-btn" onclick="adjustStat('defense', 1)">+</button>
+          </div>
+        </div>
+
+        <div class="stat-group">
+          <div class="stat-info">
+            <div class="stat-label">Sword</div>
+            <div class="stat-description">Increases sword damage and abilities</div>
+          </div>
+          <div class="stat-controls">
+            <button class="stat-btn" onclick="adjustStat('sword', -1)">-</button>
+            <input type="range" class="stat-slider" id="swordSlider" min="0" max="2550" value="0" onchange="setStat('sword', this.value)">
+            <div class="stat-value" id="swordValue">0</div>
+            <button class="stat-btn" onclick="adjustStat('sword', 1)">+</button>
+          </div>
+        </div>
+
+        <div class="stat-group">
+          <div class="stat-info">
+            <div class="stat-label">Gun</div>
+            <div class="stat-description">Increases gun damage and range</div>
+          </div>
+          <div class="stat-controls">
+            <button class="stat-btn" onclick="adjustStat('gun', -1)">-</button>
+            <input type="range" class="stat-slider" id="gunSlider" min="0" max="2550" value="0" onchange="setStat('gun', this.value)">
+            <div class="stat-value" id="gunValue">0</div>
+            <button class="stat-btn" onclick="adjustStat('gun', 1)">+</button>
+          </div>
+        </div>
+
+        <div class="stat-group">
+          <div class="stat-info">
+            <div class="stat-label">Fruit</div>
+            <div class="stat-description">Increases Devil Fruit damage and abilities</div>
+          </div>
+          <div class="stat-controls">
+            <button class="stat-btn" onclick="adjustStat('fruit', -1)">-</button>
+            <input type="range" class="stat-slider" id="fruitSlider" min="0" max="2550" value="0" onchange="setStat('fruit', this.value)">
+            <div class="stat-value" id="fruitValue">0</div>
+            <button class="stat-btn" onclick="adjustStat('fruit', 1)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="planner-grid">
+        <!-- Devil Fruit Selection -->
+        <div class="planner-section">
+          <div class="section-header">
+            <h3>🍎 Devil Fruit</h3>
+          </div>
+          <div class="loadout-slot" id="fruitSlot" onclick="openItemModal('fruit')">
+            <div class="slot-label">Select Devil Fruit</div>
+            <div class="slot-content">Click to choose</div>
+          </div>
+        </div>
+
+        <!-- Fighting Style Selection -->
+        <div class="planner-section">
+          <div class="section-header">
+            <h3>🥊 Fighting Style</h3>
+          </div>
+          <div class="loadout-slot" id="fightingStyleSlot" onclick="openItemModal('fightingStyle')">
+            <div class="slot-label">Select Fighting Style</div>
+            <div class="slot-content">Click to choose</div>
+          </div>
+        </div>
+
+        <!-- Sword Selection -->
+        <div class="planner-section">
+          <div class="section-header">
+            <h3>⚔️ Sword</h3>
+          </div>
+          <div class="loadout-slot" id="swordSlot" onclick="openItemModal('sword')">
+            <div class="slot-label">Select Sword</div>
+            <div class="slot-content">Click to choose</div>
+          </div>
+        </div>
+
+        <!-- Gun Selection -->
+        <div class="planner-section">
+          <div class="section-header">
+            <h3>🔫 Gun</h3>
+          </div>
+          <div class="loadout-slot" id="gunSlot" onclick="openItemModal('gun')">
+            <div class="slot-label">Select Gun</div>
+            <div class="slot-content">Click to choose</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preset Builds -->
+      <div class="planner-section">
+        <div class="section-header">
+          <h3>📚 Preset Builds</h3>
+        </div>
+        <div class="preset-builds" id="presetBuilds">
+          <!-- Preset builds will be populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Build Summary -->
+      <div class="build-summary">
+        <h3>📋 Build Summary</h3>
+        <div class="build-stats" id="buildStats">
+          <!-- Build statistics will be populated by JavaScript -->
+        </div>
+        <div class="action-buttons">
+          <button class="action-btn" onclick="resetBuild()">Reset Build</button>
+          <button class="action-btn" onclick="saveBuild()">Save Build</button>
+          <button class="action-btn secondary" onclick="loadBuild()">Load Build</button>
+          <button class="action-btn secondary" onclick="shareBuild()">Share Build</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Item Selection Modal -->
+    <div id="itemModal" class="modal">
+      <div class="modal-content">
+        <h3 id="modalTitle">Select Item</h3>
+        <div id="itemGrid" class="item-grid">
+          <!-- Items will be populated by JavaScript -->
+        </div>
+        <div class="action-buttons" style="margin-top: 1rem;">
+          <button class="action-btn" onclick="confirmItemSelection()">Confirm</button>
+          <button class="action-btn secondary" onclick="closeItemModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Build data
+    let currentBuild = {
+      level: 1,
+      stats: {
+        health: 0,
+        melee: 0,
+        defense: 0,
+        sword: 0,
+        gun: 0,
+        fruit: 0
+      },
+      loadout: {
+        fruit: null,
+        fightingStyle: null,
+        sword: null,
+        gun: null
+      }
+    };
+
+    let currentModalType = null;
+    let selectedItem = null;
+
+    // Item databases
+    const gameItems = {
+      fruit: [
+        { name: "Flame", type: "Logia", rarity: "Uncommon" },
+        { name: "Ice", type: "Logia", rarity: "Uncommon" },
+        { name: "Dark", type: "Logia", rarity: "Uncommon" },
+        { name: "Light", type: "Logia", rarity: "Rare" },
+        { name: "Magma", type: "Logia", rarity: "Rare" },
+        { name: "Quake", type: "Paramecia", rarity: "Legendary" },
+        { name: "Buddha", type: "Paramecia", rarity: "Legendary" },
+        { name: "Love", type: "Paramecia", rarity: "Legendary" },
+        { name: "Spider", type: "Paramecia", rarity: "Legendary" },
+        { name: "Phoenix", type: "Zoan", rarity: "Legendary" },
+        { name: "Dragon", type: "Zoan", rarity: "Mythical" },
+        { name: "Leopard", type: "Zoan", rarity: "Mythical" },
+        { name: "Dough", type: "Paramecia", rarity: "Mythical" },
+        { name: "Shadow", type: "Paramecia", rarity: "Mythical" }
+      ],
+      fightingStyle: [
+        { name: "Combat", mastery: 0, location: "Starter" },
+        { name: "Black Leg", mastery: 150, location: "First Sea" },
+        { name: "Electro", mastery: 250, location: "Sky Island" },
+        { name: "Fishman Karate", mastery: 400, location: "Underwater City" },
+        { name: "Dragon Claw", mastery: 300, location: "Second Sea" },
+        { name: "Superhuman", mastery: 300, location: "Second Sea" },
+        { name: "Death Step", mastery: 400, location: "Third Sea" },
+        { name: "Sharkman Karate", mastery: 400, location: "Third Sea" },
+        { name: "Electric Claw", mastery: 400, location: "Third Sea" },
+        { name: "Dragon Talon", mastery: 400, location: "Third Sea" },
+        { name: "Godhuman", mastery: 400, location: "Third Sea" },
+        { name: "Sanguine Art", mastery: 400, location: "Third Sea" }
+      ],
+      sword: [
+        { name: "Cutlass", rarity: "Common", location: "Starter" },
+        { name: "Katana", rarity: "Common", location: "First Sea" },
+        { name: "Iron Mace", rarity: "Common", location: "First Sea" },
+        { name: "Triple Katana", rarity: "Uncommon", location: "First Sea" },
+        { name: "Pipe", rarity: "Uncommon", location: "First Sea" },
+        { name: "Dual Katana", rarity: "Rare", location: "First Sea" },
+        { name: "Bisento", rarity: "Legendary", location: "First Sea" },
+        { name: "Shark Saw", rarity: "Legendary", location: "Second Sea" },
+        { name: "Rengoku", rarity: "Legendary", location: "Second Sea" },
+        { name: "True Triple Katana", rarity: "Mythical", location: "Third Sea" },
+        { name: "Cursed Dual Katana", rarity: "Mythical", location: "Third Sea" },
+        { name: "Dark Blade", rarity: "Mythical", location: "Third Sea" },
+        { name: "Yoru", rarity: "Mythical", location: "Third Sea" }
+      ],
+      gun: [
+        { name: "Slingshot", rarity: "Common", location: "Starter" },
+        { name: "Musket", rarity: "Common", location: "First Sea" },
+        { name: "Flintlock", rarity: "Uncommon", location: "First Sea" },
+        { name: "Refined Flintlock", rarity: "Uncommon", location: "First Sea" },
+        { name: "Cannon", rarity: "Rare", location: "First Sea" },
+        { name: "Kabucha", rarity: "Rare", location: "Second Sea" },
+        { name: "Acidum Rifle", rarity: "Legendary", location: "Second Sea" },
+        { name: "Serpent Bow", rarity: "Legendary", location: "Third Sea" },
+        { name: "Soul Guitar", rarity: "Mythical", location: "Third Sea" }
+      ]
+    };
+
+    // Preset builds
+    const presetBuilds = [
+      {
+        name: "Buddha Tank",
+        description: "High defense build focused on Buddha fruit",
+        stats: { health: 600, melee: 600, defense: 600, sword: 0, gun: 0, fruit: 750 },
+        loadout: { fruit: "Buddha", fightingStyle: "Godhuman", sword: null, gun: null },
+        tags: ["Tank", "PvE", "Buddha"]
+      },
+      {
+        name: "Sword Main",
+        description: "Focused on sword combat with high damage",
+        stats: { health: 500, melee: 500, defense: 500, sword: 1000, gun: 0, fruit: 50 },
+        loadout: { fruit: "Dark", fightingStyle: "Superhuman", sword: "Cursed Dual Katana", gun: null },
+        tags: ["Sword", "PvP", "High Damage"]
+      },
+      {
+        name: "Gun Main",
+        description: "Ranged combat specialist",
+        stats: { health: 500, melee: 300, defense: 500, sword: 0, gun: 1200, fruit: 50 },
+        loadout: { fruit: "Ice", fightingStyle: "Combat", sword: null, gun: "Soul Guitar" },
+        tags: ["Gun", "Ranged", "PvP"]
+      },
+      {
+        name: "Fruit Main",
+        description: "Maximum Devil Fruit power",
+        stats: { health: 400, melee: 400, defense: 400, sword: 0, gun: 0, fruit: 1350 },
+        loadout: { fruit: "Dragon", fightingStyle: "Godhuman", sword: null, gun: null },
+        tags: ["Fruit", "PvP", "High Damage"]
+      },
+      {
+        name: "Hybrid Build",
+        description: "Balanced build for versatility",
+        stats: { health: 500, melee: 500, defense: 500, sword: 500, gun: 0, fruit: 500 },
+        loadout: { fruit: "Dough", fightingStyle: "Superhuman", sword: "True Triple Katana", gun: null },
+        tags: ["Balanced", "Versatile", "PvP"]
+      }
+    ];
+
+    function initializeBuildPlanner() {
+      updatePointsDisplay();
+      updateBuildSummary();
+      renderPresetBuilds();
+      
+      // Add level input listener
+      document.getElementById('playerLevel').addEventListener('input', function() {
+        currentBuild.level = Math.max(1, Math.min(2550, parseInt(this.value) || 1));
+        this.value = currentBuild.level;
+        updatePointsDisplay();
+      });
+    }
+
+    function adjustStat(statName, change) {
+      const currentValue = currentBuild.stats[statName];
+      const newValue = Math.max(0, Math.min(2550, currentValue + change));
+      
+      if (change > 0 && getRemainingPoints() <= 0) return;
+      
+      currentBuild.stats[statName] = newValue;
+      updateStatDisplay(statName);
+      updatePointsDisplay();
+      updateBuildSummary();
+    }
+
+    function setStat(statName, value) {
+      const numValue = parseInt(value);
+      const totalOtherStats = Object.keys(currentBuild.stats)
+        .filter(key => key !== statName)
+        .reduce((sum, key) => sum + currentBuild.stats[key], 0);
+      
+      const maxPossible = Math.min(2550, (currentBuild.level * 3) - totalOtherStats);
+      currentBuild.stats[statName] = Math.max(0, Math.min(maxPossible, numValue));
+      
+      updateStatDisplay(statName);
+      updatePointsDisplay();
+      updateBuildSummary();
+    }
+
+    function updateStatDisplay(statName) {
+      const value = currentBuild.stats[statName];
+      document.getElementById(`${statName}Value`).textContent = value;
+      document.getElementById(`${statName}Slider`).value = value;
+    }
+
+    function updateAllStatDisplays() {
+      Object.keys(currentBuild.stats).forEach(statName => {
+        updateStatDisplay(statName);
+      });
+    }
+
+    function getRemainingPoints() {
+      const totalUsed = Object.values(currentBuild.stats).reduce((sum, value) => sum + value, 0);
+      return Math.max(0, (currentBuild.level * 3) - totalUsed);
+    }
+
+    function updatePointsDisplay() {
+      document.getElementById('pointsRemaining').textContent = getRemainingPoints();
+    }
+
+    function updateBuildSummary() {
+      const statsContainer = document.getElementById('buildStats');
+      const stats = currentBuild.stats;
+      
+      // Calculate derived stats
+      const totalHP = 100 + (stats.health * 25);
+      const totalEnergy = 100 + (stats.health * 5);
+      const meleeDamage = 100 + (stats.melee * 1.2);
+      const swordDamage = 100 + (stats.sword * 1.2);
+      const gunDamage = 100 + (stats.gun * 1.2);
+      const fruitDamage = 100 + (stats.fruit * 1.2);
+      const defenseReduction = Math.min(50, stats.defense * 0.02);
+      
+      statsContainer.innerHTML = `
+        <div class="build-stat-card">
+          <div class="build-stat-value">${totalHP.toLocaleString()}</div>
+          <div class="build-stat-label">Total HP</div>
+        </div>
+        <div class="build-stat-card">
+          <div class="build-stat-value">${totalEnergy}</div>
+          <div class="build-stat-label">Energy</div>
+        </div>
+        <div class="build-stat-card">
+          <div class="build-stat-value">${Math.round(meleeDamage)}%</div>
+          <div class="build-stat-label">Melee Damage</div>
+        </div>
+        <div class="build-stat-card">
+          <div class="build-stat-value">${Math.round(swordDamage)}%</div>
+          <div class="build-stat-label">Sword Damage</div>
+        </div>
+        <div class="build-stat-card">
+          <div class="build-stat-value">${Math.round(gunDamage)}%</div>
+          <div class="build-stat-label">Gun Damage</div>
+        </div>
+        <div class="build-stat-card">
+          <div class="build-stat-value">${Math.round(fruitDamage)}%</div>
+          <div class="build-stat-label">Fruit Damage</div>
+        </div>
+        <div class="build-stat-card">
+          <div class="build-stat-value">${defenseReduction.toFixed(1)}%</div>
+          <div class="build-stat-label">Damage Reduction</div>
+        </div>
+        <div class="build-stat-card">
+          <div class="build-stat-value">${currentBuild.level}</div>
+          <div class="build-stat-label">Level</div>
+        </div>
+      `;
+    }
+
+    function renderPresetBuilds() {
+      const container = document.getElementById('presetBuilds');
+      container.innerHTML = presetBuilds.map(preset => `
+        <div class="preset-card" onclick="loadPreset('${preset.name}')">
+          <div class="preset-title">${preset.name}</div>
+          <div class="preset-description">${preset.description}</div>
+          <div class="preset-tags">
+            ${preset.tags.map(tag => `<span class="preset-tag">${tag}</span>`).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function loadPreset(presetName) {
+      const preset = presetBuilds.find(p => p.name === presetName);
+      if (!preset) return;
+      
+      // Calculate required level for this preset
+      const totalStats = Object.values(preset.stats).reduce((sum, value) => sum + value, 0);
+      const requiredLevel = Math.ceil(totalStats / 3);
+      
+      currentBuild.level = Math.max(requiredLevel, 1);
+      currentBuild.stats = { ...preset.stats };
+      currentBuild.loadout = { ...preset.loadout };
+      
+      document.getElementById('playerLevel').value = currentBuild.level;
+      updateAllStatDisplays();
+      updatePointsDisplay();
+      updateBuildSummary();
+      updateLoadoutDisplay();
+    }
+
+    function updateLoadoutDisplay() {
+      Object.keys(currentBuild.loadout).forEach(slotType => {
+        const slot = document.getElementById(`${slotType}Slot`);
+        const item = currentBuild.loadout[slotType];
+        
+        if (item) {
+          slot.classList.add('filled');
+          slot.querySelector('.slot-content').innerHTML = `
+            <span class="item-selected">${item}</span>
+          `;
+        } else {
+          slot.classList.remove('filled');
+          slot.querySelector('.slot-content').textContent = 'Click to choose';
+        }
+      });
+    }
+
+    function openItemModal(itemType) {
+      currentModalType = itemType;
+      const modal = document.getElementById('itemModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const itemGrid = document.getElementById('itemGrid');
+      
+      modalTitle.textContent = `Select ${itemType.charAt(0).toUpperCase() + itemType.slice(1).replace(/([A-Z])/g, ' $1')}`;
+      
+      const items = gameItems[itemType] || [];
+      itemGrid.innerHTML = items.map(item => `
+        <div class="item-option" data-item="${item.name}" onclick="selectItem('${item.name}')">
+          <div style="font-weight: bold;">${item.name}</div>
+          <div style="font-size: 0.8rem; color: var(--text-color-muted);">
+            ${item.type || item.rarity || item.location || ''}
+          </div>
+        </div>
+      `).join('');
+      
+      // Add "None" option
+      itemGrid.innerHTML += `
+        <div class="item-option" data-item="none" onclick="selectItem(null)">
+          <div style="font-weight: bold;">None</div>
+          <div style="font-size: 0.8rem; color: var(--text-color-muted);">Remove item</div>
+        </div>
+      `;
+      
+      modal.style.display = 'flex';
+    }
+
+    function selectItem(itemName) {
+      selectedItem = itemName;
+      
+      // Update visual selection
+      document.querySelectorAll('.item-option').forEach(option => {
+        option.classList.remove('selected');
+      });
+      
+      const dataItem = itemName || 'none';
+      document.querySelector(`[data-item="${dataItem}"]`).classList.add('selected');
+    }
+
+    function confirmItemSelection() {
+      if (currentModalType && selectedItem !== undefined) {
+        currentBuild.loadout[currentModalType] = selectedItem;
+        updateLoadoutDisplay();
+      }
+      closeItemModal();
+    }
+
+    function closeItemModal() {
+      document.getElementById('itemModal').style.display = 'none';
+      currentModalType = null;
+      selectedItem = null;
+    }
+
+    function resetBuild() {
+      currentBuild = {
+        level: 1,
+        stats: { health: 0, melee: 0, defense: 0, sword: 0, gun: 0, fruit: 0 },
+        loadout: { fruit: null, fightingStyle: null, sword: null, gun: null }
+      };
+      
+      document.getElementById('playerLevel').value = 1;
+      updateAllStatDisplays();
+      updatePointsDisplay();
+      updateBuildSummary();
+      updateLoadoutDisplay();
+    }
+
+    function saveBuild() {
+      const buildData = JSON.stringify(currentBuild);
+      localStorage.setItem('bloxFruitsBuild', buildData);
+      alert('Build saved successfully!');
+    }
+
+    function loadBuild() {
+      const buildData = localStorage.getItem('bloxFruitsBuild');
+      if (buildData) {
+        try {
+          currentBuild = JSON.parse(buildData);
+          document.getElementById('playerLevel').value = currentBuild.level;
+          updateAllStatDisplays();
+          updatePointsDisplay();
+          updateBuildSummary();
+          updateLoadoutDisplay();
+          alert('Build loaded successfully!');
+        } catch (e) {
+          alert('Failed to load build. Save data may be corrupted.');
+        }
+      } else {
+        alert('No saved build found.');
+      }
+    }
+
+    function shareBuild() {
+      const buildData = btoa(JSON.stringify(currentBuild));
+      const shareUrl = `${window.location.href}?build=${buildData}`;
+      
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareUrl);
+        alert('Build URL copied to clipboard!');
+      } else {
+        prompt('Copy this URL to share your build:', shareUrl);
+      }
+    }
+
+    // Load shared build from URL
+    function loadSharedBuild() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const buildParam = urlParams.get('build');
+      
+      if (buildParam) {
+        try {
+          const buildData = JSON.parse(atob(buildParam));
+          currentBuild = buildData;
+          document.getElementById('playerLevel').value = currentBuild.level;
+          updateAllStatDisplays();
+          updatePointsDisplay();
+          updateBuildSummary();
+          updateLoadoutDisplay();
+        } catch (e) {
+          console.error('Failed to load shared build:', e);
+        }
+      }
+    }
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeBuildPlanner();
+      loadSharedBuild();
+      
+      // Close modal when clicking outside
+      document.getElementById('itemModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeItemModal();
+        }
+      });
+    });
+  </script>
+  <script src="../../script.js"></script>
+</body>
+</html>
+
+
+

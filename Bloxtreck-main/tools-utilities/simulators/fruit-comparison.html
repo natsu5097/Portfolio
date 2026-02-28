@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fruit Comparison Tool - Blox Fruits Wiki</title>
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="icon" href="../../assets/images/sitelogo/bloxtrex.png" type="image/png">
+  <link rel="stylesheet" href="../../assets/styles/tools.css">
+  <style>
+    .comparison-container {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+    .selection-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    .fruit-selector {
+      background: var(--bg-color-alt);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      border: 2px solid var(--border-color);
+      transition: all 0.3s;
+    }
+    .fruit-selector:hover {
+      border-color: var(--primary-color);
+      transform: translateY(-4px);
+      box-shadow: var(--card-shadow-hover);
+    }
+    .fruit-selector h3 {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .fruit-dropdown {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.1rem;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--bg-color);
+      color: var(--text-color);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .fruit-dropdown:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+    }
+    .fruit-preview {
+      margin-top: 1.5rem;
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--bg-color);
+      border-radius: 8px;
+      min-height: 200px;
+    }
+    .fruit-preview img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+    }
+    .fruit-preview h4 {
+      margin-bottom: 0.5rem;
+      color: var(--text-color);
+    }
+    .comparison-table {
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+    }
+    .comparison-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .comparison-table th {
+      background: var(--primary-color);
+      color: white;
+      padding: 1.5rem;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+    .comparison-table td {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      text-align: center;
+    }
+    .comparison-table tr:hover {
+      background: rgba(var(--primary-color-rgb), 0.05);
+    }
+    .stat-label {
+      font-weight: var(--font-semibold);
+      color: var(--text-color);
+      text-align: left !important;
+      padding-left: 2rem !important;
+    }
+    .stat-bar-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .stat-bar {
+      flex: 1;
+      height: 20px;
+      background: var(--bg-color);
+      border-radius: 10px;
+      overflow: hidden;
+      max-width: 200px;
+    }
+    .stat-bar-fill {
+      height: 100%;
+      background: var(--gradient-primary);
+      transition: width 1s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    .winner {
+      background: rgba(76, 201, 240, 0.1);
+      font-weight: var(--font-bold);
+      color: var(--primary-color);
+    }
+    @media (max-width: 768px) {
+      .selection-panel {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="comparison-container">
+      <h1 style="text-align: center; color: var(--primary-color); margin-bottom: 2rem;">🍎 Fruit Comparison Tool</h1>
+      <p style="text-align: center; margin-bottom: 3rem; color: var(--text-color-muted);">
+        Compare two devil fruits side-by-side to see their stats, abilities, and which one is better for your playstyle
+      </p>
+
+      <div class="selection-panel">
+        <div class="fruit-selector">
+          <h3>🔵 Fruit 1</h3>
+          <select class="fruit-dropdown" id="fruit1" onchange="updateComparison()">
+            <option value="">Select a fruit...</option>
+            <option value="dragon">Dragon (Mythical)</option>
+            <option value="leopard">Leopard (Mythical)</option>
+            <option value="kitsune">Kitsune (Mythical)</option>
+            <option value="spirit">Spirit (Mythical)</option>
+            <option value="dough">Dough (Legendary)</option>
+            <option value="shadow">Shadow (Legendary)</option>
+            <option value="venom">Venom (Legendary)</option>
+            <option value="buddha">Buddha (Legendary)</option>
+            <option value="control">Control (Legendary)</option>
+            <option value="ice">Ice (Rare)</option>
+            <option value="flame">Flame (Uncommon)</option>
+            <option value="light">Light (Rare)</option>
+            <option value="magma">Magma (Rare)</option>
+            <option value="quake">Quake (Legendary)</option>
+          </select>
+          <div class="fruit-preview" id="preview1">
+            <p style="color: var(--text-color-muted);">Select a fruit to see details</p>
+          </div>
+        </div>
+
+        <div class="fruit-selector">
+          <h3>🔴 Fruit 2</h3>
+          <select class="fruit-dropdown" id="fruit2" onchange="updateComparison()">
+            <option value="">Select a fruit...</option>
+            <option value="dragon">Dragon (Mythical)</option>
+            <option value="leopard">Leopard (Mythical)</option>
+            <option value="kitsune">Kitsune (Mythical)</option>
+            <option value="spirit">Spirit (Mythical)</option>
+            <option value="dough">Dough (Legendary)</option>
+            <option value="shadow">Shadow (Legendary)</option>
+            <option value="venom">Venom (Legendary)</option>
+            <option value="buddha">Buddha (Legendary)</option>
+            <option value="control">Control (Legendary)</option>
+            <option value="ice">Ice (Rare)</option>
+            <option value="flame">Flame (Uncommon)</option>
+            <option value="light">Light (Rare)</option>
+            <option value="magma">Magma (Rare)</option>
+            <option value="quake">Quake (Legendary)</option>
+          </select>
+          <div class="fruit-preview" id="preview2">
+            <p style="color: var(--text-color-muted);">Select a fruit to see details</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="comparison-table" id="comparisonTable" style="display: none;">
+        <table>
+          <thead>
+            <tr>
+              <th style="text-align: left; padding-left: 2rem;">Attribute</th>
+              <th id="fruit1Header">Fruit 1</th>
+              <th id="fruit2Header">Fruit 2</th>
+            </tr>
+          </thead>
+          <tbody id="comparisonBody">
+            <!-- Comparison rows will be inserted here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../script.js"></script>
+  <script>
+    const fruitData = {
+      dragon: {
+        name: "Dragon",
+        rarity: "Mythical",
+        type: "Zoan",
+        price: 3500000,
+        robux: 2600,
+        damage: 95,
+        speed: 70,
+        range: 90,
+        aoe: 95,
+        pvp: 98,
+        pve: 92,
+        difficulty: 70,
+        awakening: false,
+        description: "Devastating fire-based attacks with flight",
+        image: "https://via.placeholder.com/120?text=Dragon"
+      },
+      leopard: {
+        name: "Leopard",
+        rarity: "Mythical",
+        type: "Zoan",
+        price: 5000000,
+        robux: 3000,
+        damage: 98,
+        speed: 95,
+        range: 75,
+        aoe: 80,
+        pvp: 100,
+        pve: 88,
+        difficulty: 75,
+        awakening: false,
+        description: "Ultimate speed and agility with devastating combos",
+        image: "https://via.placeholder.com/120?text=Leopard"
+      },
+      kitsune: {
+        name: "Kitsune",
+        rarity: "Mythical",
+        type: "Beast",
+        price: 4000000,
+        robux: 2800,
+        damage: 92,
+        speed: 88,
+        range: 85,
+        aoe: 87,
+        pvp: 94,
+        pve: 90,
+        difficulty: 68,
+        awakening: false,
+        description: "Mystical fox powers with transformation abilities",
+        image: "https://via.placeholder.com/120?text=Kitsune"
+      },
+      spirit: {
+        name: "Spirit",
+        rarity: "Mythical",
+        type: "Natural",
+        price: 3400000,
+        robux: 2550,
+        damage: 90,
+        speed: 75,
+        range: 92,
+        aoe: 93,
+        pvp: 89,
+        pve: 95,
+        difficulty: 65,
+        awakening: false,
+        description: "Versatile spirit-based attacks for all situations",
+        image: "https://via.placeholder.com/120?text=Spirit"
+      },
+      dough: {
+        name: "Dough",
+        rarity: "Legendary",
+        type: "Elemental",
+        price: 2800000,
+        robux: 2400,
+        damage: 88,
+        speed: 82,
+        range: 80,
+        aoe: 85,
+        pvp: 96,
+        pve: 86,
+        difficulty: 72,
+        awakening: true,
+        description: "Flexible dough-based combat with awakening",
+        image: "https://via.placeholder.com/120?text=Dough"
+      },
+      shadow: {
+        name: "Shadow",
+        rarity: "Legendary",
+        type: "Natural",
+        price: 2900000,
+        robux: 2425,
+        damage: 85,
+        speed: 80,
+        range: 88,
+        aoe: 90,
+        pvp: 87,
+        pve: 91,
+        difficulty: 60,
+        awakening: true,
+        description: "Dark shadow manipulation with summons",
+        image: "https://via.placeholder.com/120?text=Shadow"
+      },
+      venom: {
+        name: "Venom",
+        rarity: "Legendary",
+        type: "Natural",
+        price: 3000000,
+        robux: 2450,
+        damage: 90,
+        speed: 70,
+        range: 82,
+        aoe: 92,
+        pvp: 91,
+        pve: 94,
+        difficulty: 58,
+        awakening: true,
+        description: "Poisonous attacks with area damage",
+        image: "https://via.placeholder.com/120?text=Venom"
+      },
+      buddha: {
+        name: "Buddha",
+        rarity: "Legendary",
+        type: "Beast",
+        price: 1200000,
+        robux: 1650,
+        damage: 70,
+        speed: 50,
+        range: 60,
+        aoe: 75,
+        pvp: 75,
+        pve: 98,
+        difficulty: 40,
+        awakening: true,
+        description: "Tank transformation perfect for grinding",
+        image: "https://via.placeholder.com/120?text=Buddha"
+      },
+      control: {
+        name: "Control",
+        rarity: "Legendary",
+        type: "Natural",
+        price: 3200000,
+        robux: 2500,
+        damage: 82,
+        speed: 68,
+        range: 95,
+        aoe: 88,
+        pvp: 85,
+        pve: 83,
+        difficulty: 68,
+        awakening: true,
+        description: "Telekinetic powers to control objects",
+        image: "https://via.placeholder.com/120?text=Control"
+      },
+      ice: {
+        name: "Ice",
+        rarity: "Rare",
+        type: "Elemental",
+        price: 350000,
+        robux: 750,
+        damage: 65,
+        speed: 60,
+        range: 70,
+        aoe: 72,
+        pvp: 60,
+        pve: 70,
+        difficulty: 45,
+        awakening: true,
+        description: "Freeze enemies with ice-based attacks",
+        image: "https://via.placeholder.com/120?text=Ice"
+      },
+      flame: {
+        name: "Flame",
+        rarity: "Uncommon",
+        type: "Elemental",
+        price: 250000,
+        robux: 550,
+        damage: 60,
+        speed: 65,
+        range: 68,
+        aoe: 70,
+        pvp: 58,
+        pve: 68,
+        difficulty: 35,
+        awakening: true,
+        description: "Fire-based attacks for beginners",
+        image: "https://via.placeholder.com/120?text=Flame"
+      },
+      light: {
+        name: "Light",
+        rarity: "Rare",
+        type: "Elemental",
+        price: 650000,
+        robux: 1100,
+        damage: 75,
+        speed: 95,
+        range: 85,
+        aoe: 70,
+        pvp: 78,
+        pve: 82,
+        difficulty: 50,
+        awakening: true,
+        description: "Fastest travel fruit with decent damage",
+        image: "https://via.placeholder.com/120?text=Light"
+      },
+      magma: {
+        name: "Magma",
+        rarity: "Rare",
+        type: "Elemental",
+        price: 850000,
+        robux: 1300,
+        damage: 78,
+        speed: 58,
+        range: 75,
+        aoe: 85,
+        pvp: 70,
+        pve: 88,
+        difficulty: 48,
+        awakening: true,
+        description: "High damage lava-based attacks",
+        image: "https://via.placeholder.com/120?text=Magma"
+      },
+      quake: {
+        name: "Quake",
+        rarity: "Legendary",
+        type: "Paramecia",
+        price: 1000000,
+        robux: 1500,
+        damage: 85,
+        speed: 55,
+        range: 78,
+        aoe: 95,
+        pvp: 72,
+        pve: 90,
+        difficulty: 55,
+        awakening: true,
+        description: "Earthquake attacks with massive AOE",
+        image: "https://via.placeholder.com/120?text=Quake"
+      }
+    };
+
+    function updateComparison() {
+      const fruit1Key = document.getElementById('fruit1').value;
+      const fruit2Key = document.getElementById('fruit2').value;
+
+      if (fruit1Key) {
+        updatePreview('preview1', fruitData[fruit1Key]);
+      }
+      if (fruit2Key) {
+        updatePreview('preview2', fruitData[fruit2Key]);
+      }
+
+      if (fruit1Key && fruit2Key) {
+        showComparison(fruitData[fruit1Key], fruitData[fruit2Key]);
+      } else {
+        document.getElementById('comparisonTable').style.display = 'none';
+      }
+    }
+
+    function updatePreview(previewId, fruit) {
+      const preview = document.getElementById(previewId);
+      preview.innerHTML = `
+        <img src="${fruit.image}" alt="${fruit.name}">
+        <h4>${fruit.name}</h4>
+        <span class="rarity-badge ${fruit.rarity.toLowerCase()}">${fruit.rarity}</span>
+        <p style="margin-top: 1rem; color: var(--text-color-muted); font-size: 0.9rem;">${fruit.description}</p>
+      `;
+    }
+
+    function showComparison(fruit1, fruit2) {
+      document.getElementById('fruit1Header').textContent = fruit1.name;
+      document.getElementById('fruit2Header').textContent = fruit2.name;
+
+      const stats = [
+        { label: 'Type', key: 'type' },
+        { label: 'Rarity', key: 'rarity' },
+        { label: 'Price (Beli)', key: 'price', format: 'money' },
+        { label: 'Price (Robux)', key: 'robux', format: 'robux' },
+        { label: 'Awakening Available', key: 'awakening', format: 'bool' },
+        { label: 'Damage', key: 'damage', format: 'bar', max: 100 },
+        { label: 'Speed', key: 'speed', format: 'bar', max: 100 },
+        { label: 'Range', key: 'range', format: 'bar', max: 100 },
+        { label: 'Area of Effect', key: 'aoe', format: 'bar', max: 100 },
+        { label: 'PvP Rating', key: 'pvp', format: 'bar', max: 100 },
+        { label: 'PvE Rating', key: 'pve', format: 'bar', max: 100 },
+        { label: 'Difficulty', key: 'difficulty', format: 'bar', max: 100 }
+      ];
+
+      let html = '';
+      stats.forEach(stat => {
+        const val1 = fruit1[stat.key];
+        const val2 = fruit2[stat.key];
+        
+        let cell1Content, cell2Content;
+        let isWinner1 = false, isWinner2 = false;
+
+        if (stat.format === 'money') {
+          cell1Content = `$${val1.toLocaleString()}`;
+          cell2Content = `$${val2.toLocaleString()}`;
+          isWinner1 = val1 < val2; // Lower is better for price
+          isWinner2 = val2 < val1;
+        } else if (stat.format === 'robux') {
+          cell1Content = `${val1} R$`;
+          cell2Content = `${val2} R$`;
+          isWinner1 = val1 < val2;
+          isWinner2 = val2 < val1;
+        } else if (stat.format === 'bool') {
+          cell1Content = val1 ? '✅ Yes' : '❌ No';
+          cell2Content = val2 ? '✅ Yes' : '❌ No';
+          isWinner1 = val1 && !val2;
+          isWinner2 = val2 && !val1;
+        } else if (stat.format === 'bar') {
+          const percent1 = (val1 / stat.max) * 100;
+          const percent2 = (val2 / stat.max) * 100;
+          cell1Content = `
+            <div class="stat-bar-container">
+              <div class="stat-bar">
+                <div class="stat-bar-fill" style="width: ${percent1}%">${val1}</div>
+              </div>
+            </div>
+          `;
+          cell2Content = `
+            <div class="stat-bar-container">
+              <div class="stat-bar">
+                <div class="stat-bar-fill" style="width: ${percent2}%">${val2}</div>
+              </div>
+            </div>
+          `;
+          isWinner1 = val1 > val2;
+          isWinner2 = val2 > val1;
+        } else {
+          cell1Content = val1;
+          cell2Content = val2;
+        }
+
+        html += `
+          <tr>
+            <td class="stat-label">${stat.label}</td>
+            <td class="${isWinner1 ? 'winner' : ''}">${cell1Content}</td>
+            <td class="${isWinner2 ? 'winner' : ''}">${cell2Content}</td>
+          </tr>
+        `;
+      });
+
+      document.getElementById('comparisonBody').innerHTML = html;
+      document.getElementById('comparisonTable').style.display = 'block';
+
+      // Scroll to comparison table
+      document.getElementById('comparisonTable').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  </script>
+</body>
+</html>
+

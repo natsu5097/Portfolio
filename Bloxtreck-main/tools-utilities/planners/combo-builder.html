@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧪 Combo Builder - Blox Fruits Wiki</title>
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../../assets/styles/tools.css">
+  <link rel="icon" href="../../assets/images/sitelogo/bloxtrex.png" type="image/png">
+  <style>
+    .combo-builder {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .builder-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr 300px;
+      gap: 2rem;
+      min-height: 600px;
+    }
+    .moves-panel, .combo-panel {
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      box-shadow: var(--card-shadow);
+    }
+    .combo-workspace {
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+    }
+    .panel-header {
+      font-size: 1.2rem;
+      font-weight: var(--font-bold);
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .move-category {
+      margin-bottom: 1.5rem;
+    }
+    .category-title {
+      font-weight: var(--font-semibold);
+      color: var(--text-color);
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      background: var(--bg-color);
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .category-title:hover {
+      background: rgba(var(--primary-color-rgb), 0.1);
+    }
+    .category-arrow {
+      transition: transform 0.3s ease;
+    }
+    .category-title.collapsed .category-arrow {
+      transform: rotate(-90deg);
+    }
+    .moves-list {
+      display: grid;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .move-item {
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.75rem;
+      cursor: grab;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+    .move-item:hover {
+      border-color: var(--primary-color);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.2);
+    }
+    .move-item:active {
+      cursor: grabbing;
+    }
+    .move-name {
+      font-weight: var(--font-semibold);
+      color: var(--text-color);
+      margin-bottom: 0.25rem;
+    }
+    .move-details {
+      font-size: 0.8rem;
+      color: var(--text-color-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+    .combo-sequence {
+      flex: 1;
+      background: var(--bg-color);
+      border: 2px dashed var(--border-color);
+      border-radius: 8px;
+      min-height: 300px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+    .combo-sequence.drag-over {
+      border-color: var(--primary-color);
+      background: rgba(var(--primary-color-rgb), 0.05);
+    }
+    .combo-step {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      background: var(--bg-color-alt);
+      border-radius: 8px;
+      border-left: 4px solid var(--primary-color);
+      position: relative;
+    }
+    .step-number {
+      background: var(--primary-color);
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--font-bold);
+      flex-shrink: 0;
+    }
+    .step-content {
+      flex: 1;
+    }
+    .step-move-name {
+      font-weight: var(--font-bold);
+      color: var(--text-color);
+      margin-bottom: 0.25rem;
+    }
+    .step-description {
+      font-size: 0.9rem;
+      color: var(--text-color-muted);
+    }
+    .step-timing {
+      background: var(--accent-color);
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: var(--font-semibold);
+    }
+    .step-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .step-btn {
+      width: 24px;
+      height: 24px;
+      border: none;
+      border-radius: 4px;
+      background: var(--danger-color);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      transition: all 0.3s ease;
+    }
+    .step-btn:hover {
+      transform: scale(1.1);
+    }
+    .combo-controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .control-btn {
+      background: var(--gradient-primary);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: var(--font-semibold);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .control-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.3);
+    }
+    .control-btn.secondary {
+      background: var(--bg-color);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+    }
+    .combo-info {
+      background: var(--bg-color);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .combo-name-input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--border-color);
+      border-radius: 6px;
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .combo-name-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    .combo-description {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--border-color);
+      border-radius: 6px;
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-size: 0.9rem;
+      resize: vertical;
+      min-height: 80px;
+    }
+    .combo-description:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    .combo-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .stat-card {
+      background: var(--bg-color-alt);
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      border-left: 4px solid var(--primary-color);
+    }
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: var(--font-bold);
+      color: var(--primary-color);
+      margin-bottom: 0.25rem;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-color-muted);
+    }
+    .saved-combos {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .saved-combo {
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .saved-combo:hover {
+      border-color: var(--primary-color);
+      transform: translateY(-1px);
+    }
+    .saved-combo-name {
+      font-weight: var(--font-bold);
+      color: var(--text-color);
+      margin-bottom: 0.5rem;
+    }
+    .saved-combo-preview {
+      font-size: 0.8rem;
+      color: var(--text-color-muted);
+      margin-bottom: 0.5rem;
+    }
+    .saved-combo-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .empty-state {
+      text-align: center;
+      color: var(--text-color-muted);
+      padding: 2rem;
+      font-style: italic;
+    }
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    @media (max-width: 1024px) {
+      .builder-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .combo-builder {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="intro">
+      <h2>🧪 Combo Builder</h2>
+      <p>Create and share powerful fighting combinations! Drag and drop moves to build the perfect combo sequence.</p>
+      <p><a href="../tools.html">← Back to Tools</a></p>
+    </section>
+
+    <div class="combo-builder">
+      <div class="builder-layout">
+        <!-- Moves Panel -->
+        <div class="moves-panel">
+          <div class="panel-header">
+            ⚔️ Available Moves
+          </div>
+          
+          <div id="movesContainer">
+            <!-- Moves will be populated by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Combo Workspace -->
+        <div class="combo-workspace">
+          <div class="panel-header">
+            🧪 Combo Builder
+          </div>
+          
+          <div class="combo-controls">
+            <button class="control-btn" onclick="clearCombo()">Clear All</button>
+            <button class="control-btn" onclick="testCombo()">Test Combo</button>
+            <button class="control-btn secondary" onclick="exportCombo()">Export</button>
+            <button class="control-btn secondary" onclick="importCombo()">Import</button>
+          </div>
+          
+          <div class="combo-info">
+            <input type="text" id="comboName" class="combo-name-input" placeholder="Enter combo name...">
+            <textarea id="comboDescription" class="combo-description" placeholder="Describe your combo strategy..."></textarea>
+          </div>
+          
+          <div class="combo-sequence" id="comboSequence" ondrop="dropMove(event)" ondragover="allowDrop(event)">
+            <div class="empty-state" id="emptyState">
+              <div style="font-size: 2rem; margin-bottom: 1rem;">🎯</div>
+              <div>Drag moves here to build your combo</div>
+            </div>
+          </div>
+          
+          <div class="combo-stats" id="comboStats">
+            <!-- Stats will be updated by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Saved Combos Panel -->
+        <div class="combo-panel">
+          <div class="panel-header">
+            💾 Saved Combos
+          </div>
+          
+          <div class="combo-controls">
+            <button class="control-btn" onclick="saveCombo()">Save Current</button>
+          </div>
+          
+          <div class="saved-combos" id="savedCombos">
+            <!-- Saved combos will be populated by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Export/Import Modal -->
+    <div id="exportModal" class="modal">
+      <div class="modal-content">
+        <h3 id="modalTitle">Export Combo</h3>
+        <div id="modalContent">
+          <!-- Content will be populated by JavaScript -->
+        </div>
+        <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+          <button class="control-btn" onclick="copyToClipboard()">Copy to Clipboard</button>
+          <button class="control-btn secondary" onclick="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Game moves database
+    const gameMoves = {
+      fruitMoves: [
+        { name: "Z Move", category: "Fruit", damage: 100, cooldown: 5, timing: "Fast" },
+        { name: "X Move", category: "Fruit", damage: 150, cooldown: 8, timing: "Medium" },
+        { name: "C Move", category: "Fruit", damage: 200, cooldown: 12, timing: "Slow" },
+        { name: "V Move", category: "Fruit", damage: 300, cooldown: 20, timing: "Very Slow" },
+        { name: "F Move (Awakened)", category: "Fruit", damage: 400, cooldown: 25, timing: "Very Slow" }
+      ],
+      swordMoves: [
+        { name: "Z Slash", category: "Sword", damage: 80, cooldown: 3, timing: "Fast" },
+        { name: "X Combo", category: "Sword", damage: 120, cooldown: 6, timing: "Medium" },
+        { name: "Dash Slice", category: "Sword", damage: 90, cooldown: 4, timing: "Fast" },
+        { name: "Air Slash", category: "Sword", damage: 110, cooldown: 7, timing: "Medium" }
+      ],
+      fightingMoves: [
+        { name: "Z Punch", category: "Fighting", damage: 70, cooldown: 2, timing: "Very Fast" },
+        { name: "X Combo", category: "Fighting", damage: 100, cooldown: 5, timing: "Fast" },
+        { name: "C Special", category: "Fighting", damage: 140, cooldown: 8, timing: "Medium" },
+        { name: "V Ultimate", category: "Fighting", damage: 180, cooldown: 15, timing: "Slow" }
+      ],
+      gunMoves: [
+        { name: "Z Shot", category: "Gun", damage: 60, cooldown: 1, timing: "Very Fast" },
+        { name: "X Barrage", category: "Gun", damage: 120, cooldown: 6, timing: "Medium" },
+        { name: "C Special Shot", category: "Gun", damage: 150, cooldown: 10, timing: "Slow" }
+      ],
+      movement: [
+        { name: "Dash", category: "Movement", damage: 0, cooldown: 2, timing: "Very Fast" },
+        { name: "Flash Step", category: "Movement", damage: 0, cooldown: 3, timing: "Fast" },
+        { name: "Sky Jump", category: "Movement", damage: 0, cooldown: 1, timing: "Very Fast" },
+        { name: "Geppo", category: "Movement", damage: 0, cooldown: 1, timing: "Very Fast" }
+      ]
+    };
+
+    let currentCombo = [];
+    let savedCombos = JSON.parse(localStorage.getItem('bloxFruitsCombos')) || [];
+    let draggedMove = null;
+
+    function initializeComboBuilder() {
+      renderMovesPanel();
+      renderSavedCombos();
+      updateComboStats();
+    }
+
+    function renderMovesPanel() {
+      const container = document.getElementById('movesContainer');
+      container.innerHTML = '';
+
+      Object.keys(gameMoves).forEach(categoryKey => {
+        const category = gameMoves[categoryKey];
+        const categoryName = categoryKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+        
+        const categoryDiv = document.createElement('div');
+        categoryDiv.className = 'move-category';
+        
+        categoryDiv.innerHTML = `
+          <div class="category-title" onclick="toggleCategory('${categoryKey}')">
+            <span>${categoryName}</span>
+            <span class="category-arrow">▼</span>
+          </div>
+          <div class="moves-list" id="${categoryKey}Moves">
+            ${category.map((move, index) => `
+              <div class="move-item" draggable="true" ondragstart="startDrag(event, '${categoryKey}', ${index})">
+                <div class="move-name">${move.name}</div>
+                <div class="move-details">
+                  <span>DMG: ${move.damage}</span>
+                  <span>${move.timing}</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+        
+        container.appendChild(categoryDiv);
+      });
+    }
+
+    function toggleCategory(categoryKey) {
+      const categoryTitle = document.querySelector(`[onclick="toggleCategory('${categoryKey}')"]`);
+      const movesList = document.getElementById(`${categoryKey}Moves`);
+      
+      categoryTitle.classList.toggle('collapsed');
+      movesList.style.display = movesList.style.display === 'none' ? 'grid' : 'none';
+    }
+
+    function startDrag(event, category, index) {
+      draggedMove = {
+        ...gameMoves[category][index],
+        category: category,
+        index: index
+      };
+      event.dataTransfer.effectAllowed = 'copy';
+    }
+
+    function allowDrop(event) {
+      event.preventDefault();
+      const sequence = document.getElementById('comboSequence');
+      sequence.classList.add('drag-over');
+    }
+
+    function dropMove(event) {
+      event.preventDefault();
+      const sequence = document.getElementById('comboSequence');
+      sequence.classList.remove('drag-over');
+      
+      if (draggedMove) {
+        currentCombo.push({ ...draggedMove, id: Date.now() });
+        renderComboSequence();
+        updateComboStats();
+        draggedMove = null;
+      }
+    }
+
+    function renderComboSequence() {
+      const sequence = document.getElementById('comboSequence');
+      const emptyState = document.getElementById('emptyState');
+      
+      if (currentCombo.length === 0) {
+        emptyState.style.display = 'block';
+        return;
+      }
+      
+      emptyState.style.display = 'none';
+      
+      const comboHTML = currentCombo.map((move, index) => `
+        <div class="combo-step">
+          <div class="step-number">${index + 1}</div>
+          <div class="step-content">
+            <div class="step-move-name">${move.name}</div>
+            <div class="step-description">${move.category} • Damage: ${move.damage} • Cooldown: ${move.cooldown}s</div>
+          </div>
+          <div class="step-actions">
+            <div class="step-timing">${move.timing}</div>
+            <button class="step-btn" onclick="removeMove(${index})" title="Remove move">×</button>
+          </div>
+        </div>
+      `).join('');
+      
+      // Update sequence content without affecting empty state
+      const existingSteps = sequence.querySelectorAll('.combo-step');
+      existingSteps.forEach(step => step.remove());
+      
+      sequence.innerHTML += comboHTML;
+    }
+
+    function removeMove(index) {
+      currentCombo.splice(index, 1);
+      renderComboSequence();
+      updateComboStats();
+    }
+
+    function updateComboStats() {
+      const statsContainer = document.getElementById('comboStats');
+      
+      if (currentCombo.length === 0) {
+        statsContainer.innerHTML = '';
+        return;
+      }
+      
+      const totalDamage = currentCombo.reduce((sum, move) => sum + move.damage, 0);
+      const totalCooldown = Math.max(...currentCombo.map(move => move.cooldown));
+      const executionTime = currentCombo.length * 1.5; // Estimate
+      const complexity = Math.min(10, currentCombo.length + (new Set(currentCombo.map(m => m.category)).size));
+      
+      statsContainer.innerHTML = `
+        <div class="stat-card">
+          <div class="stat-value">${totalDamage}</div>
+          <div class="stat-label">Total Damage</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${currentCombo.length}</div>
+          <div class="stat-label">Steps</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${executionTime.toFixed(1)}s</div>
+          <div class="stat-label">Execution Time</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${totalCooldown}s</div>
+          <div class="stat-label">Max Cooldown</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${complexity}/10</div>
+          <div class="stat-label">Complexity</div>
+        </div>
+      `;
+    }
+
+    function clearCombo() {
+      if (currentCombo.length > 0 && !confirm('Are you sure you want to clear the current combo?')) {
+        return;
+      }
+      currentCombo = [];
+      renderComboSequence();
+      updateComboStats();
+      document.getElementById('comboName').value = '';
+      document.getElementById('comboDescription').value = '';
+    }
+
+    function testCombo() {
+      if (currentCombo.length === 0) {
+        alert('Add some moves to test the combo!');
+        return;
+      }
+      
+      const totalDamage = currentCombo.reduce((sum, move) => sum + move.damage, 0);
+      const executionTime = currentCombo.length * 1.5;
+      
+      alert(`Combo Test Results:\n\nTotal Damage: ${totalDamage}\nExecution Time: ${executionTime.toFixed(1)}s\nSteps: ${currentCombo.length}\n\nTip: Practice the timing between moves for maximum effectiveness!`);
+    }
+
+    function saveCombo() {
+      if (currentCombo.length === 0) {
+        alert('Add some moves before saving!');
+        return;
+      }
+      
+      const name = document.getElementById('comboName').value || `Combo ${savedCombos.length + 1}`;
+      const description = document.getElementById('comboDescription').value || 'No description provided';
+      
+      const combo = {
+        id: Date.now(),
+        name: name,
+        description: description,
+        moves: [...currentCombo],
+        created: new Date().toLocaleDateString()
+      };
+      
+      savedCombos.unshift(combo);
+      localStorage.setItem('bloxFruitsCombos', JSON.stringify(savedCombos));
+      
+      renderSavedCombos();
+      alert(`Combo "${name}" saved successfully!`);
+    }
+
+    function renderSavedCombos() {
+      const container = document.getElementById('savedCombos');
+      
+      if (savedCombos.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📁</div>
+            <div>No saved combos yet</div>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = savedCombos.map(combo => `
+        <div class="saved-combo" onclick="loadCombo('${combo.id}')">
+          <div class="saved-combo-name">${combo.name}</div>
+          <div class="saved-combo-preview">${combo.moves.length} moves • ${combo.created}</div>
+          <div class="saved-combo-actions">
+            <button class="control-btn" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;" onclick="event.stopPropagation(); loadCombo('${combo.id}')">Load</button>
+            <button class="control-btn secondary" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;" onclick="event.stopPropagation(); deleteCombo('${combo.id}')">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function loadCombo(comboId) {
+      const combo = savedCombos.find(c => c.id == comboId);
+      if (!combo) return;
+      
+      currentCombo = [...combo.moves];
+      document.getElementById('comboName').value = combo.name;
+      document.getElementById('comboDescription').value = combo.description;
+      
+      renderComboSequence();
+      updateComboStats();
+    }
+
+    function deleteCombo(comboId) {
+      const combo = savedCombos.find(c => c.id == comboId);
+      if (!combo) return;
+      
+      if (!confirm(`Delete combo "${combo.name}"?`)) return;
+      
+      savedCombos = savedCombos.filter(c => c.id != comboId);
+      localStorage.setItem('bloxFruitsCombos', JSON.stringify(savedCombos));
+      renderSavedCombos();
+    }
+
+    function exportCombo() {
+      if (currentCombo.length === 0) {
+        alert('No combo to export!');
+        return;
+      }
+      
+      const comboData = {
+        name: document.getElementById('comboName').value || 'Exported Combo',
+        description: document.getElementById('comboDescription').value || 'No description',
+        moves: currentCombo,
+        exported: new Date().toISOString()
+      };
+      
+      const exportString = btoa(JSON.stringify(comboData));
+      
+      document.getElementById('modalTitle').textContent = 'Export Combo';
+      document.getElementById('modalContent').innerHTML = `
+        <p>Copy this code to share your combo:</p>
+        <textarea id="exportText" readonly style="width: 100%; height: 150px; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-color); color: var(--text-color); font-family: monospace;">${exportString}</textarea>
+      `;
+      
+      document.getElementById('exportModal').style.display = 'flex';
+    }
+
+    function importCombo() {
+      const importString = prompt('Paste the combo code here:');
+      if (!importString) return;
+      
+      try {
+        const comboData = JSON.parse(atob(importString));
+        
+        currentCombo = comboData.moves || [];
+        document.getElementById('comboName').value = comboData.name || 'Imported Combo';
+        document.getElementById('comboDescription').value = comboData.description || 'Imported combo';
+        
+        renderComboSequence();
+        updateComboStats();
+        
+        alert('Combo imported successfully!');
+      } catch (e) {
+        alert('Invalid combo code. Please check and try again.');
+      }
+    }
+
+    function copyToClipboard() {
+      const textArea = document.getElementById('exportText');
+      if (textArea) {
+        textArea.select();
+        document.execCommand('copy');
+        alert('Combo code copied to clipboard!');
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('exportModal').style.display = 'none';
+    }
+
+    // Handle drag leave to remove drag-over styling
+    document.getElementById('comboSequence').addEventListener('dragleave', function(e) {
+      if (!this.contains(e.relatedTarget)) {
+        this.classList.remove('drag-over');
+      }
+    });
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeComboBuilder();
+      
+      // Close modal when clicking outside
+      document.getElementById('exportModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeModal();
+        }
+      });
+    });
+  </script>
+  <script src="../../script.js"></script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧱 Material Calculator - Blox Fruits Wiki</title>
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="icon" href="../../assets/images/sitelogo/bloxtrex.png" type="image/png">
+  <link rel="stylesheet" href="../../assets/styles/tools.css">
+  <style>
+    .calculator-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .calculator-section {
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: var(--font-semibold);
+      color: var(--text-color);
+    }
+    .form-control {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+    }
+    .calc-btn {
+      background: var(--gradient-primary);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: var(--font-semibold);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      font-size: 1rem;
+    }
+    .calc-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(var(--primary-color-rgb), 0.3);
+    }
+    .results-container {
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+      margin-top: 2rem;
+    }
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 0.5rem;
+    }
+    .result-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+    .material-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 0.5rem;
+    }
+    .material-name {
+      font-weight: var(--font-medium);
+      color: var(--text-color);
+    }
+    .material-amount {
+      font-weight: var(--font-semibold);
+      color: var(--primary-color);
+      font-size: 1.1rem;
+    }
+    .upgrade-path {
+      background: var(--bg-color);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .upgrade-step {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .upgrade-step:last-child {
+      border-bottom: none;
+    }
+    .cost-summary {
+      background: linear-gradient(135deg, var(--success-color), #2ec4b6);
+      color: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .total-cost {
+      font-size: 2rem;
+      font-weight: var(--font-bold);
+      margin-bottom: 0.5rem;
+    }
+    @media (max-width: 768px) {
+      .calculator-grid {
+        grid-template-columns: 1fr;
+      }
+      .calculator-container {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="intro">
+      <h2>🧱 Material Calculator</h2>
+      <p>Calculate the materials needed for weapon upgrades, fruit awakenings, and more! Plan your resource gathering efficiently.</p>
+      <p><a href="../tools.html">← Back to Tools</a></p>
+    </section>
+
+    <div class="calculator-container">
+      <div class="calculator-grid">
+        <!-- Weapon Upgrade Calculator -->
+        <div class="calculator-section">
+          <h3>⚔️ Weapon Upgrades</h3>
+          <div class="form-group">
+            <label for="weaponType">Weapon Type</label>
+            <select id="weaponType" class="form-control">
+              <option value="sword">Sword</option>
+              <option value="gun">Gun</option>
+              <option value="melee">Fighting Style</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="currentLevel">Current Level</label>
+            <input type="number" id="currentLevel" class="form-control" min="0" max="600" value="0">
+          </div>
+          <div class="form-group">
+            <label for="targetLevel">Target Level</label>
+            <input type="number" id="targetLevel" class="form-control" min="0" max="600" value="100">
+          </div>
+          <button class="calc-btn" onclick="calculateWeaponUpgrade()">Calculate Materials</button>
+        </div>
+
+        <!-- Fruit Awakening Calculator -->
+        <div class="calculator-section">
+          <h3>🍎 Fruit Awakening</h3>
+          <div class="form-group">
+            <label for="fruitType">Fruit Type</label>
+            <select id="fruitType" class="form-control">
+              <option value="logia">Logia</option>
+              <option value="paramecia">Paramecia</option>
+              <option value="zoan">Zoan</option>
+              <option value="mythical">Mythical Zoan</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="currentMastery">Current Mastery</label>
+            <input type="number" id="currentMastery" class="form-control" min="0" max="600" value="0">
+          </div>
+          <div class="form-group">
+            <label for="targetMastery">Target Mastery</label>
+            <input type="number" id="targetMastery" class="form-control" min="0" max="600" value="400">
+          </div>
+          <div class="form-group">
+            <label for="awakeningLevel">Awakening Level</label>
+            <select id="awakeningLevel" class="form-control">
+              <option value="1">Level 1</option>
+              <option value="2">Level 2</option>
+              <option value="3">Level 3</option>
+              <option value="4">Level 4</option>
+              <option value="5">Level 5 (Full)</option>
+            </select>
+          </div>
+          <button class="calc-btn" onclick="calculateFruitAwakening()">Calculate Fragments</button>
+        </div>
+      </div>
+
+      <!-- Enhancement Calculator -->
+      <div class="calculator-section">
+        <h3>✨ Equipment Enhancement</h3>
+        <div class="calculator-grid">
+          <div>
+            <div class="form-group">
+              <label for="equipmentType">Equipment Type</label>
+              <select id="equipmentType" class="form-control">
+                <option value="accessory">Accessory</option>
+                <option value="cape">Cape</option>
+                <option value="title">Title</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="enhanceLevel">Enhancement Level</label>
+              <input type="number" id="enhanceLevel" class="form-control" min="0" max="20" value="0">
+            </div>
+          </div>
+          <div>
+            <div class="form-group">
+              <label for="targetEnhance">Target Enhancement</label>
+              <input type="number" id="targetEnhance" class="form-control" min="0" max="20" value="10">
+            </div>
+            <div class="form-group">
+              <label for="successRate">Success Rate Boost</label>
+              <select id="successRate" class="form-control">
+                <option value="1">Normal (100%)</option>
+                <option value="1.5">Premium Boost (150%)</option>
+                <option value="2">Double Event (200%)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <button class="calc-btn" onclick="calculateEnhancement()">Calculate Enhancement Cost</button>
+      </div>
+
+      <!-- Results Display -->
+      <div id="resultsContainer" class="results-container" style="display: none;">
+        <h3>📋 Material Requirements</h3>
+        <div id="materialsList"></div>
+        <div id="costSummary"></div>
+        <div id="upgradePath"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Material costs database
+    const materialCosts = {
+      weapon: {
+        sword: { fragments: 2, money: 10000, scales: 1 },
+        gun: { fragments: 1.5, money: 8000, cores: 1 },
+        melee: { fragments: 3, money: 15000, bones: 2 }
+      },
+      fruit: {
+        logia: { fragments: 1000, chips: 2 },
+        paramecia: { fragments: 800, chips: 1 },
+        zoan: { fragments: 600, chips: 1 },
+        mythical: { fragments: 1500, chips: 3 }
+      },
+      enhancement: {
+        accessory: { fragments: 500, money: 50000 },
+        cape: { fragments: 300, money: 30000 },
+        title: { fragments: 200, money: 20000 }
+      }
+    };
+
+    function calculateWeaponUpgrade() {
+      const weaponType = document.getElementById('weaponType').value;
+      const currentLevel = parseInt(document.getElementById('currentLevel').value);
+      const targetLevel = parseInt(document.getElementById('targetLevel').value);
+      
+      if (currentLevel >= targetLevel) {
+        alert('Target level must be higher than current level!');
+        return;
+      }
+
+      const levelDiff = targetLevel - currentLevel;
+      const baseCost = materialCosts.weapon[weaponType];
+      
+      const totalFragments = Math.round(baseCost.fragments * levelDiff * 1.2);
+      const totalMoney = Math.round(baseCost.money * levelDiff * 1.1);
+      
+      let additionalMaterials = {};
+      if (baseCost.scales) additionalMaterials.scales = Math.round(baseCost.scales * levelDiff * 0.8);
+      if (baseCost.cores) additionalMaterials.cores = Math.round(baseCost.cores * levelDiff * 0.8);
+      if (baseCost.bones) additionalMaterials.bones = Math.round(baseCost.bones * levelDiff * 0.8);
+
+      displayResults({
+        type: 'Weapon Upgrade',
+        fragments: totalFragments,
+        money: totalMoney,
+        ...additionalMaterials
+      }, `${weaponType} from Level ${currentLevel} to ${targetLevel}`);
+    }
+
+    function calculateFruitAwakening() {
+      const fruitType = document.getElementById('fruitType').value;
+      const currentMastery = parseInt(document.getElementById('currentMastery').value);
+      const targetMastery = parseInt(document.getElementById('targetMastery').value);
+      const awakeningLevel = parseInt(document.getElementById('awakeningLevel').value);
+      
+      if (currentMastery >= targetMastery) {
+        alert('Target mastery must be higher than current mastery!');
+        return;
+      }
+
+      const masteryDiff = targetMastery - currentMastery;
+      const baseCost = materialCosts.fruit[fruitType];
+      
+      const awakeningMultiplier = [1, 1.5, 2.5, 4, 6][awakeningLevel - 1];
+      const totalFragments = Math.round(baseCost.fragments * awakeningMultiplier + (masteryDiff * 50));
+      const totalChips = Math.round(baseCost.chips * awakeningLevel);
+      
+      displayResults({
+        type: 'Fruit Awakening',
+        fragments: totalFragments,
+        chips: totalChips
+      }, `${fruitType} awakening to Level ${awakeningLevel}`);
+    }
+
+    function calculateEnhancement() {
+      const equipmentType = document.getElementById('equipmentType').value;
+      const enhanceLevel = parseInt(document.getElementById('enhanceLevel').value);
+      const targetEnhance = parseInt(document.getElementById('targetEnhance').value);
+      const successRate = parseFloat(document.getElementById('successRate').value);
+      
+      if (enhanceLevel >= targetEnhance) {
+        alert('Target enhancement must be higher than current level!');
+        return;
+      }
+
+      const enhanceDiff = targetEnhance - enhanceLevel;
+      const baseCost = materialCosts.enhancement[equipmentType];
+      
+      // Calculate with success rate and failure chances
+      const totalFragments = Math.round((baseCost.fragments * enhanceDiff * 2) / successRate);
+      const totalMoney = Math.round((baseCost.money * enhanceDiff * 1.5) / successRate);
+      
+      displayResults({
+        type: 'Enhancement',
+        fragments: totalFragments,
+        money: totalMoney
+      }, `${equipmentType} from +${enhanceLevel} to +${targetEnhance}`);
+    }
+
+    function displayResults(materials, description) {
+      const resultsContainer = document.getElementById('resultsContainer');
+      const materialsList = document.getElementById('materialsList');
+      const costSummary = document.getElementById('costSummary');
+      
+      resultsContainer.style.display = 'block';
+      
+      let materialsHTML = '';
+      let totalValue = 0;
+      
+      Object.entries(materials).forEach(([key, value]) => {
+        if (key === 'type') return;
+        
+        const materialName = key.charAt(0).toUpperCase() + key.slice(1);
+        const emoji = {
+          fragments: '💎',
+          money: '💰',
+          scales: '⚖️',
+          cores: '🔮',
+          bones: '🦴',
+          chips: '🎯'
+        }[key] || '📦';
+        
+        materialsHTML += `
+          <div class="result-item">
+            <div style="display: flex; align-items: center;">
+              <span class="material-icon">${emoji}</span>
+              <span class="material-name">${materialName}</span>
+            </div>
+            <span class="material-amount">${value.toLocaleString()}</span>
+          </div>
+        `;
+        
+        // Calculate rough total value (fragments as base)
+        const valueMultiplier = {
+          fragments: 1,
+          money: 0.001,
+          scales: 10,
+          cores: 8,
+          bones: 15,
+          chips: 50
+        }[key] || 1;
+        
+        totalValue += value * valueMultiplier;
+      });
+      
+      materialsList.innerHTML = materialsHTML;
+      
+      costSummary.innerHTML = `
+        <div class="cost-summary">
+          <div class="total-cost">${Math.round(totalValue).toLocaleString()}</div>
+          <div>Estimated Fragment Value</div>
+          <div style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">${description}</div>
+        </div>
+      `;
+      
+      // Scroll to results
+      resultsContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Initialize with some default calculations on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set reasonable defaults
+      document.getElementById('targetLevel').value = 200;
+      document.getElementById('targetMastery').value = 350;
+    });
+  </script>
+  <script src="../../script.js"></script>
+</body>
+</html>
+
+
+

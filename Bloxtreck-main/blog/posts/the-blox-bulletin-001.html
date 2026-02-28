@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../blog.css">
+  <title>The Blox Bulletin #001</title>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header></header>
+  <nav></nav>
+  <main id="main-content" role="main" class="container">
+  <div class="blog-post-nav">
+    <a href="../blog.html" class="back-to-blog">← Back to Blog</a>
+  </div>
+  <article class="blog-post">
+  <h1>The Blox Bulletin #001</h1>
+  <p class="meta">Imported from gamerrobot</p>
+<article aria-labelledby="title-0" class="page-width">
+<div class="grid">
+<div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+<div class="shopify-section" id="shopify-section-article-template"><div class="section-header text-center">
+<h1 class="article__title" id="title-0">The Blox Bulletin #001</h1>
+</div>
+<img alt="" id="290101657907" src="/assets/images/blog/fruity_e185f941-5938-4ba6-b89a-4e051143a7bd.png"/>
+<h4 class="article__date">
+<time datetime="2025-05-15T22:59:22Z">May 15, 2025</time>
+</h4>
+<div class="rte">
+<body><div class="rte">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Blox Bulletin - Issue 001</title>
+<!-- A container that will host our shadow root -->
+<div id="blox-bulletin"></div>
+<script>
+    // Create a shadow DOM inside the container.
+    const container = document.getElementById('blox-bulletin');
+    const shadow = container.attachShadow({ mode: 'open' });
+
+    // Inject the styles and markup into the shadow root.
+    shadow.innerHTML = `
+      <style>
+        /* Base styles */
+        body {
+          font-family: "Georgia", serif;
+          line-height: 1.6;
+          margin: 0;
+          padding: 20px;
+          background-color: #f4f4f4;
+          color: #000;
+        }
+        .container {
+          max-width: 900px;
+          margin: auto;
+          background: white;
+          padding: 20px;
+          box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+          border: 3px solid #555;
+          background-size: cover;
+          display: grid;
+          grid-template-columns: 66% 33%;
+          grid-gap: 15px;
+        }
+        /* In desktop, let the wrapper be invisible in terms of layout */
+        .middle-wrapper {
+          display: contents;
+        }
+        .header {
+          grid-column: 1 / -1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          border-bottom: 3px dashed #333;
+          padding-bottom: 15px;
+        }
+        .header h1 {
+          font-size: 64px;
+          margin: 0;
+          font-family: "Times New Roman", serif;
+        }
+        .header p {
+          font-size: 18px;
+          color: #444;
+        }
+        .section {
+          border-bottom: 3px solid #000;
+          padding: 10px;
+        }
+        .warning-section {
+          background-color: #ffdddd;
+          border-left: 6px solid #ff4d4d;
+        }
+        .grey-section {
+          background-color: #e8e8e8;
+        }
+        .full-width {
+          grid-column: 1 / -1;
+        }
+        .article {
+          display: flex;
+          align-items: flex-start;
+          text-align: justify;
+        }
+        .article img {
+          max-width: 33%;
+          height: auto;
+          margin: 6px;
+        }
+        .article2 img {
+          max-width: 100%;
+          height: auto;
+          margin: 0;
+        }
+        .article3 img {
+          max-width: 50%;
+          border: 5px solid;
+          height: auto;
+          float: right;
+          margin: 4px;
+        }
+        .square-img {
+          width: 80%;
+          aspect-ratio: 1 / 1;
+        }
+        .wide-img {
+          width: 100%;
+          aspect-ratio: 16 / 9;
+        }
+        .author {
+          font-size: 14px;
+          font-style: italic;
+          color: #666;
+          margin-bottom: 5px;
+        }
+        .buy-now {
+          grid-column: 1 / -1;
+          background: #ffcc00;
+          padding: 10px;
+          color: black;
+          text-align: center;
+          font-weight: bold;
+          border: 3px solid #000;
+          font-size: 16px;
+        }
+        .buy-now img {
+          display: block;
+          margin: 6px auto;
+          max-width: 50%;
+          height: auto;
+        }
+        
+        /* Responsive adjustments for mobile screens */
+        @media screen and (max-width: 768px) {
+          .container {
+            grid-template-columns: 1fr;
+            padding: 10px;
+          }
+          .header h1 {
+            font-size: 48px;
+          }
+          .article {
+            flex-direction: column;
+            align-items: center;
+          }
+          .article img.square-img {
+            max-width: 80%;
+          }
+          .article2 img,
+          .article3 img {
+            max-width: 100%;
+            float: none;
+            margin: 12px auto;
+          }
+          .buy-now img {
+            max-width: 80%;
+          }
+          /* Override any desktop-specific grid-column settings */
+          .container > .section {
+            grid-column: 1 / -1 !important;
+          }
+          /* Change the wrapper to flex to allow reordering of its children */
+          .middle-wrapper {
+            display: flex;
+            flex-direction: column;
+          }
+          /* Swap the order of the two sections within the wrapper */
+          .poachers {
+            order: 1;
+          }
+          .asking-developers {
+            order: 2;
+          }
+        }
+      </style>
+
+      <div class="container">
+        <div class="header">
+          <h1>The Blox Bulletin</h1>
+          <p><i>A New Chapter Unfolds: Welcome to Our First Edition!</i></p>
+          <p><strong>Issue: 001 | March 20, 2025</strong></p>
+        </div>
+        
+        <div class="section warning-section full-width">
+          <h2>TURTLE ISLAND UNDER SIEGE BY FALLING STARS?!</h2>
+          <p class="author">By BAMPulous</p>
+          <div class="article">
+            <img src="https://web.archive.org/web/20250321014723/https://cdn.shopify.com/s/files/1/0830/7635/0259/files/Untitled258_0000-07-49_20250318193451_3f9b76b7-bd11-49f4-ac58-9c04b3ff29e9.png?v=1742430168" alt="Turtle Island Storm" class="square-img">
+            <p>
+              The skies over <b>Turtle Island</b> have been anything but normal—fiery meteors are crashing down, shaking the ground before vanishing without a trace. Some residents claim the air feels heavier, as if the island itself is shifting.
+              <br><br>
+              Adding to the mystery, a <b>hooded figure</b> has been spotted near the impact sites, disappearing before anyone can get close. No one knows their intentions, but rumors are spreading… Is this just a strange phenomenon, or is something powerful approaching?
+            </p>
+          </div>
+        </div>
+
+        <!-- Wrap the two sections you want to swap -->
+        <div class="middle-wrapper">
+          <div class="section asking-developers" style="grid-column: 1 / 2;">
+            <h2>Asking the Developers</h2>
+            <p class="author">Featuring rip_indra and mygame43</p>
+            
+            <div class="article">
+              <p>
+                <strong>Q:</strong> Will anything be done about the lag spikes in Sea 3?<br>
+                <strong>Indra:</strong> Trust us, we feel the pain too. We've been making optimizations behind the scenes to smooth things out. Expect a noticeable difference soon!
+              </p>
+            </div>
+            <div class="article">
+              <p>
+                <strong>Q:</strong> What about the current PvP meta , is it getting a rebalance?<br>
+                <strong>Mr. 43:</strong> Absolutely! We've been fine-tuning hitboxes, damage scaling, and cooldowns to make fights more fair and skill-based. No more getting clapped by Yetis or obliterated by Dragons—unless you deserve it.
+              </p>
+            </div>
+<div class="article">
+              <p>
+                <strong>Q:</strong> Which Blox Fruits are being added or reworked in this update?<br>
+                <strong>Indra:</strong> If you've been keeping up with the news… you probably already know ;). And yes, we hear you about Control's rework—but that's a topic for another day!
+              </p>
+            </div>
+            <div class="article">
+              <p>
+                <strong>Q:</strong> Will there ever be a Fourth Sea?<br>
+                <strong>Mr. 43:</strong> Not yet! Before we even *think* about a new sea, we want to make sure the current ones are polished, balanced, and up to standard. A big expansion needs a strong foundation.
+              </p>
+            </div>
+            <i>What questions should we answer next? The most popular ones on our Discord will be featured in the next issue.</i>
+          </div>
+          
+          <div class="section grey-section poachers" style="grid-column: 2 / 3;">
+            <h2>Fruit Showdown; Poachers Get Defeated</h2>
+            <p class="author">By ABSODAN DELETURE</p>
+            <div class="article2">
+              <img src="https://web.archive.org/web/20250321014723/https://cdn.shopify.com/s/files/1/0830/7635/0259/files/Untitled260_20250319162340.png?v=1742430173" alt="Poachers Caught" class="wide-img">
+            </div>
+            <p>
+              In a dramatic showdown, the <b>Rangers of the Wilderness</b> have successfully arrested a notorious gang of poachers who had been targeting rare <b>wildlife</b>.<br><br>
+              The poachers were caught after a tense pursuit through the dense jungle, putting an end to their illegal activities.
+            </p>
+          </div>
+        </div>
+        
+        <div class="section full-width grey-section">
+          <h2>THE LONG ROAD TO DRAGON: WHY THE UPDATE TOOK SO LONG</h2>
+          <p class="author">By Riphael Von Indra the First, The Twilight Betrayer</p>
+          <div class="article3">
+            <img src="https://web.archive.org/web/20250321014723/https://cdn.shopify.com/s/files/1/0830/7635/0259/files/uzot_news.png?v=1742430352" alt="Hydra Island Battle" class="wide-img">
+            <p>
+              The flames of <b>Dragon Talon Academy</b> have burned brighter than ever, but behind the scenes, the journey to this update has been anything but easy.<br><br>
+              Once we confirmed <b>Dragon</b> was next, all eyes were on it—meaning we couldn't release any other fruits or major content without players demanding Dragon first. The fruit itself went through <b>multiple remakes</b>, as we kept refining every detail to make it truly legendary. Unfortunately, some <b>mismanagement</b> of such a massive update led to further delays.<br><br>
+              But there's good news! While Dragon was in the works, we made <b>huge progress</b> on other parts of the game. Now, we're finally ready to start rolling out that content—beginning with <b>three complete reworks.</b><br><br>
+              And that's not all. Beyond fruits, we've been developing a <b>game-changing</b> feature that will improve the experience for <b>ALL</b> players. It's something I personally find really exciting, and while it's not ready just yet, I think when the time comes, it'll be worth the wait.
+            </p>
+          </div>
+        </div>
+        
+        <div class="buy-now">
+          <strong>BUY NOW – DON'T MISS THIS OPPORTUNITY</strong>
+          <img src="https://web.archive.org/web/20250321014723/https://cdn.shopify.com/s/files/1/0830/7635/0259/files/news_papre.png?v=1742430155" alt="Exclusive Vehicle">
+          Only the most daring pirates can claim this legendary ride! <b>CALL NOW: 1-555-SHAFI</b>
+        </div>
+        <div><i>Stay tuned—Chromatic Contest winners revealed in the next issue!</i></div>
+      </div>
+    `;
+  </script>
+<div class="shopify-block shopify-app-block" id="shopify-block-AWFNNenlBR2N5d2ZuU__12657775114333427046">
+<script>
+ 
+    window.essentialCountdownTimerConfigs = [];
+  
+  const essentialCollectionId = null;
+  window.essentialCountdownTimerMeta = {
+    productData: null,
+    productCollections: null,
+  };
+  window.essentialProductTags = null
+</script>
+</div>
+</div><div class="shopify-block shopify-app-block" id="shopify-block-AWFNNenlBR2N5d2ZuU__12657775114333427046"><script>
+  
+    window.essentialCountdownTimerConfigs = [];
+  
+  const essentialCollectionId = null;
+  window.essentialCountdownTimerMeta = {
+    productData: null,
+    productCollections: null,
+  };
+  window.essentialProductId = null
+  window.essentialProductTags = null
+  window.essentialCollectionId = null
+  window.essentialCountdownTimerPageTemplate = "article"
+</script>
+<style>
+  .essential-countdown-timer-img-reset {
+    /* wipe common globals */
+    box-sizing: content-box;
+    display: inline;
+    width: auto;
+    height: auto;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: none;
+    object-fit: fill;
+    object-position: 50% 50%;
+    filter: none;
+    opacity: 1;
+    position: static;
+    float: none;
+    clear: none;
+    vertical-align: baseline;
+    transform: none;
+    transition: none;
+    animation: none;
+    /* typography sometimes leaks via universal selectors */
+    font: inherit;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: start;
+  }
+</style>
+</div></body>
+</div>
+<!-- /snippets/social-sharing.liquid -->
+<ul class="social-sharing">
+<li>
+<a class="btn btn--small btn--share share-facebook" href="//www.facebook.com/sharer.php?u=https://gamerrobot.com/blogs/news/the-blox-bulletin-001" target="_blank">
+<svg aria-hidden="true" class="icon icon-facebook" focusable="false" role="presentation" viewbox="0 0 20 20"><path d="M18.05.811q.439 0 .744.305t.305.744v16.637q0 .439-.305.744t-.744.305h-4.732v-7.221h2.415l.342-2.854h-2.757v-1.83q0-.659.293-1t1.073-.342h1.488V3.762q-.976-.098-2.171-.098-1.634 0-2.635.964t-1 2.72V9.47H7.951v2.854h2.415v7.221H1.413q-.439 0-.744-.305t-.305-.744V1.859q0-.439.305-.744T1.413.81H18.05z" fill="#444"></path></svg>
+<span aria-hidden="true" class="share-title">Share</span>
+<span class="visually-hidden">Share on Facebook</span>
+</a>
+</li>
+<li>
+<a class="btn btn--small btn--share share-twitter" href="//twitter.com/share?text=The%20Blox%20Bulletin%20%23001&amp;url=https://gamerrobot.com/blogs/news/the-blox-bulletin-001" target="_blank">
+<svg aria-hidden="true" class="icon icon-twitter" focusable="false" role="presentation" viewbox="0 0 20 20"><path d="M19.551 4.208q-.815 1.202-1.956 2.038 0 .082.02.255t.02.255q0 1.589-.469 3.179t-1.426 3.036-2.272 2.567-3.158 1.793-3.963.672q-3.301 0-6.031-1.773.571.041.937.041 2.751 0 4.911-1.671-1.284-.02-2.292-.784T2.456 11.85q.346.082.754.082.55 0 1.039-.163-1.365-.285-2.262-1.365T1.09 7.918v-.041q.774.408 1.773.448-.795-.53-1.263-1.396t-.469-1.864q0-1.019.509-1.997 1.487 1.854 3.596 2.924T9.81 7.184q-.143-.509-.143-.897 0-1.63 1.161-2.781t2.832-1.151q.815 0 1.569.326t1.284.917q1.345-.265 2.506-.958-.428 1.386-1.732 2.18 1.243-.163 2.262-.611z" fill="#444"></path></svg>
+<span aria-hidden="true" class="share-title">Tweet</span>
+<span class="visually-hidden">Tweet on Twitter</span>
+</a>
+</li>
+<li>
+<a class="btn btn--small btn--share share-pinterest" href="//pinterest.com/pin/create/button/?url=https://gamerrobot.com/blogs/news/the-blox-bulletin-001&amp;media=//gamerrobot.com/cdn/shop/articles/fruity_e185f941-5938-4ba6-b89a-4e051143a7bd_1024x1024.png?v=1748509664&amp;description=The%20Blox%20Bulletin%20%23001" target="_blank">
+<svg aria-hidden="true" class="icon icon-pinterest" focusable="false" role="presentation" viewbox="0 0 20 20"><path d="M9.958.811q1.903 0 3.635.744t2.988 2 2 2.988.744 3.635q0 2.537-1.256 4.696t-3.415 3.415-4.696 1.256q-1.39 0-2.659-.366.707-1.147.951-2.025l.659-2.561q.244.463.903.817t1.39.354q1.464 0 2.622-.842t1.793-2.305.634-3.293q0-2.171-1.671-3.769t-4.257-1.598q-1.586 0-2.903.537T5.298 5.897 4.066 7.775t-.427 2.037q0 1.268.476 2.22t1.427 1.342q.171.073.293.012t.171-.232q.171-.61.195-.756.098-.268-.122-.512-.634-.707-.634-1.83 0-1.854 1.281-3.183t3.354-1.329q1.83 0 2.854 1t1.025 2.61q0 1.342-.366 2.476t-1.049 1.817-1.561.683q-.732 0-1.195-.537t-.293-1.269q.098-.342.256-.878t.268-.915.207-.817.098-.732q0-.61-.317-1t-.927-.39q-.756 0-1.269.695t-.512 1.744q0 .39.061.756t.134.537l.073.171q-1 4.342-1.22 5.098-.195.927-.146 2.171-2.513-1.122-4.062-3.44T.59 10.177q0-3.879 2.744-6.623T9.957.81z" fill="#444"></path></svg>
+<span aria-hidden="true" class="share-title">Pin it</span>
+<span class="visually-hidden">Pin on Pinterest</span>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</article>
+  </article>
+    <div class="blog-post-nav">
+    <a href="../blog.html" class="back-to-blog">← Back to Blog</a>
+  </div>
+  </main>
+  <footer></footer>
+  <script src="../../script.js"></script>
+</body>
+</html>

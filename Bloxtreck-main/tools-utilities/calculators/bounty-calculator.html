@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bounty Calculator - Blox Fruits Wiki</title>
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="icon" href="../../assets/images/sitelogo/bloxtrex.png" type="image/png">
+  <style>
+    .calculator-container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+    }
+    .calc-section {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: var(--bg-color);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+    .calc-section h3 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+    .input-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .input-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .input-field label {
+      font-weight: var(--font-medium);
+      color: var(--text-color);
+    }
+    .input-field input, .input-field select {
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: var(--bg-color-alt);
+      color: var(--text-color);
+      font-size: 1rem;
+    }
+    .input-field input:focus, .input-field select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+    }
+    .calculate-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--gradient-primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: var(--font-semibold);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .calculate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(var(--primary-color-rgb), 0.4);
+    }
+    .result-display {
+      margin-top: 2rem;
+      padding: 2rem;
+      background: var(--gradient-primary);
+      border-radius: 12px;
+      text-align: center;
+      color: white;
+      display: none;
+    }
+    .result-display.active {
+      display: block;
+      animation: slideIn 0.5s ease;
+    }
+    .result-display h2 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      color: white;
+    }
+    .result-display p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+    .bounty-breakdown {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .breakdown-item {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 8px;
+      backdrop-filter: blur(10px);
+    }
+    .breakdown-item strong {
+      display: block;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .bounty-tips {
+      background: var(--bg-color);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border-left: 4px solid var(--primary-color);
+      margin-top: 2rem;
+    }
+    .bounty-tips h4 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+    .bounty-tips ul {
+      margin: 0;
+      padding-left: 1.5rem;
+    }
+    .bounty-tips li {
+      margin-bottom: 0.5rem;
+      color: var(--text-color-muted);
+    }
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="calculator-container">
+      <h1 style="text-align: center; color: var(--primary-color); margin-bottom: 2rem;">🏴‍☠️ Bounty Calculator</h1>
+      
+      <div class="calc-section">
+        <h3>📊 Player Information</h3>
+        <div class="input-group">
+          <div class="input-field">
+            <label for="level">Your Level</label>
+            <input type="number" id="level" value="2450" min="1" max="2550">
+          </div>
+          <div class="input-field">
+            <label for="currentBounty">Current Bounty</label>
+            <input type="number" id="currentBounty" value="0" min="0" max="10000000">
+          </div>
+          <div class="input-field">
+            <label for="sea">Current Sea</label>
+            <select id="sea">
+              <option value="first">First Sea</option>
+              <option value="second">Second Sea</option>
+              <option value="third">Third Sea</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-section">
+        <h3>🎯 Target Information</h3>
+        <div class="input-group">
+          <div class="input-field">
+            <label for="targetLevel">Target Level</label>
+            <input type="number" id="targetLevel" value="2450" min="1" max="2550">
+          </div>
+          <div class="input-field">
+            <label for="targetBounty">Target Bounty</label>
+            <input type="number" id="targetBounty" value="2500000" min="0" max="10000000">
+          </div>
+          <div class="input-field">
+            <label for="targetSea">Target Sea</label>
+            <select id="targetSea">
+              <option value="first">First Sea</option>
+              <option value="second">Second Sea</option>
+              <option value="third">Third Sea</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-section">
+        <h3>⚔️ Combat Factors</h3>
+        <div class="input-group">
+          <div class="input-field">
+            <label for="fruitType">Your Devil Fruit</label>
+            <select id="fruitType">
+              <option value="none">None</option>
+              <option value="dragon">Dragon (Mythical)</option>
+              <option value="leopard">Leopard (Mythical)</option>
+              <option value="dough">Dough (Legendary)</option>
+              <option value="shadow">Shadow (Legendary)</option>
+              <option value="venom">Venom (Legendary)</option>
+              <option value="buddha">Buddha (Legendary)</option>
+              <option value="control">Control (Legendary)</option>
+              <option value="spirit">Spirit (Mythical)</option>
+              <option value="kitsune">Kitsune (Mythical)</option>
+            </select>
+          </div>
+          <div class="input-field">
+            <label for="weaponType">Weapon Type</label>
+            <select id="weaponType">
+              <option value="sword">Sword</option>
+              <option value="gun">Gun</option>
+              <option value="melee">Fighting Style</option>
+            </select>
+          </div>
+          <div class="input-field">
+            <label for="mastery">Mastery Level</label>
+            <input type="number" id="mastery" value="600" min="1" max="600">
+          </div>
+        </div>
+      </div>
+
+      <button class="calculate-btn" onclick="calculateBounty()">💰 Calculate Bounty Gain</button>
+
+      <div class="result-display" id="resultDisplay">
+        <h2 id="bountyGain">0</h2>
+        <p>Estimated Bounty Gain</p>
+        <div class="bounty-breakdown">
+          <div class="breakdown-item">
+            <strong id="baseBounty">0</strong>
+            <span>Base Bounty</span>
+          </div>
+          <div class="breakdown-item">
+            <strong id="levelBonus">0</strong>
+            <span>Level Bonus</span>
+          </div>
+          <div class="breakdown-item">
+            <strong id="fruitBonus">0</strong>
+            <span>Fruit Bonus</span>
+          </div>
+          <div class="breakdown-item">
+            <strong id="totalBounty">0</strong>
+            <span>New Total</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bounty-tips">
+        <h4>💡 Bounty Tips</h4>
+        <ul>
+          <li>Higher level differences give more bounty</li>
+          <li>Mythical fruits provide the highest bounty multipliers</li>
+          <li>Third Sea players give significantly more bounty</li>
+          <li>Use awakened fruits for maximum bounty gain</li>
+          <li>Target players with high bounty for better rewards</li>
+          <li>Consider using race V4 abilities for damage boosts</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../script.js"></script>
+  <script>
+    function calculateBounty() {
+      // Get all input values
+      const level = parseInt(document.getElementById('level').value) || 0;
+      const currentBounty = parseInt(document.getElementById('currentBounty').value) || 0;
+      const sea = document.getElementById('sea').value;
+      const targetLevel = parseInt(document.getElementById('targetLevel').value) || 0;
+      const targetBounty = parseInt(document.getElementById('targetBounty').value) || 0;
+      const targetSea = document.getElementById('targetSea').value;
+      const fruitType = document.getElementById('fruitType').value;
+      const weaponType = document.getElementById('weaponType').value;
+      const mastery = parseInt(document.getElementById('mastery').value) || 1;
+      
+      // Base bounty calculation
+      let baseBounty = 1000;
+      
+      // Level difference bonus
+      const levelDiff = Math.abs(targetLevel - level);
+      const levelBonus = levelDiff * 50;
+      
+      // Sea multipliers
+      const seaMultipliers = {
+        first: 1.0,
+        second: 1.5,
+        third: 2.0
+      };
+      
+      const seaMultiplier = seaMultipliers[targetSea] || 1.0;
+      
+      // Fruit multipliers
+      const fruitMultipliers = {
+        dragon: 1.8,
+        leopard: 1.7,
+        dough: 1.5,
+        shadow: 1.4,
+        venom: 1.4,
+        buddha: 1.3,
+        control: 1.3,
+        spirit: 1.6,
+        kitsune: 1.65,
+        none: 1.0
+      };
+      
+      const fruitMultiplier = fruitMultipliers[fruitType] || 1.0;
+      
+      // Mastery bonus
+      const masteryBonus = 1 + (mastery / 600) * 0.5;
+      
+      // Target bounty bonus
+      const targetBountyBonus = Math.min(targetBounty / 1000000, 2.0);
+      
+      // Calculate total bounty gain
+      const baseBountyGain = baseBounty + levelBonus;
+      const fruitBonus = baseBountyGain * (fruitMultiplier - 1);
+      const levelBonusAmount = baseBountyGain * (masteryBonus - 1);
+      
+      const totalBountyGain = Math.floor(
+        baseBountyGain * seaMultiplier * fruitMultiplier * masteryBonus * (1 + targetBountyBonus)
+      );
+      
+      const newTotalBounty = currentBounty + totalBountyGain;
+      
+      // Display results
+      document.getElementById('bountyGain').textContent = totalBountyGain.toLocaleString();
+      document.getElementById('baseBounty').textContent = Math.floor(baseBountyGain).toLocaleString();
+      document.getElementById('levelBonus').textContent = '+' + Math.floor(levelBonusAmount).toLocaleString();
+      document.getElementById('fruitBonus').textContent = '+' + Math.floor(fruitBonus).toLocaleString();
+      document.getElementById('totalBounty').textContent = newTotalBounty.toLocaleString();
+      
+      document.getElementById('resultDisplay').classList.add('active');
+      
+      // Scroll to results
+      document.getElementById('resultDisplay').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  </script>
+</body>
+</html>
+
+
+

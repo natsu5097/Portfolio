@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💱 Trading Values - Blox Fruits Wiki</title>
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="icon" href="../../assets/images/sitelogo/bloxtrex.png" type="image/png">
+  <link rel="stylesheet" href="../../assets/styles/tools.css">
+  <style>
+    .trading-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .trading-header {
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      box-shadow: var(--card-shadow);
+    }
+    .trading-title {
+      font-size: 2.5rem;
+      font-weight: var(--font-bold);
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+    .trading-subtitle {
+      color: var(--text-color-muted);
+      margin-bottom: 1rem;
+    }
+    .last-updated {
+      background: var(--success-color);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      display: inline-block;
+    }
+    .filters-section {
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--card-shadow);
+    }
+    .filters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .filter-label {
+      font-weight: var(--font-semibold);
+      color: var(--text-color);
+    }
+    .filter-control {
+      padding: 0.75rem;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    .filter-control:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+    }
+    .category-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .category-tab {
+      background: var(--bg-color);
+      border: 2px solid var(--border-color);
+      color: var(--text-color);
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: var(--font-semibold);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .category-tab:hover {
+      border-color: var(--primary-color);
+      transform: translateY(-1px);
+    }
+    .category-tab.active {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+      color: white;
+    }
+    .rarity-filters {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .rarity-filter {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      border: 2px solid var(--border-color);
+      background: var(--bg-color);
+      color: var(--text-color);
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: var(--font-semibold);
+      transition: all 0.3s ease;
+    }
+    .rarity-filter:hover {
+      transform: translateY(-1px);
+    }
+    .rarity-filter.active {
+      transform: translateY(-2px);
+    }
+    .rarity-filter.common.active {
+      background: #6c757d;
+      border-color: #6c757d;
+      color: white;
+    }
+    .rarity-filter.uncommon.active {
+      background: #28a745;
+      border-color: #28a745;
+      color: white;
+    }
+    .rarity-filter.rare.active {
+      background: #007bff;
+      border-color: #007bff;
+      color: white;
+    }
+    .rarity-filter.epic.active {
+      background: #6f42c1;
+      border-color: #6f42c1;
+      color: white;
+    }
+    .rarity-filter.legendary.active {
+      background: #fd7e14;
+      border-color: #fd7e14;
+      color: white;
+    }
+    .rarity-filter.mythical.active {
+      background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+      border-color: #ff6b6b;
+      color: white;
+    }
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .value-card {
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .value-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--card-shadow-hover);
+      border-color: var(--primary-color);
+    }
+    .value-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    .item-info {
+      flex: 1;
+    }
+    .item-name {
+      font-size: 1.2rem;
+      font-weight: var(--font-bold);
+      color: var(--text-color);
+      margin-bottom: 0.25rem;
+    }
+    .item-type {
+      font-size: 0.9rem;
+      color: var(--text-color-muted);
+      margin-bottom: 0.5rem;
+    }
+    .item-icon {
+      font-size: 2.5rem;
+      opacity: 0.8;
+    }
+    .rarity-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: var(--font-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .rarity-badge.common {
+      background: #6c757d;
+      color: white;
+    }
+    .rarity-badge.uncommon {
+      background: #28a745;
+      color: white;
+    }
+    .rarity-badge.rare {
+      background: #007bff;
+      color: white;
+    }
+    .rarity-badge.epic {
+      background: #6f42c1;
+      color: white;
+    }
+    .rarity-badge.legendary {
+      background: #fd7e14;
+      color: white;
+    }
+    .rarity-badge.mythical {
+      background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+      color: white;
+    }
+    .value-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .value-stat {
+      text-align: center;
+      padding: 0.75rem;
+      background: var(--bg-color);
+      border-radius: 8px;
+      border-left: 4px solid var(--primary-color);
+    }
+    .value-label {
+      font-size: 0.8rem;
+      color: var(--text-color-muted);
+      margin-bottom: 0.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .value-amount {
+      font-size: 1.3rem;
+      font-weight: var(--font-bold);
+      color: var(--primary-color);
+    }
+    .demand-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem;
+      background: var(--bg-color);
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .demand-label {
+      font-weight: var(--font-semibold);
+      color: var(--text-color);
+    }
+    .demand-level {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .demand-bars {
+      display: flex;
+      gap: 2px;
+    }
+    .demand-bar {
+      width: 6px;
+      height: 20px;
+      background: var(--border-color);
+      border-radius: 3px;
+    }
+    .demand-bar.filled {
+      background: var(--success-color);
+    }
+    .demand-bar.filled.high {
+      background: var(--warning-color);
+    }
+    .demand-bar.filled.very-high {
+      background: var(--danger-color);
+    }
+    .demand-text {
+      font-size: 0.9rem;
+      font-weight: var(--font-semibold);
+    }
+    .demand-text.low {
+      color: var(--success-color);
+    }
+    .demand-text.medium {
+      color: var(--warning-color);
+    }
+    .demand-text.high {
+      color: var(--danger-color);
+    }
+    .trend-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: var(--font-semibold);
+    }
+    .trend-arrow {
+      font-size: 1.2rem;
+    }
+    .trend-up {
+      color: var(--success-color);
+    }
+    .trend-down {
+      color: var(--danger-color);
+    }
+    .trend-stable {
+      color: var(--text-color-muted);
+    }
+    .trading-tips {
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .tip-card {
+      background: var(--bg-color);
+      padding: 1rem;
+      border-radius: 8px;
+      border-left: 4px solid var(--accent-color);
+    }
+    .tip-title {
+      font-weight: var(--font-bold);
+      color: var(--text-color);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .tip-description {
+      color: var(--text-color-muted);
+      line-height: 1.5;
+    }
+    .search-controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .search-box {
+      flex: 1;
+      min-width: 250px;
+      padding: 0.75rem;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-size: 1rem;
+    }
+    .search-box:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+    }
+    .sort-controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .sort-btn {
+      background: var(--bg-color);
+      border: 2px solid var(--border-color);
+      color: var(--text-color);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: var(--font-semibold);
+      transition: all 0.3s ease;
+    }
+    .sort-btn:hover {
+      border-color: var(--primary-color);
+    }
+    .sort-btn.active {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+      color: white;
+    }
+    .results-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      background: var(--bg-color-alt);
+      border-radius: 8px;
+    }
+    .results-count {
+      font-weight: var(--font-semibold);
+      color: var(--text-color);
+    }
+    .view-toggle {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .view-btn {
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--border-color);
+      background: var(--bg-color);
+      color: var(--text-color);
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .view-btn:hover {
+      border-color: var(--primary-color);
+    }
+    .view-btn.active {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+      color: white;
+    }
+    @media (max-width: 768px) {
+      .trading-container {
+        padding: 1rem;
+      }
+      .values-grid {
+        grid-template-columns: 1fr;
+      }
+      .filters-grid {
+        grid-template-columns: 1fr;
+      }
+      .value-info {
+        grid-template-columns: 1fr;
+      }
+      .search-controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .search-box {
+        min-width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="intro">
+      <h2>💱 Trading Values</h2>
+      <p>Up-to-date trading values and market demand for all Blox Fruits items. Make informed trading decisions!</p>
+      <p><a href="../tools.html">← Back to Tools</a></p>
+    </section>
+
+    <div class="trading-container">
+      <!-- Header Section -->
+      <div class="trading-header">
+        <div class="trading-title">💱 Trading Values & Market Data</div>
+        <div class="trading-subtitle">Real-time trading values, demand levels, and market trends</div>
+        <div class="last-updated">Last Updated: <span id="lastUpdated">Just Now</span></div>
+      </div>
+
+      <!-- Filters Section -->
+      <div class="filters-section">
+        <div class="search-controls">
+          <input type="text" class="search-box" id="searchBox" placeholder="Search items...">
+          <div class="sort-controls">
+            <span class="filter-label">Sort by:</span>
+            <button class="sort-btn active" onclick="sortItems('value')">Value</button>
+            <button class="sort-btn" onclick="sortItems('demand')">Demand</button>
+            <button class="sort-btn" onclick="sortItems('name')">Name</button>
+          </div>
+        </div>
+        
+        <div class="category-tabs" id="categoryTabs">
+          <button class="category-tab active" onclick="filterCategory('all')">
+            <span>🌟</span> All Items
+          </button>
+          <button class="category-tab" onclick="filterCategory('fruits')">
+            <span>🍎</span> Devil Fruits
+          </button>
+          <button class="category-tab" onclick="filterCategory('gamepass')">
+            <span>🎫</span> Gamepasses
+          </button>
+          <button class="category-tab" onclick="filterCategory('physical')">
+            <span>⚔️</span> Physical Items
+          </button>
+          <button class="category-tab" onclick="filterCategory('permanent')">
+            <span>💎</span> Permanent
+          </button>
+        </div>
+        
+        <div>
+          <div class="filter-label" style="margin-bottom: 0.5rem;">Filter by Rarity:</div>
+          <div class="rarity-filters" id="rarityFilters">
+            <button class="rarity-filter common active" onclick="toggleRarity('common')">Common</button>
+            <button class="rarity-filter uncommon active" onclick="toggleRarity('uncommon')">Uncommon</button>
+            <button class="rarity-filter rare active" onclick="toggleRarity('rare')">Rare</button>
+            <button class="rarity-filter epic active" onclick="toggleRarity('epic')">Epic</button>
+            <button class="rarity-filter legendary active" onclick="toggleRarity('legendary')">Legendary</button>
+            <button class="rarity-filter mythical active" onclick="toggleRarity('mythical')">Mythical</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Info -->
+      <div class="results-info">
+        <div class="results-count" id="resultsCount">Showing 0 items</div>
+        <div class="view-toggle">
+          <button class="view-btn active" onclick="setView('grid')" title="Grid View">
+            <span>⊞</span>
+          </button>
+          <button class="view-btn" onclick="setView('list')" title="List View">
+            <span>☰</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Values Grid -->
+      <div class="values-grid" id="valuesGrid">
+        <!-- Items will be populated by JavaScript -->
+      </div>
+
+      <!-- Trading Tips -->
+      <div class="trading-tips">
+        <h3>💡 Trading Tips & Market Insights</h3>
+        <div class="tips-grid">
+          <div class="tip-card">
+            <div class="tip-title">
+              <span>📈</span> Market Trends
+            </div>
+            <div class="tip-description">
+              Values fluctuate based on demand, updates, and seasonal events. High-demand items typically trade above their base value.
+            </div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-title">
+              <span>🎯</span> Smart Trading
+            </div>
+            <div class="tip-description">
+              Focus on items with high demand but stable values. Avoid overpaying during hype periods and look for undervalued opportunities.
+            </div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-title">
+              <span>⏰</span> Timing
+            </div>
+            <div class="tip-description">
+              Best trading times are during weekends and after updates. Avoid trading right after major nerfs or buffs until prices stabilize.
+            </div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-title">
+              <span>🔍</span> Research
+            </div>
+            <div class="tip-description">
+              Always check multiple sources and recent trades. Community discord servers often have the most up-to-date pricing information.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Comprehensive trading values database
+    const tradingData = {
+      // Devil Fruits
+      fruits: [
+        // Mythical Fruits
+        { name: "Dragon", type: "Devil Fruit", category: "fruits", rarity: "mythical", icon: "🐉", value: 3500000, demand: "high", trend: "up" },
+        { name: "Leopard", type: "Devil Fruit", category: "fruits", rarity: "mythical", icon: "🐆", value: 5000000, demand: "very-high", trend: "up" },
+        { name: "Shadow", type: "Devil Fruit", category: "fruits", rarity: "mythical", icon: "👤", value: 2900000, demand: "high", trend: "stable" },
+        { name: "Venom", type: "Devil Fruit", category: "fruits", rarity: "mythical", icon: "☠️", value: 3000000, demand: "high", trend: "up" },
+        { name: "Control", type: "Devil Fruit", category: "fruits", rarity: "mythical", icon: "🌀", value: 3200000, demand: "medium", trend: "stable" },
+        { name: "Spirit", type: "Devil Fruit", category: "fruits", rarity: "mythical", icon: "👻", value: 3400000, demand: "high", trend: "up" },
+        { name: "Dough", type: "Devil Fruit", category: "fruits", rarity: "mythical", icon: "🍞", value: 2800000, demand: "very-high", trend: "up" },
+        { name: "Blizzard", type: "Devil Fruit", category: "fruits", rarity: "mythical", icon: "❄️", value: 2350000, demand: "medium", trend: "stable" },
+        { name: "Mammoth", type: "Devil Fruit", category: "fruits", rarity: "mythical", icon: "🦣", value: 2700000, demand: "medium", trend: "down" },
+        { name: "T-Rex", type: "Devil Fruit", category: "fruits", rarity: "mythical", icon: "🦖", value: 2200000, demand: "low", trend: "down" },
+        
+        // Legendary Fruits
+        { name: "Buddha", type: "Devil Fruit", category: "fruits", rarity: "legendary", icon: "🧘", value: 1200000, demand: "very-high", trend: "up" },
+        { name: "Phoenix", type: "Devil Fruit", category: "fruits", rarity: "legendary", icon: "🔥", value: 1800000, demand: "high", trend: "stable" },
+        { name: "Rumble", type: "Devil Fruit", category: "fruits", rarity: "legendary", icon: "⚡", value: 2100000, demand: "high", trend: "up" },
+        { name: "Paw", type: "Devil Fruit", category: "fruits", rarity: "legendary", icon: "🐾", value: 2300000, demand: "medium", trend: "stable" },
+        { name: "Gravity", type: "Devil Fruit", category: "fruits", rarity: "legendary", icon: "🌑", value: 2500000, demand: "medium", trend: "stable" },
+        { name: "Portal", type: "Devil Fruit", category: "fruits", rarity: "legendary", icon: "🌀", value: 1900000, demand: "high", trend: "up" },
+        { name: "Pain", type: "Devil Fruit", category: "fruits", rarity: "legendary", icon: "💀", value: 2100000, demand: "medium", trend: "stable" },
+        { name: "Quake", type: "Devil Fruit", category: "fruits", rarity: "legendary", icon: "💥", value: 1000000, demand: "high", trend: "up" },
+        { name: "String", type: "Devil Fruit", category: "fruits", rarity: "legendary", icon: "🧵", value: 750000, demand: "medium", trend: "stable" },
+        { name: "Love", type: "Devil Fruit", category: "fruits", rarity: "legendary", icon: "💖", value: 650000, demand: "low", trend: "down" },
+        
+        // Epic Fruits
+        { name: "Magma", type: "Devil Fruit", category: "fruits", rarity: "epic", icon: "🌋", value: 850000, demand: "high", trend: "up" },
+        { name: "Light", type: "Devil Fruit", category: "fruits", rarity: "epic", icon: "💡", value: 650000, demand: "high", trend: "stable" },
+        { name: "Rubber", type: "Devil Fruit", category: "fruits", rarity: "epic", icon: "🎈", value: 750000, demand: "medium", trend: "stable" },
+        { name: "Barrier", type: "Devil Fruit", category: "fruits", rarity: "epic", icon: "🛡️", value: 800000, demand: "low", trend: "stable" },
+        { name: "Ghost", type: "Devil Fruit", category: "fruits", rarity: "epic", icon: "👻", value: 950000, demand: "medium", trend: "up" },
+        { name: "Diamond", type: "Devil Fruit", category: "fruits", rarity: "epic", icon: "💎", value: 600000, demand: "low", trend: "down" },
+        { name: "Phoenix", type: "Devil Fruit", category: "fruits", rarity: "epic", icon: "🔥", value: 420000, demand: "medium", trend: "stable" },
+        
+        // Rare Fruits
+        { name: "Ice", type: "Devil Fruit", category: "fruits", rarity: "rare", icon: "🧊", value: 350000, demand: "medium", trend: "stable" },
+        { name: "Sand", type: "Devil Fruit", category: "fruits", rarity: "rare", icon: "🏖️", value: 420000, demand: "low", trend: "stable" },
+        { name: "Dark", type: "Devil Fruit", category: "fruits", rarity: "rare", icon: "🌑", value: 500000, demand: "high", trend: "up" },
+        { name: "Revive", type: "Devil Fruit", category: "fruits", rarity: "rare", icon: "💚", value: 550000, demand: "medium", trend: "stable" },
+        { name: "Diamond", type: "Devil Fruit", category: "fruits", rarity: "rare", icon: "💎", value: 600000, demand: "low", trend: "down" },
+        
+        // Uncommon & Common Fruits
+        { name: "Flame", type: "Devil Fruit", category: "fruits", rarity: "uncommon", icon: "🔥", value: 250000, demand: "medium", trend: "stable" },
+        { name: "Smoke", type: "Devil Fruit", category: "fruits", rarity: "uncommon", icon: "💨", value: 100000, demand: "low", trend: "stable" },
+        { name: "Spike", type: "Devil Fruit", category: "fruits", rarity: "common", icon: "🌵", value: 180000, demand: "low", trend: "stable" },
+        { name: "Chop", type: "Devil Fruit", category: "fruits", rarity: "common", icon: "✂️", value: 30000, demand: "low", trend: "stable" },
+        { name: "Spring", type: "Devil Fruit", category: "fruits", rarity: "common", icon: "🌸", value: 60000, demand: "low", trend: "stable" },
+        { name: "Bomb", type: "Devil Fruit", category: "fruits", rarity: "common", icon: "💣", value: 80000, demand: "low", trend: "stable" }
+      ],
+      
+      // Gamepasses
+      gamepass: [
+        { name: "2x Experience", type: "Gamepass", category: "gamepass", rarity: "legendary", icon: "📈", value: 450000, demand: "very-high", trend: "stable" },
+        { name: "2x Money", type: "Gamepass", category: "gamepass", rarity: "legendary", icon: "💰", value: 750000, demand: "very-high", trend: "stable" },
+        { name: "2x Mastery", type: "Gamepass", category: "gamepass", rarity: "legendary", icon: "⚔️", value: 450000, demand: "high", trend: "stable" },
+        { name: "Fast Boats", type: "Gamepass", category: "gamepass", rarity: "epic", icon: "⛵", value: 450000, demand: "medium", trend: "stable" },
+        { name: "Fruit Notifier", type: "Gamepass", category: "gamepass", rarity: "epic", icon: "🔔", value: 2700000, demand: "high", trend: "up" },
+        { name: "Blox Fruits Dealer Cousin", type: "Gamepass", category: "gamepass", rarity: "legendary", icon: "🛒", value: 450000, demand: "medium", trend: "stable" }
+      ],
+      
+      // Physical Items
+      physical: [
+        { name: "Dark Blade", type: "Sword", category: "physical", rarity: "mythical", icon: "🗡️", value: 1200000, demand: "very-high", trend: "up" },
+        { name: "Red Spikey Coat", type: "Accessory", category: "physical", rarity: "legendary", icon: "🧥", value: 100000, demand: "medium", trend: "stable" },
+        { name: "Blue Spikey Coat", type: "Accessory", category: "physical", rarity: "legendary", icon: "🧥", value: 100000, demand: "medium", trend: "stable" },
+        { name: "Zebra Cap", type: "Accessory", category: "physical", rarity: "rare", icon: "🧢", value: 50000, demand: "low", trend: "stable" },
+        { name: "Choppa", type: "Sword", category: "physical", rarity: "legendary", icon: "🪓", value: 15000000, demand: "very-high", trend: "up" }
+      ],
+      
+      // Permanent Items
+      permanent: [
+        { name: "Permanent Buddha", type: "Permanent Fruit", category: "permanent", rarity: "mythical", icon: "🧘", value: 1650000, demand: "very-high", trend: "up" },
+        { name: "Permanent Portal", type: "Permanent Fruit", category: "permanent", rarity: "mythical", icon: "🌀", value: 1900000, demand: "high", trend: "up" },
+        { name: "Permanent Phoenix", type: "Permanent Fruit", category: "permanent", rarity: "mythical", icon: "🔥", value: 1850000, demand: "high", trend: "stable" },
+        { name: "Permanent Dough", type: "Permanent Fruit", category: "permanent", rarity: "mythical", icon: "🍞", value: 2800000, demand: "very-high", trend: "up" },
+        { name: "Permanent Dragon", type: "Permanent Fruit", category: "permanent", rarity: "mythical", icon: "🐉", value: 3500000, demand: "very-high", trend: "up" }
+      ]
+    };
+
+    let currentCategory = 'all';
+    let activeRarities = ['common', 'uncommon', 'rare', 'epic', 'legendary', 'mythical'];
+    let currentSort = 'value';
+    let searchQuery = '';
+    let currentView = 'grid';
+
+    function initializeTradingValues() {
+      updateLastUpdated();
+      renderItems();
+      setupSearchListener();
+    }
+
+    function updateLastUpdated() {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString('en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit'
+      });
+      document.getElementById('lastUpdated').textContent = timeString;
+    }
+
+    function getAllItems() {
+      return Object.values(tradingData).flat();
+    }
+
+    function filterCategory(category) {
+      currentCategory = category;
+      
+      // Update active tab
+      document.querySelectorAll('.category-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      renderItems();
+    }
+
+    function toggleRarity(rarity) {
+      const button = event.target;
+      
+      if (activeRarities.includes(rarity)) {
+        activeRarities = activeRarities.filter(r => r !== rarity);
+        button.classList.remove('active');
+      } else {
+        activeRarities.push(rarity);
+        button.classList.add('active');
+      }
+      
+      renderItems();
+    }
+
+    function sortItems(sortBy) {
+      currentSort = sortBy;
+      
+      // Update active sort button
+      document.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      renderItems();
+    }
+
+    function setView(view) {
+      currentView = view;
+      
+      // Update active view button
+      document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      const grid = document.getElementById('valuesGrid');
+      if (view === 'list') {
+        grid.style.gridTemplateColumns = '1fr';
+      } else {
+        grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(300px, 1fr))';
+      }
+    }
+
+    function setupSearchListener() {
+      const searchBox = document.getElementById('searchBox');
+      searchBox.addEventListener('input', (e) => {
+        searchQuery = e.target.value.toLowerCase();
+        renderItems();
+      });
+    }
+
+    function getFilteredItems() {
+      let items = getAllItems();
+      
+      // Filter by category
+      if (currentCategory !== 'all') {
+        items = items.filter(item => item.category === currentCategory);
+      }
+      
+      // Filter by rarity
+      items = items.filter(item => activeRarities.includes(item.rarity));
+      
+      // Filter by search query
+      if (searchQuery) {
+        items = items.filter(item => 
+          item.name.toLowerCase().includes(searchQuery) ||
+          item.type.toLowerCase().includes(searchQuery)
+        );
+      }
+      
+      // Sort items
+      items.sort((a, b) => {
+        switch (currentSort) {
+          case 'value':
+            return b.value - a.value;
+          case 'demand':
+            const demandOrder = { 'very-high': 4, 'high': 3, 'medium': 2, 'low': 1 };
+            return demandOrder[b.demand] - demandOrder[a.demand];
+          case 'name':
+            return a.name.localeCompare(b.name);
+          default:
+            return 0;
+        }
+      });
+      
+      return items;
+    }
+
+    function renderItems() {
+      const items = getFilteredItems();
+      const grid = document.getElementById('valuesGrid');
+      const resultsCount = document.getElementById('resultsCount');
+      
+      resultsCount.textContent = `Showing ${items.length} item${items.length !== 1 ? 's' : ''}`;
+      
+      grid.innerHTML = items.map(item => createItemCard(item)).join('');
+    }
+
+    function createItemCard(item) {
+      const demandBars = createDemandBars(item.demand);
+      const trendIcon = getTrendIcon(item.trend);
+      
+      return `
+        <div class="value-card">
+          <div class="rarity-badge ${item.rarity}">${item.rarity}</div>
+          
+          <div class="value-card-header">
+            <div class="item-info">
+              <div class="item-name">${item.name}</div>
+              <div class="item-type">${item.type}</div>
+            </div>
+            <div class="item-icon">${item.icon}</div>
+          </div>
+          
+          <div class="value-info">
+            <div class="value-stat">
+              <div class="value-label">Current Value</div>
+              <div class="value-amount">${formatValue(item.value)}</div>
+            </div>
+            <div class="value-stat">
+              <div class="value-label">Market Cap</div>
+              <div class="value-amount">${formatValue(Math.round(item.value * 1.2))}</div>
+            </div>
+          </div>
+          
+          <div class="demand-indicator">
+            <div class="demand-label">Market Demand</div>
+            <div class="demand-level">
+              <div class="demand-bars">${demandBars}</div>
+              <div class="demand-text ${item.demand.replace('-', '_')}">${item.demand.replace('-', ' ').toUpperCase()}</div>
+            </div>
+          </div>
+          
+          <div class="trend-indicator trend-${item.trend}">
+            <span class="trend-arrow">${trendIcon}</span>
+            <span>Price ${item.trend === 'up' ? 'Rising' : item.trend === 'down' ? 'Falling' : 'Stable'}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function createDemandBars(demand) {
+      const levels = { 'low': 1, 'medium': 2, 'high': 3, 'very-high': 4 };
+      const level = levels[demand] || 1;
+      
+      let bars = '';
+      for (let i = 1; i <= 4; i++) {
+        let barClass = 'demand-bar';
+        if (i <= level) {
+          barClass += ' filled';
+          if (level >= 3) barClass += ' high';
+          if (level === 4) barClass += ' very-high';
+        }
+        bars += `<div class="${barClass}"></div>`;
+      }
+      
+      return bars;
+    }
+
+    function getTrendIcon(trend) {
+      switch (trend) {
+        case 'up': return '↗️';
+        case 'down': return '↘️';
+        case 'stable': return '→';
+        default: return '→';
+      }
+    }
+
+    function formatValue(value) {
+      if (value >= 1000000) {
+        return (value / 1000000).toFixed(1) + 'M';
+      } else if (value >= 1000) {
+        return (value / 1000).toFixed(0) + 'K';
+      } else {
+        return value.toLocaleString();
+      }
+    }
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeTradingValues();
+      
+      // Update values periodically (simulate real-time data)
+      setInterval(updateLastUpdated, 300000); // Update every 5 minutes
+    });
+  </script>
+  <script src="../../script.js"></script>
+</body>
+</html>
+
+
+

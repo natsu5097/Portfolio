@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Page Not Found | BloxTreck Wiki</title>
+  <meta name="description" content="The page you're looking for doesn't exist. Explore our comprehensive Blox Fruits wiki with guides, calculators, and tier lists.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://natsu5097.github.io/Bloxtreck/404.html">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="assets/images/sitelogo/favicon_io/favicon.ico" type="image/x-icon">
+  <style>
+    /* Enhanced 404 visuals */
+    .error-container {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      background: radial-gradient(ellipse at top, rgba(var(--primary-color-rgb),0.06), transparent 60%),
+                  radial-gradient(ellipse at bottom, rgba(114,9,183,0.08), transparent 60%);
+      border-radius: 16px;
+    }
+    .error-code {
+      font-size: 10rem;
+      font-weight: var(--font-extrabold);
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+      animation: float 3s ease-in-out infinite;
+    }
+    .error-title {
+      font-size: 2.5rem;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+    }
+    .error-message {
+      font-size: 1.2rem;
+      color: var(--text-color-muted);
+      margin-bottom: 3rem;
+      max-width: 600px;
+    }
+    .error-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .error-btn {
+      padding: 1rem 2rem;
+      background: var(--gradient-primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: var(--font-semibold);
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .error-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(var(--primary-color-rgb), 0.4);
+      color: white;
+    }
+    .error-btn.secondary {
+      background: var(--bg-color-alt);
+      color: var(--text-color);
+      border: 2px solid var(--border-color);
+    }
+    .error-btn.secondary:hover {
+      background: var(--bg-color);
+      border-color: var(--primary-color);
+    }
+    .error-illustration {
+      margin-bottom: 2rem;
+      font-size: 8rem;
+      animation: bounce 2s infinite;
+    }
+    .error-illustration:after {
+      content: '';
+      display: block;
+      width: 140px;
+      height: 14px;
+      margin: 6px auto 0;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.06);
+      filter: blur(4px);
+      animation: shadowPulse 2s infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    @keyframes shadowPulse {
+      0%,100% { transform: scaleX(1); opacity: 0.5; }
+      50% { transform: scaleX(1.2); opacity: 0.25; }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    .quick-links {
+      margin-top: 4rem;
+      padding: 2rem;
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      max-width: 800px;
+      box-shadow: var(--card-shadow);
+    }
+    .quick-links h3 {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+    }
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .quick-link {
+      padding: 1rem;
+      background: var(--bg-color);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      text-decoration: none;
+      transition: all 0.3s;
+      text-align: center;
+    }
+    .quick-link:hover {
+      background: rgba(var(--primary-color-rgb), 0.05);
+      border-color: var(--primary-color);
+      transform: translateY(-2px);
+    }
+    @media (max-width: 600px) {
+      .error-code { font-size: 6rem; }
+      .error-title { font-size: 1.75rem; }
+      .error-illustration { font-size: 5rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Skip Navigation Link -->
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <main id="main-content" role="main">
+    <div class="error-container">
+      <div class="error-illustration">🏴‍☠️</div>
+      <div class="error-code">404</div>
+      <h1 class="error-title">Island Not Found!</h1>
+      <p class="error-message">
+        Looks like you sailed into uncharted waters. The page you're looking for doesn't exist or has been moved to another sea.
+      </p>
+      
+      <div class="error-actions">
+        <a href="index.html" class="error-btn">
+          <span>🏠</span> Return Home
+        </a>
+        <a href="javascript:history.back()" class="error-btn secondary">
+          <span>←</span> Go Back
+        </a>
+        <a href="tools-utilities/tools.html" class="error-btn secondary">
+          <span>🛠️</span> Browse Tools
+        </a>
+      </div>
+
+      <div class="quick-links">
+        <h3>🗺️ Popular Destinations</h3>
+        <div class="links-grid">
+          <a href="game-content/fruits/fruits.html" class="quick-link">🍎 Devil Fruits</a>
+          <a href="game-content/swords/swords.html" class="quick-link">⚔️ Swords</a>
+          <a href="game-content/accessories/accessories.html" class="quick-link">💎 Accessories</a>
+          <a href="game-content/bosses/bosses.html" class="quick-link">👹 Bosses</a>
+          <a href="tools-utilities/calculators/damage-calculator.html" class="quick-link">🔥 Damage Calc</a>
+          <a href="community/quiz.html" class="quick-link">🎮 Take Quiz</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

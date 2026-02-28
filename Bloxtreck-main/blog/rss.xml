@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>BloxTreck Blog</title>
+    <link>https://natsu5097.github.io/Bloxtreck/blog/</link>
+    <description>News and updates from the BloxTreck project</description>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 26 Oct 2025 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Welcome to the BloxTreck Blog</title>
+      <link>https://natsu5097.github.io/Bloxtreck/blog/posts/2025-10-26-welcome.html</link>
+      <pubDate>Sun, 26 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://natsu5097.github.io/Bloxtreck/blog/posts/2025-10-26-welcome.html</guid>
+      <description>Initial blog post: release notes and plans for the BloxTreck site.</description>
+    </item>
+  </channel>
+</rss>

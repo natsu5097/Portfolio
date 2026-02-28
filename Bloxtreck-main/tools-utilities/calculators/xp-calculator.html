@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📈 XP Calculator - Blox Fruits Wiki</title>
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="icon" href="../../assets/images/sitelogo/bloxtrex.png" type="image/png">
+  <link rel="stylesheet" href="../../assets/styles/tools.css">
+  <style>
+    .xp-calculator {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .calculator-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--border-color);
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 1rem 1.5rem;
+      color: var(--text-color-muted);
+      font-weight: var(--font-semibold);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s ease;
+    }
+    .tab-btn.active {
+      color: var(--primary-color);
+      border-bottom-color: var(--primary-color);
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .calc-section {
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: var(--font-semibold);
+      color: var(--text-color);
+    }
+    .form-control {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+    }
+    .calc-btn {
+      background: var(--gradient-primary);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: var(--font-semibold);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      font-size: 1rem;
+    }
+    .calc-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(var(--primary-color-rgb), 0.3);
+    }
+    .results-display {
+      background: var(--bg-color-alt);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+      margin-top: 1rem;
+    }
+    .xp-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+      background: var(--bg-color);
+      border-radius: 8px;
+      border-left: 4px solid var(--primary-color);
+    }
+    .xp-label {
+      font-weight: var(--font-medium);
+      color: var(--text-color);
+    }
+    .xp-value {
+      font-weight: var(--font-bold);
+      color: var(--primary-color);
+      font-size: 1.1rem;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: var(--border-color);
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 0.5rem 0;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--gradient-primary);
+      border-radius: 6px;
+      transition: width 1s ease-out;
+      position: relative;
+    }
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .level-breakdown {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .level-card {
+      background: var(--bg-color);
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      border: 2px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+    .level-card:hover {
+      border-color: var(--primary-color);
+      transform: translateY(-2px);
+    }
+    .level-number {
+      font-size: 1.5rem;
+      font-weight: var(--font-bold);
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+    .level-xp {
+      font-size: 0.9rem;
+      color: var(--text-color-muted);
+    }
+    .time-estimates {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .time-card {
+      background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
+      color: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .time-value {
+      font-size: 1.5rem;
+      font-weight: var(--font-bold);
+      margin-bottom: 0.5rem;
+    }
+    .time-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    @media (max-width: 768px) {
+      .calc-grid {
+        grid-template-columns: 1fr;
+      }
+      .xp-calculator {
+        padding: 1rem;
+      }
+      .calculator-tabs {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .tab-btn {
+        text-align: center;
+        border-bottom: none;
+        border-left: 3px solid transparent;
+      }
+      .tab-btn.active {
+        border-left-color: var(--primary-color);
+        border-bottom-color: transparent;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="intro">
+      <h2>📈 XP Calculator</h2>
+      <p>Calculate experience requirements, level progression, and mastery grinding efficiency with our comprehensive XP calculator!</p>
+      <p><a href="../tools.html">← Back to Tools</a></p>
+    </section>
+
+    <div class="xp-calculator">
+      <div class="calculator-tabs">
+        <button class="tab-btn active" onclick="switchTab('level')">Level Calculator</button>
+        <button class="tab-btn" onclick="switchTab('mastery')">Mastery Calculator</button>
+        <button class="tab-btn" onclick="switchTab('bounty')">Bounty/Honor Calculator</button>
+      </div>
+
+      <!-- Level Calculator Tab -->
+      <div id="levelTab" class="tab-content active">
+        <div class="calc-grid">
+          <div class="calc-section">
+            <h3>⚙️ Level Settings</h3>
+            <div class="form-group">
+              <label for="currentLevel">Current Level</label>
+              <input type="number" id="currentLevel" class="form-control" min="1" max="2550" value="1">
+            </div>
+            <div class="form-group">
+              <label for="targetLevel">Target Level</label>
+              <input type="number" id="targetLevel" class="form-control" min="1" max="2550" value="100">
+            </div>
+            <div class="form-group">
+              <label for="xpMultiplier">XP Multiplier</label>
+              <select id="xpMultiplier" class="form-control">
+                <option value="1">1x (Normal)</option>
+                <option value="1.5">1.5x (Premium)</option>
+                <option value="2">2x (Double XP Event)</option>
+                <option value="2.5">2.5x (Premium + Event)</option>
+              </select>
+            </div>
+            <button class="calc-btn" onclick="calculateLevel()">Calculate XP Requirements</button>
+          </div>
+
+          <div class="calc-section">
+            <h3>🎯 Grinding Method</h3>
+            <div class="form-group">
+              <label for="grindingMethod">Primary Method</label>
+              <select id="grindingMethod" class="form-control">
+                <option value="quest">Quests (Recommended)</option>
+                <option value="boss">Boss Grinding</option>
+                <option value="dungeon">Dungeon/Raid</option>
+                <option value="pvp">PvP Battles</option>
+                <option value="mixed">Mixed Grinding</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="xpPerHour">Estimated XP/Hour</label>
+              <input type="number" id="xpPerHour" class="form-control" min="1000" value="50000">
+            </div>
+            <div class="form-group">
+              <label for="hoursPerDay">Hours/Day Playing</label>
+              <input type="number" id="hoursPerDay" class="form-control" min="0.5" max="24" step="0.5" value="3">
+            </div>
+          </div>
+        </div>
+
+        <div id="levelResults" class="results-display" style="display: none;">
+          <h3>📈 Level Progression Results</h3>
+          <div id="levelStats"></div>
+          <div id="levelBreakdown"></div>
+          <div id="timeEstimates"></div>
+        </div>
+      </div>
+
+      <!-- Mastery Calculator Tab -->
+      <div id="masteryTab" class="tab-content">
+        <div class="calc-grid">
+          <div class="calc-section">
+            <h3>⚔️ Mastery Settings</h3>
+            <div class="form-group">
+              <label for="itemType">Item Type</label>
+              <select id="itemType" class="form-control">
+                <option value="fruit">Devil Fruit</option>
+                <option value="sword">Sword</option>
+                <option value="gun">Gun</option>
+                <option value="melee">Fighting Style</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="currentMastery">Current Mastery</label>
+              <input type="number" id="currentMastery" class="form-control" min="0" max="600" value="0">
+            </div>
+            <div class="form-group">
+              <label for="targetMastery">Target Mastery</label>
+              <input type="number" id="targetMastery" class="form-control" min="0" max="600" value="350">
+            </div>
+            <button class="calc-btn" onclick="calculateMastery()">Calculate Mastery</button>
+          </div>
+
+          <div class="calc-section">
+            <h3>🎯 Mastery Method</h3>
+            <div class="form-group">
+              <label for="masteryMethod">Grinding Method</label>
+              <select id="masteryMethod" class="form-control">
+                <option value="npc">NPC Grinding</option>
+                <option value="boss">Boss Grinding</option>
+                <option value="player">Player Killing</option>
+                <option value="sea_beast">Sea Beast</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="masteryPerKill">Mastery per Kill</label>
+              <input type="number" id="masteryPerKill" class="form-control" min="1" value="3">
+            </div>
+            <div class="form-group">
+              <label for="killsPerHour">Kills per Hour</label>
+              <input type="number" id="killsPerHour" class="form-control" min="1" value="100">
+            </div>
+          </div>
+        </div>
+
+        <div id="masteryResults" class="results-display" style="display: none;">
+          <h3>⚔️ Mastery Progress Results</h3>
+          <div id="masteryStats"></div>
+          <div id="masteryBreakdown"></div>
+        </div>
+      </div>
+
+      <!-- Bounty Calculator Tab -->
+      <div id="bountyTab" class="tab-content">
+        <div class="calc-grid">
+          <div class="calc-section">
+            <h3>🏆 Bounty/Honor Settings</h3>
+            <div class="form-group">
+              <label for="factionType">Faction</label>
+              <select id="factionType" class="form-control">
+                <option value="pirate">Pirate (Bounty)</option>
+                <option value="marine">Marine (Honor)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="currentBounty">Current Bounty/Honor</label>
+              <input type="number" id="currentBounty" class="form-control" min="0" value="0">
+            </div>
+            <div class="form-group">
+              <label for="targetBounty">Target Bounty/Honor</label>
+              <input type="number" id="targetBounty" class="form-control" min="0" value="2500000">
+            </div>
+            <button class="calc-btn" onclick="calculateBounty()">Calculate Requirements</button>
+          </div>
+
+          <div class="calc-section">
+            <h3>⚔️ PvP Method</h3>
+            <div class="form-group">
+              <label for="pvpMethod">Fighting Method</label>
+              <select id="pvpMethod" class="form-control">
+                <option value="normal">Normal PvP</option>
+                <option value="bounty_hunt">Bounty Hunting</option>
+                <option value="crew_wars">Crew Wars</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="avgBountyGain">Average Gain per Win</label>
+              <input type="number" id="avgBountyGain" class="form-control" min="1000" value="25000">
+            </div>
+            <div class="form-group">
+              <label for="winRate">Win Rate (%)</label>
+              <input type="number" id="winRate" class="form-control" min="10" max="100" value="60">
+            </div>
+          </div>
+        </div>
+
+        <div id="bountyResults" class="results-display" style="display: none;">
+          <h3>🏆 Bounty/Honor Results</h3>
+          <div id="bountyStats"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // XP requirement formulas and data
+    const xpData = {
+      levelFormula: (level) => {
+        if (level <= 100) return level * 100;
+        if (level <= 200) return level * 200;
+        if (level <= 300) return level * 300;
+        if (level <= 400) return level * 400;
+        return level * 500;
+      },
+      
+      masteryFormula: (mastery) => {
+        return Math.round(mastery * mastery * 0.5 + mastery * 100);
+      },
+      
+      grindingMethods: {
+        quest: { baseXP: 50000, efficiency: 1.2 },
+        boss: { baseXP: 40000, efficiency: 1.0 },
+        dungeon: { baseXP: 80000, efficiency: 0.8 },
+        pvp: { baseXP: 30000, efficiency: 0.6 },
+        mixed: { baseXP: 45000, efficiency: 1.1 }
+      }
+    };
+
+    function switchTab(tabName) {
+      // Hide all tab contents
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Remove active class from all buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      // Show selected tab and activate button
+      document.getElementById(tabName + 'Tab').classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function calculateLevel() {
+      const currentLevel = parseInt(document.getElementById('currentLevel').value);
+      const targetLevel = parseInt(document.getElementById('targetLevel').value);
+      const multiplier = parseFloat(document.getElementById('xpMultiplier').value);
+      const method = document.getElementById('grindingMethod').value;
+      const xpPerHour = parseInt(document.getElementById('xpPerHour').value);
+      const hoursPerDay = parseFloat(document.getElementById('hoursPerDay').value);
+      
+      if (currentLevel >= targetLevel) {
+        alert('Target level must be higher than current level!');
+        return;
+      }
+
+      let totalXPNeeded = 0;
+      for (let level = currentLevel + 1; level <= targetLevel; level++) {
+        totalXPNeeded += xpData.levelFormula(level);
+      }
+      
+      const adjustedXPNeeded = Math.round(totalXPNeeded / multiplier);
+      const hoursNeeded = Math.ceil(adjustedXPNeeded / xpPerHour);
+      const daysNeeded = Math.ceil(hoursNeeded / hoursPerDay);
+      
+      displayLevelResults({
+        currentLevel,
+        targetLevel,
+        totalXPNeeded: adjustedXPNeeded,
+        hoursNeeded,
+        daysNeeded,
+        method,
+        multiplier
+      });
+    }
+
+    function calculateMastery() {
+      const itemType = document.getElementById('itemType').value;
+      const currentMastery = parseInt(document.getElementById('currentMastery').value);
+      const targetMastery = parseInt(document.getElementById('targetMastery').value);
+      const masteryPerKill = parseInt(document.getElementById('masteryPerKill').value);
+      const killsPerHour = parseInt(document.getElementById('killsPerHour').value);
+      
+      if (currentMastery >= targetMastery) {
+        alert('Target mastery must be higher than current mastery!');
+        return;
+      }
+
+      const masteryNeeded = targetMastery - currentMastery;
+      const killsNeeded = Math.ceil(masteryNeeded / masteryPerKill);
+      const hoursNeeded = Math.ceil(killsNeeded / killsPerHour);
+      
+      displayMasteryResults({
+        itemType,
+        currentMastery,
+        targetMastery,
+        masteryNeeded,
+        killsNeeded,
+        hoursNeeded
+      });
+    }
+
+    function calculateBounty() {
+      const factionType = document.getElementById('factionType').value;
+      const currentBounty = parseInt(document.getElementById('currentBounty').value);
+      const targetBounty = parseInt(document.getElementById('targetBounty').value);
+      const avgGain = parseInt(document.getElementById('avgBountyGain').value);
+      const winRate = parseInt(document.getElementById('winRate').value);
+      
+      if (currentBounty >= targetBounty) {
+        alert('Target bounty/honor must be higher than current!');
+        return;
+      }
+
+      const bountyNeeded = targetBounty - currentBounty;
+      const winsNeeded = Math.ceil(bountyNeeded / avgGain);
+      const battlesNeeded = Math.ceil(winsNeeded / (winRate / 100));
+      
+      displayBountyResults({
+        factionType,
+        currentBounty,
+        targetBounty,
+        bountyNeeded,
+        winsNeeded,
+        battlesNeeded
+      });
+    }
+
+    function displayLevelResults(data) {
+      const resultsContainer = document.getElementById('levelResults');
+      const statsDiv = document.getElementById('levelStats');
+      const breakdownDiv = document.getElementById('levelBreakdown');
+      const timeDiv = document.getElementById('timeEstimates');
+      
+      resultsContainer.style.display = 'block';
+      
+      statsDiv.innerHTML = `
+        <div class="xp-stat">
+          <span class="xp-label">Total XP Required</span>
+          <span class="xp-value">${data.totalXPNeeded.toLocaleString()}</span>
+        </div>
+        <div class="xp-stat">
+          <span class="xp-label">Level Range</span>
+          <span class="xp-value">${data.currentLevel} → ${data.targetLevel}</span>
+        </div>
+        <div class="xp-stat">
+          <span class="xp-label">XP Multiplier</span>
+          <span class="xp-value">${data.multiplier}x</span>
+        </div>
+      `;
+      
+      timeDiv.innerHTML = `
+        <div class="time-estimates">
+          <div class="time-card">
+            <div class="time-value">${data.hoursNeeded}</div>
+            <div class="time-label">Hours Needed</div>
+          </div>
+          <div class="time-card">
+            <div class="time-value">${data.daysNeeded}</div>
+            <div class="time-label">Days at Current Rate</div>
+          </div>
+          <div class="time-card">
+            <div class="time-value">${Math.ceil(data.daysNeeded / 7)}</div>
+            <div class="time-label">Weeks Estimated</div>
+          </div>
+        </div>
+      `;
+      
+      resultsContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function displayMasteryResults(data) {
+      const resultsContainer = document.getElementById('masteryResults');
+      const statsDiv = document.getElementById('masteryStats');
+      
+      resultsContainer.style.display = 'block';
+      
+      statsDiv.innerHTML = `
+        <div class="xp-stat">
+          <span class="xp-label">Mastery Needed</span>
+          <span class="xp-value">${data.masteryNeeded}</span>
+        </div>
+        <div class="xp-stat">
+          <span class="xp-label">Kills Required</span>
+          <span class="xp-value">${data.killsNeeded.toLocaleString()}</span>
+        </div>
+        <div class="xp-stat">
+          <span class="xp-label">Hours Needed</span>
+          <span class="xp-value">${data.hoursNeeded}</span>
+        </div>
+        <div class="xp-stat">
+          <span class="xp-label">Progress</span>
+          <span class="xp-value">${data.currentMastery}/${data.targetMastery}</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: ${(data.currentMastery / data.targetMastery) * 100}%"></div>
+        </div>
+      `;
+      
+      resultsContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function displayBountyResults(data) {
+      const resultsContainer = document.getElementById('bountyResults');
+      const statsDiv = document.getElementById('bountyStats');
+      
+      resultsContainer.style.display = 'block';
+      
+      const currency = data.factionType === 'pirate' ? 'Bounty' : 'Honor';
+      
+      statsDiv.innerHTML = `
+        <div class="xp-stat">
+          <span class="xp-label">${currency} Needed</span>
+          <span class="xp-value">${data.bountyNeeded.toLocaleString()}</span>
+        </div>
+        <div class="xp-stat">
+          <span class="xp-label">Wins Required</span>
+          <span class="xp-value">${data.winsNeeded.toLocaleString()}</span>
+        </div>
+        <div class="xp-stat">
+          <span class="xp-label">Total Battles</span>
+          <span class="xp-value">${data.battlesNeeded.toLocaleString()}</span>
+        </div>
+        <div class="xp-stat">
+          <span class="xp-label">Current Progress</span>
+          <span class="xp-value">${((data.currentBounty / data.targetBounty) * 100).toFixed(1)}%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: ${(data.currentBounty / data.targetBounty) * 100}%"></div>
+        </div>
+      `;
+      
+      resultsContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Initialize with reasonable defaults
+    document.addEventListener('DOMContentLoaded', function() {
+      // Update XP per hour based on method selection
+      document.getElementById('grindingMethod').addEventListener('change', function() {
+        const method = this.value;
+        const baseXP = xpData.grindingMethods[method].baseXP;
+        document.getElementById('xpPerHour').value = baseXP;
+      });
+      
+      // Update mastery per kill based on method
+      document.getElementById('masteryMethod').addEventListener('change', function() {
+        const method = this.value;
+        const masteryValues = {
+          npc: 3,
+          boss: 8,
+          player: 5,
+          sea_beast: 12
+        };
+        document.getElementById('masteryPerKill').value = masteryValues[method] || 3;
+      });
+    });
+  </script>
+  <script src="../../script.js"></script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mani Puspak Dhakal — Portfolio</title>
+  <meta name="description" content="Portfolio of Mani Puspak Dhakal - Aspiring Engineer and Web Developer from Nepal">
+  <meta name="keywords" content="web developer, portfolio, react, javascript, nepal">
+  
+  <!-- Preconnect for font optimization -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ===== INTRO OVERLAY ===== -->
+<div id="intro">
+  <canvas id="introCanvas"></canvas>
+
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <!-- Floating code snippets -->
+  <div class="float-snippet" id="fs1" style="top:15%;left:8%;--rot:-4deg;animation-duration:6s;animation-delay:0.4s">const dev = new Developer("Mani");</div>
+  <div class="float-snippet" id="fs2" style="top:72%;left:6%;--rot:3deg;animation-duration:5s;animation-delay:1s;color:var(--accent)">import React, { useState } from 'react'</div>
+  <div class="float-snippet" id="fs3" style="top:20%;right:6%;--rot:5deg;animation-duration:7s;animation-delay:0.7s">npm run build ✓</div>
+  <div class="float-snippet" id="fs4" style="bottom:20%;right:8%;--rot:-3deg;animation-duration:5.5s;animation-delay:1.3s">git commit -m "shipped 🚀"</div>
+  <div class="float-snippet" id="fs5" style="top:45%;right:3%;--rot:2deg;animation-duration:6.5s;animation-delay:0.2s;color:#ff9f7f">async function solve() { ... }</div>
+
+  <div class="intro-content">
+    <p class="intro-greeting">✦ Welcome to my portfolio</p>
+    <h1 class="intro-name">MANI</h1>
+    <p class="intro-tagline">Aspiring Engineer &amp; <span>Developer</span> from Nepal</p>
+    <div class="intro-bar"></div>
+  </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<div id="app">
+  <div class="grid-bg"></div>
+
+  <!-- Header -->
+  <header>
+    <a href="#home" class="logo">M.</a>
+    <nav id="mainNav">
+      <a href="#home" class="active">Home</a>
+      <a href="#services">Services</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+      <a href="#contact" class="nav-cta">Hire Me</a>
+    </nav>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section id="home" style="max-width:1200px">
+    <div class="hero-text">
+      <div class="hero-badge">Available for work</div>
+      <h1 class="hero-title">Hello, I'm<br><span>Mani Puspak</span><br>Dhakal.</h1>
+      <p class="hero-sub">
+        <span id="typedText">Aspiring Engineer</span><span class="cursor-blink"></span>
+      </p>
+      <p class="hero-desc">I'm a developer from Nepal documenting my journey toward becoming an engineer. I build modern websites, tinker with new tech, and ship projects that matter.</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn-primary">View Projects →</a>
+        <a href="#contact" class="btn-outline">Get in Touch</a>
+      </div>
+      <div class="hero-socials">
+        <a href="#" class="social-link" title="LinkedIn">in</a>
+        <a href="#" class="social-link" title="GitHub">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+        </a>
+        <a href="#" class="social-link" title="Twitter">𝕏</a>
+        <a href="https://www.instagram.com/manipuspak12_/" class="social-link" title="Instagram">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="card-header">
+          <div class="card-dot red"></div>
+          <div class="card-dot yellow"></div>
+          <div class="card-dot green"></div>
+        </div>
+        <div class="code-block">
+          <div><span class="code-keyword">const</span> <span class="code-fn">mani</span> = {</div>
+          <div>&nbsp;&nbsp;name: <span class="code-string">"Mani Puspak Dhakal"</span>,</div>
+          <div>&nbsp;&nbsp;location: <span class="code-string">"Nepal 🇳🇵"</span>,</div>
+          <div>&nbsp;&nbsp;role: <span class="code-string">"Aspiring Engineer"</span>,</div>
+          <div>&nbsp;&nbsp;stack: [<span class="code-string">"React"</span>, <span class="code-string">"Node"</span>, <span class="code-string">"JS"</span>],</div>
+          <div>&nbsp;&nbsp;available: <span class="code-keyword">true</span>,</div>
+          <div>};</div>
+          <div>&nbsp;</div>
+          <div class="code-comment">// Open to opportunities</div>
+          <div><span class="code-fn">console</span>.log(mani.available); <span class="code-comment">// true</span></div>
+        </div>
+        <div class="card-stats">
+          <div class="stat-box">
+            <div class="stat-num">3+</div>
+            <div class="stat-label">Years Coding</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">10+</div>
+            <div class="stat-label">Projects Done</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SERVICES ===== -->
+  <section id="services" style="max-width:1200px">
+    <div class="section-head reveal">
+      <span class="section-tag">// 01 what I do</span>
+      <h2 class="section-title">My <span>Services</span></h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="grid reveal">
+      <div class="service-card">
+        <div class="service-icon">🌐</div>
+        <h3>Web Development</h3>
+        <p>Modern, responsive websites using HTML, CSS and JavaScript — focused on performance and accessibility.</p>
+        <div class="service-num">01</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🎨</div>
+        <h3>UI / UX Design</h3>
+        <p>Design and refine user interfaces with a user-first approach, pixel-perfect attention to detail.</p>
+        <div class="service-num">02</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🚀</div>
+        <h3>Projects & Consulting</h3>
+        <p>Prototype, build and ship projects — from idea to production-ready deployment.</p>
+        <div class="service-num">03</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SKILLS ===== -->
+  <section id="skills" style="max-width:1200px">
+    <div class="section-head reveal">
+      <span class="section-tag">// 02 technologies</span>
+      <h2 class="section-title">My <span>Skills</span></h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="grid reveal" id="skillsGrid">
+      <div class="skill-item">
+        <div class="skill-head"><span class="skill-name">HTML / CSS</span><span class="skill-pct">90%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-head"><span class="skill-name">JavaScript</span><span class="skill-pct">85%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-head"><span class="skill-name">React</span><span class="skill-pct">75%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="75"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-head"><span class="skill-name">Node.js</span><span class="skill-pct">70%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="70"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <section id="projects" style="max-width:1200px">
+    <div class="section-head reveal">
+      <span class="section-tag">// 03 work</span>
+      <h2 class="section-title">Featured <span>Projects</span></h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="grid reveal">
+      <div class="project-card" data-title="Project One" data-desc="A small e-commerce demo built with vanilla JS featuring product filtering, cart functionality, and a clean checkout flow. Built to practice DOM manipulation and local storage.">
+        <div class="project-thumb">
+          <div class="project-thumb-bg" style="background:linear-gradient(135deg,#0d1a33,#1a2a50)"></div>
+          <div class="project-thumb-icon">🛒</div>
+          <div class="project-overlay"><button class="project-link-btn open-project">View Details</button></div>
+        </div>
+        <div class="project-body">
+          <div class="project-tags"><span class="tag">Vanilla JS</span><span class="tag">HTML</span><span class="tag">CSS</span></div>
+          <h4>E-Commerce Demo</h4>
+          <p>A fully functional shopping experience built with vanilla JavaScript.</p>
+        </div>
+      </div>
+      <div class="project-card" data-title="Project Two" data-desc="Interactive UI demo using React components with state management, custom hooks, and reusable component patterns. Demonstrates modern React best practices.">
+        <div class="project-thumb">
+          <div class="project-thumb-bg" style="background:linear-gradient(135deg,#0d2a1a,#1a4030)"></div>
+          <div class="project-thumb-icon">⚛️</div>
+          <div class="project-overlay"><button class="project-link-btn open-project">View Details</button></div>
+        </div>
+        <div class="project-body">
+          <div class="project-tags"><span class="tag">React</span><span class="tag">Hooks</span><span class="tag">CSS</span></div>
+          <h4>React UI Dashboard</h4>
+          <p>Interactive UI demo showcasing React components and state management.</p>
+        </div>
+      </div>
+      <div class="project-card" data-title="Project Three" data-desc="API-driven dashboard built on Node.js with Express, real-time data updates, and a clean admin interface. Handles authentication and CRUD operations.">
+        <div class="project-thumb">
+          <div class="project-thumb-bg" style="background:linear-gradient(135deg,#2a1a0d,#4a2a10)"></div>
+          <div class="project-thumb-icon">📊</div>
+          <div class="project-overlay"><button class="project-link-btn open-project">View Details</button></div>
+        </div>
+        <div class="project-body">
+          <div class="project-tags"><span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">API</span></div>
+          <h4>API Dashboard</h4>
+          <p>A real-time data dashboard powered by Node.js and REST APIs.</p>
+        </div>
+      </div>
+      <div class="project-card" data-title="Bloxtreck" data-desc="A comprehensive fan wiki and resource guide for the Bloxtreck game. Features detailed game information, item databases, calculators, interactive maps, and community tools to enhance your gaming experience." onclick="window.location.href='../Bloxtreck-main/'">
+        <div class="project-thumb">
+          <div class="project-thumb-bg" style="background:linear-gradient(135deg,#1a0d2a,#3a1a5a)"></div>
+          <div class="project-thumb-icon">⚔️</div>
+          <div class="project-overlay"><button class="project-link-btn" style="cursor: pointer;">Visit Site</button></div>
+        </div>
+        <div class="project-body">
+          <div class="project-tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
+          <h4>Bloxtreck Wiki</h4>
+          <p>A detailed fan wiki with game resources, calculators, maps, and community tools.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EDUCATION & EXPERIENCE ===== -->
+  <section id="education" style="max-width:1200px">
+    <div class="section-head reveal">
+      <span class="section-tag">// 04 background</span>
+      <h2 class="section-title">Education & <span>Experience</span></h2>
+      <div class="section-line"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px" class="reveal edu-exp-grid">
+      <div>
+        <p style="font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:20px">Education</p>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-label">2023 — Present</div>
+            <div class="timeline-title">Bachelor of Engineering</div>
+            <div class="timeline-desc">Studying engineering with a focus on software systems, algorithms, and modern development practices.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-label">2019 — 2022</div>
+            <div class="timeline-title">High School</div>
+            <div class="timeline-desc">Graduated with a strong mathematics and science background, developing early interest in computers.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p style="font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:20px">Experience</p>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-label">2022 — Present</div>
+            <div class="timeline-title">Freelance Developer</div>
+            <div class="timeline-desc">Built small business websites, landing pages, and prototypes for clients — end to end, from design to deployment.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact" style="max-width:1200px">
+    <div class="section-head reveal">
+      <span class="section-tag">// 05 reach out</span>
+      <h2 class="section-title">Get in <span>Touch</span></h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-grid reveal">
+      <div class="contact-info">
+        <h3>Let's build something great together.</h3>
+        <p>I'm always open to new opportunities, collaborations, or just a good conversation about tech. Drop me a message!</p>
+        <div class="contact-links">
+          <a href="#" class="contact-link-item">
+            <div class="contact-link-icon">in</div>
+            LinkedIn
+          </a>
+          <a href="#" class="contact-link-item">
+            <div class="contact-link-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+            </div>
+            GitHub
+          </a>
+          <a href="https://www.instagram.com/manipuspak12_/" class="contact-link-item" target="_blank">
+            <div class="contact-link-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </div>
+            Instagram — @manipuspak12_
+          </a>
+        </div>
+        <div style="margin-top:28px;display:flex;gap:12px">
+          <a href="resume.pdf" class="btn-primary" download>↓ Resume</a>
+        </div>
+      </div>
+      <form class="contact-form" id="contactForm">
+        <div class="form-field">
+          <label for="fname">Name</label>
+          <input type="text" id="fname" name="name" placeholder="Your name" required>
+        </div>
+        <div class="form-field">
+          <label for="femail">Email</label>
+          <input type="email" id="femail" name="email" placeholder="you@example.com" required>
+        </div>
+        <div class="form-field">
+          <label for="fmsg">Message</label>
+          <textarea id="fmsg" name="message" rows="5" placeholder="What's on your mind?" required></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send Message ✦</button>
+        <p class="form-status" id="formStatus"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© <span id="yr"></span> <span>Mani Puspak Dhakal</span> — Built with ❤️ from Nepal</p>
+  </footer>
+</div>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modal">
+  <div class="modal-box">
+    <h3 id="modalTitle"></h3>
+    <p id="modalDesc"></p>
+    <button class="modal-close-btn" id="modalClose">Close ×</button>
+  </div>
+</div>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>

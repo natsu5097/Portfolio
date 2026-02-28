@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloxtreck Form - Submit Your Information</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="form.css">
+    <link rel="icon" href="../assets/images/sitelogo/favicon_io/favicon.ico" type="image/x-icon">
+    <style>
+        /* Enhanced Professional Form Styling with Dark Theme */
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #f8f9fa;
+            font-family: var(--body-font);
+            line-height: 1.6;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem 1rem;
+        }
+
+        /* Override CSS variables for dark theme */
+        :root {
+            --bg-color: #121212;
+            --bg-color-alt: #1e1e1e;
+            --text-color: #f8f9fa;
+            --text-color-muted: #adb5bd;
+            --border-color: #343a40;
+            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --card-shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(30, 30, 30, 0.95);
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            position: relative;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            z-index: 1;
+        }
+
+        .breadcrumb-wrapper {
+            padding: 1rem 2rem 0;
+            background: rgba(30, 30, 30, 0.95);
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-color-muted);
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--primary-color-alt);
+        }
+
+        .form-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="0.5" fill="white" opacity="0.1"/><circle cx="15" cy="15" r="0.3" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+        }
+
+        .form-header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-header h1 {
+            font-size: 2.5rem;
+            font-family: var(--heading-font);
+            font-weight: var(--font-bold);
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-header p {
+            font-size: 1.125rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-body {
+            padding: 3rem 2rem;
+            background: rgba(30, 30, 30, 0.95);
+        }
+
+        /* Conditional fields animation */
+        .conditional-field {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.4s ease, max-height 0.4s ease, margin 0.4s ease;
+        }
+
+        .conditional-field.show {
+            opacity: 1;
+            max-height: 200px;
+            margin-bottom: 1.75rem;
+        }
+
+        .form-section {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .form-section:last-of-type {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-family: var(--heading-font);
+            font-weight: var(--font-semibold);
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 3px solid var(--primary-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--gradient-accent);
+        }
+
+        .form-group {
+            margin-bottom: 1.75rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            font-weight: var(--font-medium);
+            font-size: 1rem;
+            position: relative;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"],
+        .form-group input[type="file"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(18, 18, 18, 0.8);
+            color: var(--text-color);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(173, 181, 189, 0.7);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+            transform: translateY(-1px);
+        }
+
+        .form-group textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 0.5rem;
+            color: var(--text-color-muted);
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 0.75rem;
+        }
+
+        .radio-option,
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: rgba(18, 18, 18, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .radio-option:hover,
+        .checkbox-option:hover {
+            border-color: var(--primary-color);
+            background: rgba(var(--primary-color-rgb), 0.05);
+        }
+
+        .radio-option input[type="radio"],
+        .checkbox-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .radio-option:has(input:checked),
+        .checkbox-option:has(input:checked) {
+            border-color: var(--primary-color);
+            background: rgba(var(--primary-color-rgb), 0.1);
+            color: var(--primary-color);
+            font-weight: var(--font-medium);
+        }
+
+        .rating-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        .rating-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: rgba(18, 18, 18, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius-lg);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            -webkit-user-select: none;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rating-option:hover {
+            border-color: var(--warning-color);
+            background: rgba(255, 159, 28, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 159, 28, 0.2);
+        }
+
+        .rating-option:has(input:checked) {
+            border-color: var(--warning-color);
+            background: rgba(255, 159, 28, 0.15);
+            color: var(--warning-color);
+            font-weight: var(--font-semibold);
+        }
+
+        .rating-option input[type="radio"] {
+            display: none;
+        }
+
+        .rating-option label {
+            cursor: pointer;
+            margin: 0;
+            font-size: 1rem;
+            font-weight: inherit;
+        }
+
+        .submit-section {
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .submit-btn {
+            padding: 1.25rem 3rem;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-lg);
+            font-size: 1.125rem;
+            font-weight: var(--font-bold);
+            font-family: var(--heading-font);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-width: 200px;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.4);
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .submit-btn:disabled::before {
+            display: none;
+        }
+
+        .message {
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            display: none;
+            border-left: 4px solid;
+            font-weight: var(--font-medium);
+        }
+
+        .message.success {
+            background: rgba(46, 196, 182, 0.1);
+            color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .message.error {
+            background: rgba(231, 57, 70, 0.1);
+            color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+
+        .message.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .required {
+            color: var(--danger-color);
+            font-weight: var(--font-medium);
+        }
+
+        .form-progress {
+            height: 4px;
+            background: var(--border-color);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .form-progress-bar {
+            height: 100%;
+            background: var(--gradient-primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+
+            .container {
+                margin: 0;
+                border-radius: 0;
+                min-height: 100vh;
+            }
+
+            .breadcrumb-wrapper {
+                padding: 1rem 1.5rem 0;
+            }
+
+            .form-header {
+                padding: 2.5rem 1.5rem 1.5rem;
+            }
+
+            .form-header h1 {
+                font-size: 2rem;
+            }
+
+            .form-body {
+                padding: 2rem 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.25rem;
+            }
+
+            .radio-group,
+            .checkbox-group,
+            .rating-group {
+                gap: 0.5rem;
+            }
+
+            .radio-option,
+            .checkbox-option,
+            .rating-option {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .submit-btn {
+                width: 100%;
+                padding: 1rem 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-header h1 {
+                font-size: 1.75rem;
+            }
+
+            .form-header p {
+                font-size: 1rem;
+            }
+
+            .radio-group,
+            .checkbox-group {
+                flex-direction: column;
+            }
+
+            .rating-group {
+                justify-content: center;
+            }
+        }
+
+        .form-note {
+            margin-top: 1rem;
+            color: var(--text-color-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb-wrapper">
+            <nav aria-label="Breadcrumb">
+                <ol class="breadcrumb">
+                    <li><a href="../index.html">🏠 Home</a></li>
+                    <li>/</li>
+                    <li aria-current="page">Contact Form</li>
+                </ol>
+            </nav>
+        </div>
+        
+        <div class="form-header">
+            <div class="form-header-content">
+                <h1>🎮 Bloxtreck Contact Form</h1>
+                <p>We'd love to hear from you! Share your feedback, questions, and stay connected with our gaming community.</p>
+            </div>
+        </div>
+
+        <div class="form-body">
+            <div class="form-progress">
+                <div class="form-progress-bar" id="progressBar"></div>
+            </div>
+            
+            <div id="message" class="message"></div>
+
+            <form id="bloxtreckForm">
+                <!-- Section 1: Personal & Contact Information -->
+                <div class="form-section">
+                    <h2 class="section-title">Personal & Contact Information</h2>
+
+                    <div class="form-group">
+                        <label for="username">Username / Nickname <span class="required">*</span></label>
+                        <input type="text" id="username" name="username" required placeholder="Enter your username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Gender / Pronouns</label>
+                        <select id="gender" name="gender">
+                            <option value="">Select...</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Non-binary">Non-binary</option>
+                            <option value="He/Him">He/Him</option>
+                            <option value="She/Her">She/Her</option>
+                            <option value="They/Them">They/Them</option>
+                            <option value="Prefer not to say">Prefer not to say</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Preferred Contact Method</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="contact-email" name="preferredContact" value="Email">
+                                <label for="contact-email">📧 Email</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="contact-phone" name="preferredContact" value="Phone">
+                                <label for="contact-phone">📱 Phone</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="contact-both" name="preferredContact" value="Both">
+                                <label for="contact-both">📧📱 Both</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Conditional Contact Fields -->
+                    <div id="contactFields">
+                        <div class="form-group conditional-field" id="emailField">
+                            <label for="email">📧 Email Address <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" placeholder="your.email@example.com">
+                            <small>We'll use this to send you updates and respond to your inquiries</small>
+                        </div>
+
+                        <div class="form-group conditional-field" id="phoneField">
+                            <label for="phone">📱 Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567">
+                            <small>Include country code for international numbers</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">📍 Address / Location</label>
+                        <input type="text" id="location" name="location" placeholder="City, State, or Country">
+                        <small>Help us understand your geographic location for better support</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profilePicture">📸 Profile Picture Upload</label>
+                        <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
+                        <small>Upload a profile picture (JPG, PNG, GIF). File name will be recorded for processing.</small>
+                    </div>
+                </div>
+
+                <!-- Section 2: Feedback & Preferences -->
+                <div class="form-section">
+                    <h2 class="section-title">Feedback & Preferences</h2>
+
+                    <div class="form-group">
+                        <label for="contactTime">Preferred Contact Time</label>
+                        <select id="contactTime" name="contactTime">
+                            <option value="">Select...</option>
+                            <option value="Morning (6 AM - 12 PM)">Morning (6 AM - 12 PM)</option>
+                            <option value="Afternoon (12 PM - 6 PM)">Afternoon (12 PM - 6 PM)</option>
+                            <option value="Evening (6 PM - 12 AM)">Evening (6 PM - 12 AM)</option>
+                            <option value="Anytime">Anytime</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>⭐ Service Rating</label>
+                        <small>How would you rate our service quality?</small>
+                        <div class="rating-group">
+                            <div class="rating-option">
+                                <input type="radio" id="service1" name="serviceRating" value="1">
+                                <label for="service1">⭐ Poor</label>
+                            </div>
+                            <div class="rating-option">
+                                <input type="radio" id="service2" name="serviceRating" value="2">
+                                <label for="service2">⭐⭐ Fair</label>
+                            </div>
+                            <div class="rating-option">
+                                <input type="radio" id="service3" name="serviceRating" value="3">
+                                <label for="service3">⭐⭐⭐ Good</label>
+                            </div>
+                            <div class="rating-option">
+                                <input type="radio" id="service4" name="serviceRating" value="4">
+                                <label for="service4">⭐⭐⭐⭐ Great</label>
+                            </div>
+                            <div class="rating-option">
+                                <input type="radio" id="service5" name="serviceRating" value="5">
+                                <label for="service5">⭐⭐⭐⭐⭐ Excellent</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>🌐 Website Rating</label>
+                        <small>How easy was it to navigate our website?</small>
+                        <div class="rating-group">
+                            <div class="rating-option">
+                                <input type="radio" id="website1" name="websiteRating" value="1">
+                                <label for="website1">⭐ Difficult</label>
+                            </div>
+                            <div class="rating-option">
+                                <input type="radio" id="website2" name="websiteRating" value="2">
+                                <label for="website2">⭐⭐ Okay</label>
+                            </div>
+                            <div class="rating-option">
+                                <input type="radio" id="website3" name="websiteRating" value="3">
+                                <label for="website3">⭐⭐⭐ Good</label>
+                            </div>
+                            <div class="rating-option">
+                                <input type="radio" id="website4" name="websiteRating" value="4">
+                                <label for="website4">⭐⭐⭐⭐ Great</label>
+                            </div>
+                            <div class="rating-option">
+                                <input type="radio" id="website5" name="websiteRating" value="5">
+                                <label for="website5">⭐⭐⭐⭐⭐ Perfect</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>💯 Overall Satisfaction</label>
+                        <small>How satisfied are you with your overall experience?</small>
+                        <div class="rating-group">
+                            <div class="rating-option">
+                                <input type="radio" id="overall1" name="overallRating" value="1">
+                                <label for="overall1">⭐ Very Poor</label>
+                            </div>
+                            <div class="rating-option">
+                                <input type="radio" id="overall2" name="overallRating" value="2">
+                                <label for="overall2">⭐⭐ Poor</label>
+                            </div>
+                            <div class="rating-option">
+                                <input type="radio" id="overall3" name="overallRating" value="3">
+                                <label for="overall3">⭐⭐⭐ Average</label>
+                            </div>
+                            <div class="rating-option">
+                                <input type="radio" id="overall4" name="overallRating" value="4">
+                                <label for="overall4">⭐⭐⭐⭐ Good</label>
+                            </div>
+                            <div class="rating-option">
+                                <input type="radio" id="overall5" name="overallRating" value="5">
+                                <label for="overall5">⭐⭐⭐⭐⭐ Excellent</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="comments">💬 Additional Comments</label>
+                        <small>Tell us more about your experience or any suggestions you have</small>
+                        <textarea id="comments" name="comments" placeholder="We value your feedback! Share any additional thoughts, suggestions, or comments here..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="newsletter" name="newsletter">
+                            <label for="newsletter">📬 Subscribe to our newsletter for updates and exclusive content</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Section -->
+                <div class="submit-section">
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        🚀 Submit Form
+                    </button>
+                    <p class="form-note">
+                        Your information is secure and will only be used to improve our services.
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+  <script src="form-script.js"></script>
+  <script>
+    // Enhanced form progress and UX improvements
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('bloxtreckForm');
+        const progressBar = document.getElementById('progressBar');
+        const formInputs = form.querySelectorAll('input, select, textarea');
+        const totalFields = formInputs.length;
+        let filledFields = 0;
+
+        // Update progress bar
+        function updateProgress() {
+            filledFields = 0;
+            formInputs.forEach(input => {
+                if (input.type === 'radio' || input.type === 'checkbox') {
+                    const groupName = input.name;
+                    if (document.querySelector(`input[name="${groupName}"]:checked`)) {
+                        filledFields++;
+                    }
+                } else if (input.value.trim() !== '') {
+                    filledFields++;
+                }
+            });
+            
+            // Remove duplicates for radio groups
+            const uniqueFields = new Set();
+            formInputs.forEach(input => {
+                if (input.type === 'radio') {
+                    uniqueFields.add(input.name);
+                } else {
+                    uniqueFields.add(input.id || input.name);
+                }
+            });
+            
+            const actualTotal = uniqueFields.size;
+            let actualFilled = 0;
+            
+            uniqueFields.forEach(fieldId => {
+                const field = document.querySelector(`[name="${fieldId}"], #${fieldId}`);
+                if (field) {
+                    if (field.type === 'radio') {
+                        if (document.querySelector(`input[name="${fieldId}"]:checked`)) {
+                            actualFilled++;
+                        }
+                    } else if (field.type === 'checkbox') {
+                        if (field.checked) {
+                            actualFilled++;
+                        }
+                    } else if (field.value.trim() !== '') {
+                        actualFilled++;
+                    }
+                }
+            });
+            
+            const progress = (actualFilled / actualTotal) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        // Add input event listeners
+        formInputs.forEach(input => {
+            input.addEventListener('input', updateProgress);
+            input.addEventListener('change', updateProgress);
+            
+            // Add focus/blur effects for better UX
+            if (input.type !== 'radio' && input.type !== 'checkbox') {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'translateY(-2px)';
+                    this.parentElement.style.transition = 'transform 0.3s ease';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'translateY(0)';
+                });
+            }
+        });
+
+        // Initialize progress
+        updateProgress();
+
+        // Form submission enhancement
+        form.addEventListener('submit', function(e) {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.innerHTML = '⏳ Submitting...';
+            submitBtn.disabled = true;
+            
+            // Re-enable button after 5 seconds (in case of network issues)
+            setTimeout(() => {
+                submitBtn.innerHTML = '🚀 Submit Form';
+                submitBtn.disabled = false;
+            }, 5000);
+        });
+
+        // Add subtle animations to sections
+        const sections = document.querySelectorAll('.form-section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+
+        // Add hover effects to rating options
+        const ratingOptions = document.querySelectorAll('.rating-option');
+        ratingOptions.forEach(option => {
+            option.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.02)';
+            });
+            
+            option.addEventListener('mouseleave', function() {
+                if (!this.querySelector('input:checked')) {
+                    this.style.transform = 'translateY(0) scale(1)';
+                }
+            });
+        });
+    });
+  </script>
+</body>
+</html>
