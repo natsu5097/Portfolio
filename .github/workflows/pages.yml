@@ -5,12 +5,19 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Setup repository info
+        run: echo "REPO=${{ github.repository }}" >> $GITHUB_ENV
 
       # if you have a build step you can add it here
 
@@ -20,5 +27,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./Portfolio
           publish_branch: gh-pages
+          repository: ${{ github.repository }}
+          clean: true
           # keep empty if you want root or specify docs if using root folder
           # for a project site the URL will be https://<user>.github.io/Portfolio-Main/
